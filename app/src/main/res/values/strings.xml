@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">EArt</string>
+
+    <!--    Registration Details validation error messages-->
+    <string name="errorEtFirstName">Please enter first name.</string>
+    <string name="errorEtLastName">Please enter last name.</string>
+    <string name="errorEtEmail">Please enter email ID.</string>
+    <string name="errorEtPassword">Please enter password.</string>
+    <string name="errorEtConfrmPassword">Please Confirm password.</string>
+    <string name="errorComparePassword">Password does not match.</string>
+    <string name="accountCreated">Account Created Successfully.</string>
+    <string name="errorTermsConditions">Agree to the terms and conditions.</string>
+    <string name="loginSuccess">Login Successfully</string>
+    <string name="errorEtShortPaswd">Password must be atleast eight characters</string>
+    <string name="loginFailure">Login Failure</string>
+    <string name="emailForgotPasswd">Enter your email, we will send a link to change the password.</string>
+    <string name="emailSentSuccess">Email sent successfully. Check your email to change your password.</string>
+    <string name="account">MY ACCOUNT</string>
+    <string name="title_activity_dashboard">MainActivity</string>
+    <string name="title_products">Products</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_orders">Orders</string>
+    <string name="onBackPress">Click back again to exit</string>
+    <string name="action_settings">Settings</string>
+
+    <!--    ERROR strings for Add Product-->
+    <string name="errorProdctImg">Please Select the product.</string>
+    <string name="errorProdctTitle">Please enter product title.</string>
+    <string name="errorProdctPrice">Please enter product price.</string>
+    <string name="errorProdctDescrptn">Please enter product description.</string>
+    <string name="errorProdctQtty">Please enter prodct quantity.</string>
+    <string name="noPrdctsAddedYet">No products added yet</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

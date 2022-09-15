@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "923995474623",
+    "project_id": "eart-7c941",
+    "storage_bucket": "eart-7c941.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:923995474623:android:4e5f9c440ad6f618af140a",
+        "android_client_info": {
+          "package_name": "com.example.eart"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "923995474623-ag9ukt9ma649h5063cgq5li2246bs574.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAN6aFq0nolqnYUN8ZuMKqxSgp6W_87Fck"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "923995474623-ag9ukt9ma649h5063cgq5li2246bs574.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
