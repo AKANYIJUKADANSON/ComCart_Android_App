@@ -11,6 +11,8 @@ import android.widget.TextView
 import android.widget.Toast
 import com.example.eart.R
 import com.example.eart.baseactivity.BaseActivity
+import com.example.eart.firestore.FirestoreClass
+import com.example.eart.modules.MyUser
 import com.google.firebase.auth.FirebaseAuth
 
 class Login : BaseActivity(), View.OnClickListener {
@@ -28,6 +30,7 @@ class Login : BaseActivity(), View.OnClickListener {
         haveNoAccnt = findViewById(R.id.haveNoActReg)
 
         //Setting the onclick function to work when the views are selected
+
         lgnbtn.setOnClickListener(this)
         forgotPasswd.setOnClickListener(this)
         haveNoAccnt.setOnClickListener(this)
@@ -63,20 +66,12 @@ class Login : BaseActivity(), View.OnClickListener {
                 auth = FirebaseAuth.getInstance()
                 auth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener {
-                        progDialog.dismiss()
 
                         if (it.isSuccessful){
-                            Toast.makeText(this, resources.getString(R.string.loginSuccess),
-                                Toast.LENGTH_LONG).show()
-
-                            val intent = Intent(this@Login, MainActivity::class.java)
-
-                            // Clearing the previous background tasks
-                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                            startActivity(intent)
-                            finish()
+                           FirestoreClass().getUserDetails(this)
                         }
                         else {
+                            progDialog.dismiss()
                             Toast.makeText(
                                 this@Login,
                                 it.exception?.message.toString(),
@@ -112,6 +107,22 @@ class Login : BaseActivity(), View.OnClickListener {
 
             }
         }
+    }
+
+
+    fun loginSuccess(user: MyUser){
+
+        progDialog.dismiss()
+
+        Toast.makeText(this, resources.getString(R.string.loginSuccess),
+            Toast.LENGTH_LONG).show()
+
+        val intent = Intent(this@Login, Dashboard::class.java)
+
+        // Clearing the previous background tasks
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
     }
 
 

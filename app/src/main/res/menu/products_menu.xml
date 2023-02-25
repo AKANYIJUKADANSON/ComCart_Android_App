@@ -7,4 +7,10 @@
         android:title="@string/action_settings"
         app:showAsAction="always"
         android:iconTint="@color/white"/>
+
+    <item android:id="@+id/action_logout"
+        android:icon="@drawable/ic_logout"
+        android:title="Logout"
+        app:showAsAction="always"
+        android:iconTint="@color/white"/>
 </menu>

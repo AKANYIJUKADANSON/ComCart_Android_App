@@ -40,7 +40,6 @@ class Dashboard : BaseActivity() {
     }
 
     override fun onBackPressed() {
-
         doubleBackToExit()
     }
 }

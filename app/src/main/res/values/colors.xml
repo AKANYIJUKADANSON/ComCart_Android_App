@@ -14,6 +14,7 @@
     <color name="password">#0E3CCC</color>
     <color name="deepskyblue">#00B0FF</color>
     <color name="register">#E91E63</color>
+    <color name="lightGrey">#D5CBCB</color>
 
     <color name="red">#ED2F6F</color>
     <color name="yellow">#FFEB3B</color>
@@ -21,4 +22,30 @@
     <color name="errorColor">#EA004F</color>
     <color name="noErrorColor">#09D511</color>
     <color name="imageViewProdctBg">#B8B8B8</color>
+
+    <color name="borderColor">#DFDEDE</color>
+
+
+
+
+
+
+    <color name="colorSnackBarSuccess">#8BC34A</color>
+    <color name="colorSnackBarError">#F72400</color>
+
+    <color name="colorPrimaryText">#222934</color>
+    <color name="colorSecondaryText">#989898</color>
+
+    <color name="colorLightGrey">#F1F1F1</color>
+
+    <color name="colorBorder">#E8E6E6</color>
+    <color name="colorDarkGrey">#878787</color>
+
+    <color name="colorImageViewBackground">#E1E1E1</color>
+
+    <color name="colorOffWhite">#F8F8F8</color>
+    <color name="item_value_text_color">#545353</color>
+    <color name="grey" >#EAEAEA</color>
+
+    <color name="dashboard_item_details_bg">#F3F3F3</color>
 </resources>

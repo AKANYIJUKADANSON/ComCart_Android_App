@@ -7,7 +7,7 @@
     tools:context=".ui.fragments.ProductsFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_products_items"
+        android:id="@+id/products_recyc_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
