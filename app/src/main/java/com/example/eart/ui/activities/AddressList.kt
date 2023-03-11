@@ -7,8 +7,12 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.eart.R
 import com.example.eart.adapters.AddressListAdapter
 import com.example.eart.adapters.ProductsAdapter
@@ -16,34 +20,23 @@ import com.example.eart.baseactivity.BaseActivity
 import com.example.eart.firestore.FirestoreClass
 import com.example.eart.modules.Address
 import com.example.eart.modules.PrdctDtlsClass
+import com.example.eart.modules.SwipeToDeleteCallback
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_address_list.*
 import kotlinx.android.synthetic.main.fragment_products.*
 
-class AddressList : BaseActivity(){
+class   AddressList : BaseActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_address_list)
         setUpActionBar()
 
-    }
 
-//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater): Boolean {
-//        super.onCreateOptionsMenu(menu)
-//        inflater.inflate(R.menu.address_list, menu)
-//
-//    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
-        when(item.itemId){
-            R.id.action_add_address ->{
-                startActivity(Intent(this, AddAddress::class.java))
-                return true
-            }
+        fabAddAddress.setOnClickListener {
+            startActivity(Intent(this, AddAddress::class.java))
         }
-
-        return super.onOptionsItemSelected(item)
     }
+
 
     private fun setUpActionBar(){
         val myToolBar = findViewById<Toolbar>(R.id.toolbar_address_list)
@@ -59,9 +52,13 @@ class AddressList : BaseActivity(){
 
 
     override fun onResume() {
+        getAddressList()
+        super.onResume()
+    }
+
+    fun getAddressList(){
         progressDialog("Loading...")
         FirestoreClass().downloadAddressListFromFirestore(this)
-        super.onResume()
     }
 
     // Create the success download of products function
@@ -87,11 +84,30 @@ class AddressList : BaseActivity(){
             // The productsAdapter above will be assigned as the adapter of the recyclerview
             recycler_view_address_list.adapter = addressListAdapter
 
+            // Swiping to delete
+            val swipeToDeleteHandler = object : SwipeToDeleteCallback(this){
+                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                    progressDialog("Deleting...")
+                    // delete the product from here
+                    FirestoreClass().deleteAddress(this@AddressList, addressList[viewHolder.adapterPosition].address_id)
+                }
+
+            }
+
+            val deleteItemTouchHelper = ItemTouchHelper(swipeToDeleteHandler)
+            deleteItemTouchHelper.attachToRecyclerView(recycler_view_address_list)
+
         }else{
             recycler_view_address_list.visibility = View.GONE
             tv_no_address.visibility = View.VISIBLE
         }
 
+    }
+
+    fun deleteAddressSuccess(){
+        hideProgressDialog()
+        Toast.makeText(this, "Address deleted successfully", Toast.LENGTH_LONG).show()
+        getAddressList()
     }
 
 }

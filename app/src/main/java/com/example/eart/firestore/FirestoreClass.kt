@@ -209,7 +209,6 @@ class FirestoreClass {
          *  Then we have to get the product list wc is an array list of type ProductClass (because they have same prperties)
          * and later we have to loop through the data we get coz they are many products from the collection
          *
-         *
          */
         mFirestore.collection(Constants.PRODUCTS)
             .whereEqualTo(Constants.USER_ID, getCurrentUserID())
@@ -559,6 +558,21 @@ class FirestoreClass {
                 Log.e(
                     activity.javaClass.simpleName,
                     "Error while saving the address",
+                    e
+                )
+            }
+    }
+
+    fun deleteAddress(activity: AddressList, addressId:String){
+        mFirestore.collection(Constants.ADDRESS)
+            .document(addressId).delete()
+            .addOnSuccessListener {
+                activity.deleteAddressSuccess()
+            }.addOnFailureListener {e->
+                activity.hideProgressDialog()
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while deleting the address",
                     e
                 )
             }

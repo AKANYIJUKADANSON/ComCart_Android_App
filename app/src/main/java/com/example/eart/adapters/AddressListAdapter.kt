@@ -7,9 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.eart.R
+import com.example.eart.firestore.FirestoreClass
 import com.example.eart.modules.Address
 import com.example.eart.modules.CartItem
 import com.example.eart.modules.Constants
+import com.example.eart.ui.activities.AddressList
 import com.example.eart.ui.activities.ProductDetailsActivity
 import kotlinx.android.synthetic.main.address_list_custom.view.*
 import kotlinx.android.synthetic.main.products_item_custom.view.*
@@ -34,10 +36,10 @@ class AddressListAdapter(
 
         }
 
-        holder.itemView.address_delete_btn.setOnClickListener {
-            // Passing the product id to the delete fn
-//            fragment.deleteProduct(currentProduct.product_id)
-        }
+//        holder.itemView.address_delete_btn.setOnClickListener {
+//            // Passing the product id to the delete fn
+//            FirestoreClass().deleteAddress(AddressList(), currentAddress.address_id)
+//        }
 
         // Setting the item click foe each item in the recyclerview
 

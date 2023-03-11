@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/grey"
+    android:contentDescription="Add your address"
     tools:context=".ui.activities.AddressList">
 
 
@@ -59,5 +60,19 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar_address_list"
         app:layout_constraintVertical_bias="0.447" />
 
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:clickable="true"
+        app:backgroundTint="@color/redOrange"
+        android:contentDescription="Add your address"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_address_list"
+        app:layout_constraintVertical_bias="0.946"
+        app:srcCompat="@drawable/floating_add_address" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
