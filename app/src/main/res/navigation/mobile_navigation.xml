@@ -3,7 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_products">
+    app:startDestination="@id/navigation_dashboard">
+
+    <fragment
+        android:id="@+id/navigation_dashboard"
+        android:name="com.example.eart.ui.fragments.DashboardFragment"
+        android:label="@string/title_dashboard"
+        tools:layout="@layout/fragment_dashboard" />
 
     <fragment
         android:id="@+id/navigation_products"
@@ -11,11 +17,7 @@
         android:label="@string/title_products"
         tools:layout="@layout/fragment_products" />
 
-    <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.example.eart.ui.fragments.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+
 
     <fragment
         android:id="@+id/navigation_orders"

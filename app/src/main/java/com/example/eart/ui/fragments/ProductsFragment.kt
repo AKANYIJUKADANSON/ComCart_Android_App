@@ -12,7 +12,6 @@ import com.example.eart.basefragment.BaseFragment
 import com.example.eart.firestore.FirestoreClass
 import com.example.eart.modules.PrdctDtlsClass
 import com.example.eart.ui.activities.Addproduct
-import com.example.eart.ui.activities.Login
 import kotlinx.android.synthetic.main.fragment_products.*
 
 class ProductsFragment : BaseFragment() {
@@ -29,8 +28,7 @@ class ProductsFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val root = inflater.inflate(R.layout.fragment_products, container, false)
-        return root
+        return inflater.inflate(R.layout.fragment_products, container, false)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -68,7 +66,7 @@ class ProductsFragment : BaseFragment() {
 
 
     // Function to get the product list from firestore and it will be called on resume
-    fun getProductsfromFirestore(){
+    private fun getProductsfromFirestore(){
         // start the progress dialog
         progressDialog("Loading.....")
         FirestoreClass().getProductList(this)
@@ -158,7 +156,5 @@ class ProductsFragment : BaseFragment() {
         alert_dialog.setCancelable(false)
         alert_dialog.show()
     }
-
-
 
 }

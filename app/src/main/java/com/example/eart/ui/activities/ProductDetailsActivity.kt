@@ -1,12 +1,8 @@
 package com.example.eart.ui.activities
 
 import android.content.Intent
-import android.opengl.Visibility
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
@@ -18,15 +14,19 @@ import com.example.eart.modules.Constants
 import com.example.eart.modules.GlideLoader
 import com.example.eart.modules.PrdctDtlsClass
 import kotlinx.android.synthetic.main.activity_product_details.*
-import kotlinx.android.synthetic.main.cart_item_custom.view.*
 
 class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
+    /**
+     * mProductId, global variable will be initialized as soon as we get into this activity
+     * after its value has been sent from the productsAdapter holderItemClickListener
+     */
     private var  mProdcutId:String = ""
     /**
      *  Creating an object that will contain the item and is of type prdctclass
      *  The object will be best initialized when we download the product from firestore
      *  ie productDownloadSuccess()
     */
+    private var productExraOwnerId:String = ""
     private lateinit var mProductDetails:PrdctDtlsClass
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,12 +36,16 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
 
 
         // Checking if there is any intent with extra information
+        /**
+         * First checking if the intent has the extra data including the product(document) id
+         * for the specific product to display and this will help to assign this id to the global
+         * variable mProductId
+         */
         if(intent.hasExtra(Constants.PRODUCT_EXTRA_ID)){
             // Store the product id in the mProductId global variable
             mProdcutId = intent.getStringExtra(Constants.PRODUCT_EXTRA_ID)!!
         }
 
-        var productExraOwnerId:String = ""
         if(intent.hasExtra(Constants.PRODUCT_EXTRA_OWNER_ID)){
             // Store the set the userid of the product that is not ours
             productExraOwnerId = intent.getStringExtra(Constants.PRODUCT_EXTRA_OWNER_ID)!!
@@ -70,10 +74,10 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
 
     //    Setting the action bar
     private fun setUpActionBar() {
-        val plantStore_toolbar = findViewById<Toolbar>(R.id.toolbar_product_details_activity)
-        setSupportActionBar(plantStore_toolbar)
+        val productDetailsToolbar = findViewById<Toolbar>(R.id.toolbar_product_details_activity)
+        setSupportActionBar(productDetailsToolbar)
 
-        var actionbar = supportActionBar
+        val actionbar = supportActionBar
         if(actionbar != null){
             with(actionbar) {
                 setDisplayHomeAsUpEnabled(true)
@@ -81,7 +85,7 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
             }
         }
 
-        plantStore_toolbar.setNavigationOnClickListener { onBackPressed() }
+        productDetailsToolbar.setNavigationOnClickListener { onBackPressed() }
     }
 
 
@@ -105,18 +109,23 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
         tv_product_details_title.text = product.productTitle
         tv_product_details_price.text = "$${product.productPrice}"
         tv_product_details_description.text = product.prodctDescrptn
-        tv_product_details_available_quantity.text = product.prodctQuantity
+        tv_product_details_stock_quantity.text = product.stock_quantity
+        tv_product_details_stock_quantity.setTextColor(
+            ContextCompat.getColor(
+                this, R.color.green
+            )
+        )
 
         /**
-         * Check if the product quantity is 0 or less and avoid the customer fro adding it to cart
-         * by hidding the add to cart btn
+         * Check if the stock quantity is 0 or less and avoid the customer fro adding it to cart
+         * by hiding the add to cart btn
          * And then change the stock quantity to "OUT OF STOCK"
          */
-        if(product.prodctQuantity.toInt() == 0){
+        if(product.stock_quantity.toInt() == 0){
             hideProgressDialog()
             add_to_cart_btn.visibility = View.GONE
-            tv_product_details_available_quantity.text = "OUT OF STOCK"
-            tv_product_details_available_quantity.setTextColor(
+            tv_product_details_stock_quantity.text = "OUT OF STOCK"
+            tv_product_details_stock_quantity.setTextColor(
                 ContextCompat.getColor(
                     this, R.color.errorColor
                 )
@@ -140,8 +149,8 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
 
     // Creating the function that adds an item to cart
     private fun addItemToCart(){
-        // creating ab object
-        val cart_item = CartItem(
+        // creating an object
+        val cartItem = CartItem(
             FirestoreClass().getCurrentUserID(),
             mProdcutId,
             mProductDetails.productTitle,
@@ -152,7 +161,7 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
 
         progressDialog("Adding...")
         // Adding the object containing the product details into the cart
-        FirestoreClass().addItemToFirestoreCart(this, cart_item)
+        FirestoreClass().addItemToFirestoreCart(this, cartItem)
     }
 
     // The function to run after product is successfully added to cart
@@ -169,7 +178,7 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
         go_to_cart_btn.visibility = View.VISIBLE
     }
 
-    // if the product exists in cart already then hide the btns to add it again
+    // if the product exists in cart already then hide the button to add it again
     fun productExistsInCart(){
         hideProgressDialog()
         // make the visibility of add_to_cart btn GONE and that of go_to_cart VISIBLE

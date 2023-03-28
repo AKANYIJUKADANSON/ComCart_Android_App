@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/tv_title"
+            android:id="@+id/tv_title_addAddress_activity"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="20pt"

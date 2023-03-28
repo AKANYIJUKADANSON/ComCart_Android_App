@@ -7,20 +7,16 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.eart.R
-import com.example.eart.baseactivity.BaseActivity
 import com.example.eart.firestore.FirestoreClass
 import com.example.eart.modules.CartItem
 import com.example.eart.modules.Constants
 import com.example.eart.modules.GlideLoader
 import com.example.eart.ui.activities.CartListActivity
-import kotlinx.android.synthetic.main.activity_product_details.view.*
 import kotlinx.android.synthetic.main.cart_item_custom.view.*
-import kotlinx.android.synthetic.main.products_item_custom.view.*
 
 class CartItemsListAdapter (
     private val context: Context,
-    private val cartItemsList: ArrayList<CartItem>,
-//    private val activity: CartListActivity
+    private var cartItemsList: ArrayList<CartItem>
 ): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val cartLayoutFormat = LayoutInflater.from(parent.context)
@@ -39,7 +35,6 @@ class CartItemsListAdapter (
             holder.itemView.recyc_cart_price.text = "$ ${currentCartItem.product_price}"
             holder.itemView.item_quantity.text = currentCartItem.cart_quantity
 
-
             /**
              * if the cart quantity is 0 then that mean that also we are out of stock of that product
              * as it is set previously
@@ -47,9 +42,20 @@ class CartItemsListAdapter (
              * by hiding the buttons for that and set the cart quantity to a string informing that
              * ts out of stock
              */
-            if(currentCartItem.cart_quantity.toInt() < 0){
+            if(currentCartItem.cart_quantity.toInt() == 0){
                 holder.itemView.quantity_remove_btn.visibility = View.GONE
                 holder.itemView.quantity_add_btn.visibility = View.GONE
+
+                /**
+                 * Since there is an option to also update items because we are using this adapter to
+                 * serve two activities
+                 */
+
+//                if (updateCartItems){
+//                    holder.itemView.cart_delete_btn.visibility = View.VISIBLE
+//                }else{
+//                    holder.itemView.cart_delete_btn.visibility = View.GONE
+//                }
 
                 // Setting the text
                 holder.itemView.item_quantity.text = "Out Of Stock"
@@ -63,6 +69,18 @@ class CartItemsListAdapter (
             }
             // If there is any item, make the - & + btns vissible
             else{
+
+//                if (updateCartItems){
+//                    holder.itemView.quantity_remove_btn.visibility = View.VISIBLE
+//                    holder.itemView.quantity_add_btn.visibility = View.VISIBLE
+//                    holder.itemView.cart_delete_btn.visibility = View.VISIBLE
+//                }else{
+//                    holder.itemView.quantity_remove_btn.visibility = View.GONE
+//                    holder.itemView.quantity_add_btn.visibility = View.GONE
+//                    holder.itemView.cart_delete_btn.visibility = View.GONE
+//                }
+
+
                 holder.itemView.quantity_remove_btn.visibility = View.VISIBLE
                 holder.itemView.quantity_add_btn.visibility = View.VISIBLE
                 // Make the color of the quantity to black again
@@ -81,7 +99,7 @@ class CartItemsListAdapter (
                         context.progressDialog("please wait..")
                     }
                 }
-                FirestoreClass().deleteCartItemFromStore(context, currentCartItem.id)
+                FirestoreClass().deletingCartItem(context, currentCartItem.cartItemId)
                 // The id to use is the one the item obtained as a cart item or when added to cart
             }
 
@@ -91,7 +109,7 @@ class CartItemsListAdapter (
                 // if the cart quantty is at zero then it means if we press the minus option...
                 // none will remain thus delete the product from cart
                 if (currentCartItem.cart_quantity  =="1"){
-                    FirestoreClass().deleteCartItemFromStore(context, currentCartItem.id)
+                    FirestoreClass().deletingCartItem(context, currentCartItem.cartItemId)
                 }
                 // Else if the cart qty id greater than 0ne then we are free to subtract some
                 else{
@@ -104,7 +122,7 @@ class CartItemsListAdapter (
                     if(context is CartListActivity){
                         context.progressDialog("Please wait...")
                     }
-                    FirestoreClass().updateCart(context, currentCartItem.id, itemHashMap)
+                    FirestoreClass().updateCart(context, currentCartItem.cartItemId, itemHashMap)
                 }
             }
 
@@ -124,7 +142,7 @@ class CartItemsListAdapter (
                     if(context is CartListActivity){
                         context.progressDialog("Please wait...")
                     }
-                    FirestoreClass().updateCart(context, currentCartItem.id, itemHashMap)
+                    FirestoreClass().updateCart(context, currentCartItem.cartItemId, itemHashMap)
 
                 }
                 // else we are out of stock and cannot add anything to cart
@@ -138,16 +156,6 @@ class CartItemsListAdapter (
 
             }
 
-
-
-            // Setting the item click foe each item in the recyclerview
-//
-//            holder.itemView.setOnClickListener {
-//                val intent = Intent(context, ProductDetailsActivity::class.java)
-//                intent.putExtra(Constants.PRODUCT_EXTRA_ID, currentProduct.product_id)
-//                intent.putExtra(Constants.PRODUCT_EXTRA_OWNER_ID, currentProduct.userid)
-//                context.startActivity(intent)
-//            }
         }
 
     }

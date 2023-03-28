@@ -32,7 +32,7 @@ class Registration : BaseActivity(), View.OnClickListener {
     lateinit var haveAcctLgn: TextView
     lateinit var loadUserImg:ImageView
     lateinit var auth: FirebaseAuth
-    private var mImageUrl:String = ""
+    private var mImageUrl:String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,9 +44,9 @@ class Registration : BaseActivity(), View.OnClickListener {
         loadUserImg = findViewById(R.id.loadUserImg)
 
         //Setting the onclick function for views to function
-        registrationButton.setOnClickListener(this)
         haveAcctLgn.setOnClickListener(this)
         loadUserImg.setOnClickListener(this)
+        registrationButton.setOnClickListener(this)
 
 
 
@@ -64,6 +64,11 @@ class Registration : BaseActivity(), View.OnClickListener {
 
 
         return when{
+            mselectImageFileUri == null ->{
+                showErrorSnackBar(resources.getString(R.string.errorImageUrl), true)
+                false
+            }
+
             TextUtils.isEmpty(regFirstName.text.toString().trim { it <= ' ' })->{
                 showErrorSnackBar(resources.getString(R.string.errorEtFirstName), true)
                 false
@@ -121,7 +126,7 @@ after which the details about the image/product will also be uploaded
 */
     fun imageUploadSuccess(ImageUrl:String){
         mImageUrl = ImageUrl
-        Toast.makeText(this, "Image uploaded and Uri = $ImageUrl", Toast.LENGTH_LONG).show()
+//        Toast.makeText(this, "Image uploaded and Uri = $ImageUrl", Toast.LENGTH_LONG).show()
         uploadUserDetails()
     }
 
@@ -134,6 +139,7 @@ after which the details about the image/product will also be uploaded
                 //Registration button
                 R.id.regbtn ->{
                     if(validateRegDetails()){
+                        progressDialog("Authenticating....")
                         FirestoreClass().uploadImageToCloud(this, mselectImageFileUri, Constants.USER_PROFILE_IMAGE)
                     }
                 }
@@ -252,7 +258,7 @@ after which the details about the image/product will also be uploaded
      * Uploading the image to the firebase
      * */
     fun uploadUserDetails(){
-        progressDialog("Authenticating....")
+//        progressDialog("Authenticating....")
 
         // NOTE: all these always have to be captured again to be used in the authentication
         val firstName = findViewById<EditText>(R.id.address_name).text.toString().trim{it <= ' '}
@@ -306,10 +312,6 @@ after which the details about the image/product will also be uploaded
         ).show()
 
 
-
-
-
-
         val intent = Intent(this, Login::class.java)
         /*
             Getting rid of the other layers running in the background say if
@@ -324,21 +326,7 @@ after which the details about the image/product will also be uploaded
         //  intent.putExtra("userID", currentUser)
         //  intent.putExtra("userEmail", email)
         startActivity(intent)
-
-
-
-
-
-
-
-
-        /**
-         * Here the new user registered is automatically signed-in so we just sign-out the user from firebase
-         * and send him to Intro Screen for Sign-In
-         */
-//        FirebaseAuth.getInstance().signOut()
-        // Finish the Register Screen
-//        finish()
+        finish()
     }
 
 

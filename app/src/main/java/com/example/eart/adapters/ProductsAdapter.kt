@@ -41,10 +41,18 @@ class ProductsAdapter(
                 fragment.deleteProduct(currentProduct.product_id)
             }
 
-            // Setting the item click foe each item in the recyclerview
+            // Setting the item click for each item in the recyclerview
 
             holder.itemView.setOnClickListener {
                 val intent = Intent(context, ProductDetailsActivity::class.java)
+                /**
+                 * The product_extra_id will help us to be sent to the next activity thru the intent
+                 * so that it can be used and assigned to the product_id
+                 * so in real sense, the document id(the id representing each product uniquely coz
+                 * a product is considered as a document
+                 * And thus we use the opportunity that we have the currentProduct and get its document id
+                 * to send it to the productDetails activity
+                 */
                 intent.putExtra(Constants.PRODUCT_EXTRA_ID, currentProduct.product_id)
                 intent.putExtra(Constants.PRODUCT_EXTRA_OWNER_ID, currentProduct.user_id)
                 context.startActivity(intent)

@@ -1,39 +1,55 @@
 package com.example.eart.ui.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.eart.R
 import com.example.eart.adapters.AddressListAdapter
-import com.example.eart.adapters.ProductsAdapter
 import com.example.eart.baseactivity.BaseActivity
 import com.example.eart.firestore.FirestoreClass
 import com.example.eart.modules.Address
-import com.example.eart.modules.PrdctDtlsClass
+import com.example.eart.modules.Constants
 import com.example.eart.modules.SwipeToDeleteCallback
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_address_list.*
-import kotlinx.android.synthetic.main.fragment_products.*
 
 class   AddressList : BaseActivity(){
+    // Will help to know what address is selected and it will be filled with the intent but one with
+    // only intent with extras
+    // The variable willl help determine wther we are selecting or want to edit the address what to do
+    private var mSelectAddress:Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_address_list)
         setUpActionBar()
 
-
+        // Adding the address icon
         fabAddAddress.setOnClickListener {
+            // If we add an address, then we expect some results whc can be stored in the address code(constant)
             startActivity(Intent(this, AddAddress::class.java))
+        }
+
+        /**
+         * Here is that if the intent has extras then we set the mselectedaddress variable to
+         * whatever is passed
+         * otherwise it will be set to false(default value parameter) below
+         */
+        if (intent.hasExtra(Constants.EXTRA_SELECT_ADDRESS)){
+            mSelectAddress = intent.getBooleanExtra(Constants.EXTRA_SELECT_ADDRESS, false)
+        }
+
+        /**
+         * If mSelectedAddress is true meaning if it has the intent with extra_select_address
+         * change the addressList Activity tv_title(activity title) to SELECT ADDRESS so that a user can select
+         * but not edit or delete the address
+         */
+        if (mSelectAddress){
+            tv_title_address_list.text = resources.getString(R.string.title_select_address)
         }
     }
 
@@ -80,22 +96,28 @@ class   AddressList : BaseActivity(){
             // sethasfixed size in order to make its size fixed
             recycler_view_address_list.setHasFixedSize(true)
 
-            val addressListAdapter = AddressListAdapter(this, addressList)
+            val addressListAdapter = AddressListAdapter(this, addressList, mSelectAddress)
             // The productsAdapter above will be assigned as the adapter of the recyclerview
             recycler_view_address_list.adapter = addressListAdapter
 
-            // Swiping to delete
-            val swipeToDeleteHandler = object : SwipeToDeleteCallback(this){
-                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                    progressDialog("Deleting...")
-                    // delete the product from here
-                    FirestoreClass().deleteAddress(this@AddressList, addressList[viewHolder.adapterPosition].address_id)
+            /**
+             * If the mselectedAddress is not having extras with the intent to selectan address then
+             * we are to either edit or delete
+             */
+            if (!mSelectAddress){
+                // Swiping to delete
+                val swipeToDeleteHandler = object : SwipeToDeleteCallback(this){
+                    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                        progressDialog("Deleting...")
+                        // delete the product from here
+                        FirestoreClass().deleteAddress(this@AddressList, addressList[viewHolder.adapterPosition].address_id)
+                    }
+
                 }
 
+                val deleteItemTouchHelper = ItemTouchHelper(swipeToDeleteHandler)
+                deleteItemTouchHelper.attachToRecyclerView(recycler_view_address_list)
             }
-
-            val deleteItemTouchHelper = ItemTouchHelper(swipeToDeleteHandler)
-            deleteItemTouchHelper.attachToRecyclerView(recycler_view_address_list)
 
         }else{
             recycler_view_address_list.visibility = View.GONE

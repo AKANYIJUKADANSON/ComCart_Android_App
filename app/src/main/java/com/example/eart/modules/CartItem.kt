@@ -12,5 +12,5 @@ data class CartItem(
     val product_image:String = "",
     var cart_quantity :String = "",
     var stock_quantity:String = "",
-    var id:String = ""
+    var cartItemId:String = ""
 ) :Parcelable

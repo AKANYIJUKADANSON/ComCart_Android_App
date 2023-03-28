@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">EArt</string>
 
+    <string name="currency">$</string>
+
     <!--    Registration Details validation error messages-->
     <string name="errorEtFirstName">Please enter first name.</string>
     <string name="errorEtLastName">Please enter last name.</string>
@@ -19,7 +21,7 @@
     <string name="title_activity_dashboard">MainActivity</string>
     <string name="title_products">Products</string>
     <string name="title_dashboard">Dashboard</string>
-    <string name="title_orders">Orders</string>
+    <string name="title_orders">My Orders</string>
     <string name="onBackPress">Click back again to exit</string>
     <string name="action_settings">Settings</string>
     <string name="errorPermission">You don\'t have permission to storag. You can allow this in settings</string>
@@ -31,6 +33,7 @@
     <string name="errorProdctDescrptn">Please enter product description.</string>
     <string name="errorProdctQtty">Please enter prodct quantity.</string>
     <string name="noPrdctsAddedYet">No products added yet</string>
+    <string name="errorImageUrl">Please select profile Image</string>
     <string name="noDashboardProdctsAddedYet">No dashboard products added yet</string>
 
     <!--    Deleting a product-->
@@ -46,6 +49,7 @@
 
     <string name="title_my_address">ADDRESS LIST</string>
     <string name="title_add_address_edit">ADD ADDRESS</string>
+    <string name="title_select_address">SELECT ADDRESS</string>
 
 
     <!--    Add address Details validation error messages-->

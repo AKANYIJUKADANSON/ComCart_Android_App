@@ -11,7 +11,7 @@ data class PrdctDtlsClass(
     val productTitle:String = " ",
     val productPrice:String = "",
     val prodctDescrptn:String = "",
-    val prodctQuantity:String = "",
+    var stock_quantity:String = "",
     val image:String = "",
     var product_id:String = "",
 ) : Parcelable

@@ -229,15 +229,19 @@ class Addproduct : BaseActivity(), View.OnClickListener {
             .trim { it <= ' '}
         val productDecrptn = findViewById<EditText>(R.id.prodctDescription).text.toString()
             .trim { it <= ' '}
-        val productQutty = findViewById<EditText>(R.id.prodctQuantity).text.toString()
+        val productQuatity = findViewById<EditText>(R.id.prodctQuantity).text.toString()
             .trim { it <= ' '}
 
         //Storing the data into the PrdctDtlsClass to be picked by the Firestoreclass file
 
         val prodct = PrdctDtlsClass(
-            userid, username,
-            productTitle, productPrice,
-            productDecrptn, productQutty, mImageUrl
+            userid,
+            username,
+            productTitle,
+            productPrice,
+            productDecrptn,
+            productQuatity,
+            mImageUrl
         )
 
         // Store details

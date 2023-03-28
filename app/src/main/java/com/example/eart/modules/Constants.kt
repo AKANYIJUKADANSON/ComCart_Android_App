@@ -23,6 +23,7 @@ object Constants {
     const val READ_EXTERNAL_STORAGE_CODE = 2
     const val USER_PROFILE_IMAGE:String = "User_profile_image"
     const val PRODUCT_IMAGE:String = "Product_image"
+    // PRODUCT_EXTRA_ID will store the documentId of the product
     const val PRODUCT_EXTRA_ID:String = "product_extra_id"
     const val PRODUCT_EXTRA_OWNER_ID:String = ""
     const val DEFAULT_ITEM_QUANTITY:String = "1"
@@ -30,17 +31,20 @@ object Constants {
     const val PRODUCT_ID:String = "product_id"
     const val CART_QUANTITY:String = "cart_quantity"
 
-    // Intent extra constants.
-    const val EXTRA_USER_DETAILS: String = "extra_user_details"
-    const val EXTRA_PRODUCT_ID: String = "extra_product_id"
-    const val EXTRA_PRODUCT_OWNER_ID: String = "extra_product_owner_id"
-
     // ADDRESS ACTIVITY
     const val ADDRESS:String = "Address"
     // Address radio btn values
     const val HOME:String = "Home"
     const val OFFICE:String = "Office"
     const val OTHER:String = "Other"
+
+    // If address selecting or editing/deleting
+    const val EXTRA_SELECT_ADDRESS:String = "extra_select_address"
+    // The actual address that is selected
+    const val EXTRA_SELECTED_ADDRESS:String = "extra_selected_address"
+
+    // Orders
+    const val ORDERS:String = "Orders"
 
 
     fun imageChooser(activity: Activity){

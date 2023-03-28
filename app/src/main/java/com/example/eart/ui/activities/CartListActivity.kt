@@ -1,21 +1,20 @@
 package com.example.eart.ui.activities
 
-import android.opengl.Visibility
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eart.R
 import com.example.eart.adapters.CartItemsListAdapter
-import com.example.eart.adapters.ProductsAdapter
 import com.example.eart.baseactivity.BaseActivity
 import com.example.eart.firestore.FirestoreClass
 import com.example.eart.modules.CartItem
+import com.example.eart.modules.Constants
 import com.example.eart.modules.PrdctDtlsClass
 import kotlinx.android.synthetic.main.activity_cart_list.*
+import kotlinx.android.synthetic.main.activity_checkout.*
 import kotlinx.android.synthetic.main.fragment_products.*
 
 class CartListActivity :BaseActivity() {
@@ -28,6 +27,13 @@ class CartListActivity :BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cart_list)
         setUpActionBar()
+
+        btn_checkout.setOnClickListener {
+            // Send an intent with extras to the AddressList Activity wea to pic the address from
+            val intent = Intent(this@CartListActivity, AddressList::class.java)
+            intent.putExtra(Constants.EXTRA_SELECT_ADDRESS, true)
+            startActivity(intent)
+        }
 
     }
 
@@ -45,7 +51,7 @@ class CartListActivity :BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        // getCartItemsList() This was the first to be called
+        // getCartItemsList() This will be the first to be called
         // We have to first get rid of the getCartItemList() because we want to first get the productItemsList()
         // This will help to know how much of each element exists in stock
         // The getCartItemsList() will be called when the productsList is downloaded successfully
@@ -83,13 +89,12 @@ class CartListActivity :BaseActivity() {
     fun cartItemListDownloadSucces(cartItemList:ArrayList<CartItem>){
         //first hide the progress dialog
         hideProgressDialog()
-        /** Check if there are any products in the list and .....
-         * make the recyclerview Views visible
+        /** Check if there are any products in the list, make the recyclerview Views visible
          * then make the no product added yet to gone
          */
 
         /**
-         * Check the productlist items download and loop through them to get the product id
+         * Check the product List items downloaded and loop through them to get the product id
          * and compare it with the cart item id
          * So it will go through every single product item and also through every single cart item
          */
@@ -101,13 +106,21 @@ class CartListActivity :BaseActivity() {
                  * to the cart item stock quantity
                  */
                 if (product.product_id == cartitem.product_id){
-                    // This line below will help to see directly how much in stock of that
-                    // product in cart we still have
-                    cartitem.stock_quantity = product.prodctQuantity
-                    if (product.prodctQuantity.toInt() == 0){
-                        // This is because if out of stock the we cant order anything thus also in
-                        // cart we cant have any product ordered yet out of stock
-                        cartitem.cart_quantity = product.prodctQuantity
+                    /**
+                     * This line below will help to know directly how much is in stock of that
+                     * product we still have
+                     */
+
+                    cartitem.stock_quantity = product.stock_quantity
+
+                    /**
+                     * if out of stock then cant order anything thus also in cart we cant have any
+                     * product ordered coz wea out of stock
+                     * If only the stock quantity is 0, means there are no items to add to cart thus we shall
+                     * assign the cartItem quantity to be 0 too
+                     */
+                    if (product.stock_quantity.toInt() == 0){
+                        cartitem.cart_quantity = product.stock_quantity
                     }
                 }
             }
@@ -116,9 +129,10 @@ class CartListActivity :BaseActivity() {
         // Just made it global that we can use it later with the data that will be passed to it
         mCartListItems = cartItemList
 
+
         // And thus we shall check the mCartListItems instead of the cartItemsList otherwise they are of same contents
 
-        Log.e("Downloaded cart items:", cartItemList.toString())
+//        Log.e("Downloaded cart items:", cartItemList.toString())
         if(mCartListItems.size > 0 ){
             rv_cart_items_list.visibility = View.VISIBLE
             linear_layout_checkout.visibility = View.VISIBLE
@@ -130,10 +144,9 @@ class CartListActivity :BaseActivity() {
             // sethasfixed size in order to make its size fixed
             rv_cart_items_list.setHasFixedSize(true)
 
-            val rv_cart_items_list_adapter = CartItemsListAdapter(this, cartItemList)
+            val rv_cart_items_list_adapter = CartItemsListAdapter(this, mCartListItems)
             // The cartItemsListAdapter above will be assigned as the adapter of the recyclerview
             rv_cart_items_list.adapter = rv_cart_items_list_adapter
-
 
             // Dealing with the subtotal or calculating price
             var subtotal:Double = 0.0
@@ -144,7 +157,7 @@ class CartListActivity :BaseActivity() {
              */
             for(item in mCartListItems){
                 // Also check for the available quantity to know if its possible to increase or reduce
-                // and If quantity is > than Zero the thats when we can carry on with the calculations of prices
+                // and If quantity is > than Zero the that's when we can carry on with the calculations of prices
                 val availableQuantity = item.stock_quantity
                 if(availableQuantity.toInt() > 0){
                     // Price for each item
@@ -152,9 +165,9 @@ class CartListActivity :BaseActivity() {
                     val quantity = item.cart_quantity.toInt()
 
                     // Getting subtotal of each item and add to that of the other
-                    subtotal += price * quantity
+                    subtotal += (price * quantity)
                 }
-             }
+            }
 
             // Assign the total of the subtotal to the subtotal field in the layout
             tv_sub_total.text = "$ ${subtotal}"
@@ -166,6 +179,12 @@ class CartListActivity :BaseActivity() {
              * based on weight or size or data from the developer or manufacturer
              */
             tv_shipping_charge.text = "$ 10"
+
+            // Shipping fee will be 1% of the total price of all products
+            var deliveryFee:Double = 0.0
+            deliveryFee = ((1.0/100.0)*(subtotal))
+
+            tv_shipping_charge.text = "$ ${deliveryFee}"
 
             /**
              * check if the subtotal is greater than zero as in real sense there are items in cart

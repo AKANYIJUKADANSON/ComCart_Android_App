@@ -10,14 +10,13 @@ import androidx.fragment.app.Fragment
 import com.example.eart.modules.*
 import com.example.eart.ui.activities.*
 import com.example.eart.ui.fragments.DashboardFragment
+import com.example.eart.ui.fragments.OrdersFragment
 import com.example.eart.ui.fragments.ProductsFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
-import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import kotlinx.android.synthetic.main.progressdialog.*
 
 
 class FirestoreClass {
@@ -231,6 +230,7 @@ class FirestoreClass {
                     /**
                      * this id below will assign the product_id property on firebase database the document id which
                      * is located in the column of documents(ids representing each product)
+                     * i.id is the id representing each product in the document column
                      */
                     prodct!!.product_id = i.id
 
@@ -306,33 +306,6 @@ class FirestoreClass {
             }
     }
 
-    // Deleting cart item
-    fun deleteCartItemFromStore(context: Context, productID:String){
-        mFirestore.collection(Constants.CART_ITEMS)
-            // Set the document to delete tht is using the ID
-            .document(productID) // Checking the item id that was passed to this function
-            .delete()
-            .addOnSuccessListener {
-                when(context){
-                    is CartListActivity ->{
-                        context.successDeleteCartItem()
-                    }
-                }
-            }
-            .addOnFailureListener {
-                when(context){
-                    is CartListActivity ->{
-                        context.hideProgressDialog()
-                        Log.e(
-                            context.javaClass.simpleName,
-                            "Error while deleting product", it
-                        )
-                    }
-                }
-
-            }
-    }
-
     fun getExtraProductDetailsFromFirestore(activity: ProductDetailsActivity, productId:String){
         // Have to specify the exact collectio to get data from and the exact product needed using the id
         mFirestore.collection(Constants.PRODUCTS)
@@ -355,7 +328,7 @@ class FirestoreClass {
     }
 
     // Function that will add the selected item to cloud in the cart table database
-    // It will require te activity param and the object containing the details about  a product
+    // It will require the activity param and the object containing the details about  a product
     fun addItemToFirestoreCart(activity: ProductDetailsActivity, itemToAddToCart:CartItem){
         mFirestore.collection(Constants.CART_ITEMS)
             .document()
@@ -411,35 +384,49 @@ class FirestoreClass {
 
     fun downloadCartItemList(activity: Activity){
         mFirestore.collection(Constants.CART_ITEMS)
+                // We have to only get the items of that specific user logged in only
             .whereEqualTo(Constants.USER_ID, getCurrentUserID())
             .get()
             .addOnSuccessListener { document ->
                 Log.e("All item cats for user " + getCurrentUserID(),  document.documents.toString())
                 // Get the list of cart items
-                //Creating an array that we shall put or add the products
-                val itemsList : ArrayList<CartItem> = ArrayList()
+                //Creating an array wea we shall put or add the products
+                val cartItemsList : ArrayList<CartItem> = ArrayList()
 //                we have to loop through the data got coz the document that we are getting contains many products
 
                 for (i in document.documents){
                     // This loop will contain the products that will fit in the criteria of the document obtained
-                    // Then we now change each doc to an object
 
+                    // Then we now change each doc to an object
                     val singleItem = i.toObject(CartItem::class.java)!!
 
                     // creating a new product id out of the id of the products
-                    singleItem.id = i.id
+                    /**
+                     * Assigning the documentId of the document(cartItem) to the cartItemId
+                     * meaning that the documentId for each cartItem will be the value for the
+                     * cartItemId variable
+                     */
+                    singleItem.cartItemId = i.id
 
                     // then now we add this product to the product list
-                    itemsList.add(singleItem)
+                    cartItemsList.add(singleItem)
                 }
                 when(activity){
                     is CartListActivity->{
-                         activity.cartItemListDownloadSucces(itemsList)
+                         activity.cartItemListDownloadSucces(cartItemsList)
+                    }
+
+                    is CheckoutActivity->{
+                        activity.successCartListFromFirestore(cartItemsList)
                     }
                 }
             }.addOnFailureListener { e->
                 when(activity){
-                    is CartListActivity->{
+                    is CartListActivity ->{
+                        activity.hideProgressDialog()
+                    }
+
+                    is CheckoutActivity ->{
                         activity.hideProgressDialog()
                     }
                 }
@@ -448,7 +435,7 @@ class FirestoreClass {
     }
 
     // Getting the list of all products in the cartList activity for use
-    fun getAllProductsList(activity: CartListActivity){
+    fun getAllProductsList(activity: Activity){
         mFirestore.collection(Constants.PRODUCTS)
             .get()
             .addOnSuccessListener { document ->
@@ -476,11 +463,31 @@ class FirestoreClass {
                     productList.add(prodct)
                 }
 
-                activity.successProductsListFromFirestore(productList)
+                when(activity){
+                    is CartListActivity -> {
+                        activity.successProductsListFromFirestore(productList)
+                    }
+
+                    is CheckoutActivity -> {
+                        activity.successProductsListFromFirestore(productList)
+                    }
+                }
+
+
 
             }.addOnFailureListener { e->
-                activity.hideProgressDialog()
-                Log.e("Error msg","Error while fetching all products", e)
+                when(activity){
+                    is CartListActivity -> {
+                        activity.hideProgressDialog()
+                        Log.e("Error msg","Error while fetching all products", e)
+                    }
+
+                    is CheckoutActivity -> {
+                        activity.hideProgressDialog()
+                        Log.e("Error msg","Error while fetching all products", e)
+                    }
+                }
+
             }
     }
 
@@ -488,7 +495,7 @@ class FirestoreClass {
         mFirestore.collection(Constants.CART_ITEMS)
             .document(cart_id)
                 // HashMap will help to pass in the whole object but will help to edit a
-            // specific attribute of this object passed
+            // specific attribute of this object passed in this case the stock_quantity
             .update(itemHashMap)
             .addOnSuccessListener {
                 when(context){
@@ -503,6 +510,33 @@ class FirestoreClass {
                     }
                 }
                 Log.e(context.javaClass.simpleName, "Cart update failure! Something went wrong", e)
+            }
+    }
+
+    // Deleting cart item
+    fun deletingCartItem(context: Context, productID:String){
+        mFirestore.collection(Constants.CART_ITEMS)
+            // Set the document to delete tht is using the ID
+            .document(productID) // Checking the item id that was passed to this function
+            .delete()
+            .addOnSuccessListener {
+                when(context){
+                    is CartListActivity ->{
+                        context.successDeleteCartItem()
+                    }
+                }
+            }
+            .addOnFailureListener {
+                when(context){
+                    is CartListActivity ->{
+                        context.hideProgressDialog()
+                        Log.e(
+                            context.javaClass.simpleName,
+                            "Error while deleting product", it
+                        )
+                    }
+                }
+
             }
     }
 
@@ -578,6 +612,49 @@ class FirestoreClass {
             }
     }
 
+
+    // Save the order made
+    fun addOrderToFirestoreCart(activity: CheckoutActivity, orderPlaced:Order){
+        mFirestore.collection(Constants.ORDERS)
+            .document()
+            .set(orderPlaced, SetOptions.merge())
+            .addOnSuccessListener {
+                activity.successAddOrderToFirestore()
+            }.addOnFailureListener { e ->
+                //Hidding the progress dialog
+                activity.hideProgressDialog()
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while placing the order", e
+                )
+            }
+    }
+
+
+
+    // Orders
+    fun getOrdersList(fragment: OrdersFragment){
+        mFirestore.collection(Constants.ORDERS)
+            .get()
+            .addOnSuccessListener { orders ->
+
+                val ordersList:ArrayList<Order> = ArrayList()
+
+                for (i in orders.documents){
+                    // Creating the object of each order
+                    val orderObj = i.toObject(Order::class.java)
+
+                    // Assigning the document id to be the order id
+                    orderObj!!.order_id = i.id
+
+                    // Adding all the objects looped to the ordersList
+                    ordersList.add(orderObj)
+                }
+
+                // Passing the ordersList to the ordersFragment
+                fragment.ordersListDownloadSuccess(ordersList)
+            }
+    }
 }
 
 
