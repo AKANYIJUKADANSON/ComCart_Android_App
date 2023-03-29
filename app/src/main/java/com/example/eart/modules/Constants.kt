@@ -30,6 +30,7 @@ object Constants {
     const val CART_ITEMS:String = "cart_items"
     const val PRODUCT_ID:String = "product_id"
     const val CART_QUANTITY:String = "cart_quantity"
+    const val STOCK_QUANTITY:String = "stock_quantity"
 
     // ADDRESS ACTIVITY
     const val ADDRESS:String = "Address"
@@ -45,6 +46,7 @@ object Constants {
 
     // Orders
     const val ORDERS:String = "Orders"
+    const val EXTRA_MY_ORDER_DETAILS:String = "extra_my_order_details"
 
 
     fun imageChooser(activity: Activity){

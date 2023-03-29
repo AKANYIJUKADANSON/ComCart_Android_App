@@ -51,12 +51,6 @@ class CartItemsListAdapter (
                  * serve two activities
                  */
 
-//                if (updateCartItems){
-//                    holder.itemView.cart_delete_btn.visibility = View.VISIBLE
-//                }else{
-//                    holder.itemView.cart_delete_btn.visibility = View.GONE
-//                }
-
                 // Setting the text
                 holder.itemView.item_quantity.text = "Out Of Stock"
                 // Setting the color
@@ -69,17 +63,6 @@ class CartItemsListAdapter (
             }
             // If there is any item, make the - & + btns vissible
             else{
-
-//                if (updateCartItems){
-//                    holder.itemView.quantity_remove_btn.visibility = View.VISIBLE
-//                    holder.itemView.quantity_add_btn.visibility = View.VISIBLE
-//                    holder.itemView.cart_delete_btn.visibility = View.VISIBLE
-//                }else{
-//                    holder.itemView.quantity_remove_btn.visibility = View.GONE
-//                    holder.itemView.quantity_add_btn.visibility = View.GONE
-//                    holder.itemView.cart_delete_btn.visibility = View.GONE
-//                }
-
 
                 holder.itemView.quantity_remove_btn.visibility = View.VISIBLE
                 holder.itemView.quantity_add_btn.visibility = View.VISIBLE
@@ -111,14 +94,14 @@ class CartItemsListAdapter (
                 if (currentCartItem.cart_quantity  =="1"){
                     FirestoreClass().deletingCartItem(context, currentCartItem.cartItemId)
                 }
-                // Else if the cart qty id greater than 0ne then we are free to subtract some
+                // Else if the cart qty is greater than 0ne then we are free to subtract some
                 else{
                     val cartQuantity:Int = currentCartItem.cart_quantity.toInt()
                     val itemHashMap = HashMap<String, Any>()
                     // Setting the hashmap or the exact field/ attribute we are to update
                     itemHashMap[Constants.CART_QUANTITY] = (cartQuantity - 1).toString()
 
-                    // If in the cartListactivity.. show the progress dialog
+                    // If in the cartListActivity.. show the progress dialog
                     if(context is CartListActivity){
                         context.progressDialog("Please wait...")
                     }

@@ -15,6 +15,7 @@ import com.example.eart.ui.fragments.ProductsFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.firestore.WriteBatch
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 
@@ -494,8 +495,10 @@ class FirestoreClass {
     fun updateCart(context: Context, cart_id:String, itemHashMap:HashMap<String, Any>){
         mFirestore.collection(Constants.CART_ITEMS)
             .document(cart_id)
-                // HashMap will help to pass in the whole object but will help to edit a
-            // specific attribute of this object passed in this case the stock_quantity
+            /**
+             * HashMap will help to pass in the whole object but will help to edit a
+             * specific attribute of this object passed in this case the stock_quantity
+             */
             .update(itemHashMap)
             .addOnSuccessListener {
                 when(context){
@@ -655,6 +658,77 @@ class FirestoreClass {
                 fragment.ordersListDownloadSuccess(ordersList)
             }
     }
+
+
+    // Updating the cart activity after making an order
+    fun updateAllDetails(activity: CheckoutActivity, cartItemArrayList:ArrayList<CartItem>){
+        /**
+         * firestore batch helps to update or perform multiple activities at a tym
+         * in this case we to update the cart quantity and stock quantity
+         * First we shall loop through the cart items in order to update the product hashmap with
+         * stock_quantity and then get rid of the cart coz the product is bought or no longer exists
+         *
+         * ~~~~~~~~~~~~~~~~~~~~~~WHAT EACH DOES~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+         * ~~~~~~~~HashMap: Will design what action will be done
+         * ~~~~~~~~DocReference: Will locate the exact item(document) that will be updated
+         * ~~~~~~~~Bach: will run the updating process
+         */
+        val writeBatch = mFirestore.batch()
+
+        // Loop that will cater for the locating and then updating the document
+        // *******************UPDATING THE CART AND PRODUCTS COLLECTIONS*************
+        for (cartItem in cartItemArrayList){
+            // The product hashMap will contain the action that will be done ie updating
+            // the stock of the product
+            val productHashmap = HashMap<String, Any>()
+            /**
+             * Use the productHashMap to add the field to update ie the stock_quantity field
+             * and we are to get the cart stock_quantity minus cartItem_quantity and since
+             * the cart stock_quantity is up-to-date with the product stock_quantity field then
+             * it will help to update the stock quantity of products
+             * Whatever we update, later change it back to string since the stock_quantity field on accepts
+             * the String type by  default
+             */
+            productHashmap[Constants.STOCK_QUANTITY] = (
+                    cartItem.stock_quantity.toInt() - cartItem.cart_quantity.toInt()).toString()
+
+            /**
+             * ~~~~~~~~~~~Locating the document that we will work on~~~~~~~~~~~~~~~~~~
+             * Creating the document reference in the collection in this case the products collection
+             *  and the document we need to work on is of id cartItem product_id.
+             *  NOTE: That the product_id field is both in the products collection and the cart collection thus we can easily update it
+             */
+
+            val documentReference = mFirestore.collection(Constants.PRODUCTS).document(cartItem.product_id)
+
+            // Running or writing the batch
+            writeBatch.update(documentReference, productHashmap)
+        }
+
+
+        // *********************DELETING THE ITEMS FROM THE CART COLLECTION**********
+        /**
+         * After updating then we have to try and make sure that we delete the items from cart
+         */
+        for (cartItem in cartItemArrayList) {
+            val documentReference = mFirestore.collection(Constants.CART_ITEMS).document(cartItem.cartItemId)
+            // run the batch
+            writeBatch.delete(documentReference)
+        }
+
+        // Once done with doing all the changes using the batch then we commit it
+        // commit option will write all the changes/writes in the writeBatch as a single unit
+        writeBatch.commit()
+            .addOnSuccessListener {
+                activity.successUpdateAllDetails()
+            }
+            .addOnFailureListener {
+                activity.hideProgressDialog()
+                Log.e(activity.javaClass.simpleName, "Error while updating the items after placing order")
+            }
+    }
+
+
 }
 
 

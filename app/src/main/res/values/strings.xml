@@ -58,4 +58,9 @@
     <string name="error_phone">Region Phone Number is required</string>
     <string name="error_zipcode">Region Zipcode required</string>
 
+
+    <string name="status_pending">Pending</string>
+    <string name="status_progress">In Progress</string>
+    <string name="status_delivered">Delivered</string>
+
 </resources>

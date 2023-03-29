@@ -132,7 +132,7 @@ class CartListActivity :BaseActivity() {
 
         // And thus we shall check the mCartListItems instead of the cartItemsList otherwise they are of same contents
 
-//        Log.e("Downloaded cart items:", cartItemList.toString())
+        // Log.e("Downloaded cart items:", cartItemList.toString())
         if(mCartListItems.size > 0 ){
             rv_cart_items_list.visibility = View.VISIBLE
             linear_layout_checkout.visibility = View.VISIBLE
@@ -215,5 +215,6 @@ class CartListActivity :BaseActivity() {
         getCartItemsList()
 
     }
+
 
 }

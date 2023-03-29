@@ -51,8 +51,7 @@ class OrdersAdapter(
                  * And thus we use the opportunity that we have the currentProduct and get its document id
                  * to send it to the productDetails activity
                  */
-//                intent.putExtra(Constants.PRODUCT_EXTRA_ID, currentOrder.order_id)
-//                intent.putExtra(Constants.PRODUCT_EXTRA_OWNER_ID, currentOrder.user_id)
+                intent.putExtra(Constants.EXTRA_MY_ORDER_DETAILS, currentOrder)
                 context.startActivity(intent)
             }
         }

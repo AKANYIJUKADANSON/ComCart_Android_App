@@ -200,7 +200,8 @@ class CheckoutActivity : BaseActivity() {
                 mCartListItems[0].product_image,
                 mSubtotal.toString(),
                 mDeliveryFee.toString(),
-                mTotal.toString()
+                mTotal.toString(),
+                System.currentTimeMillis()
                 )
 
             FirestoreClass().addOrderToFirestoreCart(this@CheckoutActivity, order)
@@ -208,6 +209,10 @@ class CheckoutActivity : BaseActivity() {
     }
 
     fun successAddOrderToFirestore() {
+        FirestoreClass().updateAllDetails(this, mCartListItems)
+    }
+
+    fun successUpdateAllDetails() {
         hideProgressDialog()
         Toast.makeText(this@CheckoutActivity,
             "Oder placed successfully",

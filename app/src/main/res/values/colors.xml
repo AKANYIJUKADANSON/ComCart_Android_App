@@ -25,6 +25,10 @@
 
     <color name="borderColor">#DFDEDE</color>
 
+    <!--    Order colors-->
+    <color name="status_pending_Color">#EA004F</color>
+    <color name="status_in_progress_Color">#FFC107</color>
+    <color name="status_delivered_Color">#009704</color>
 
 
 

@@ -15,7 +15,8 @@
         android:theme="@style/Theme.EArt">
         <activity
             android:name=".ui.activities.OrderDetailsActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/noActionBar"/>
         <activity
             android:name=".ui.activities.CheckoutActivity"
             android:exported="false"

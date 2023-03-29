@@ -13,5 +13,7 @@ data class Order(
     val sub_total:String = "",
     val delivery_charge :String = "",
     val total_amount:String = "",
+    val order_date:Long = 0L,
     var order_id:String = ""
+
 ) : Parcelable
