@@ -57,7 +57,7 @@ class OrdersFragment : BaseFragment() {
             // setHasFixed size in order to make its size fixed
             orders_recyc_view.setHasFixedSize(true)
 
-            val ordersAdapter = OrdersAdapter(requireActivity(), ordersList, this)
+            val ordersAdapter = OrdersAdapter(requireActivity(), ordersList)
             // The productsAdapter above will be assigned as the adapter of the recyclerview
             orders_recyc_view.adapter = ordersAdapter
 

@@ -20,11 +20,12 @@
             android:layout_height="100dp"
             android:layout_marginStart="20dp"
             android:scaleType="fitXY"
+            android:contentDescription="product Image"
             app:shapeAppearanceOverlay="@style/roundImgViewpager" />
 
         <LinearLayout
             android:id="@+id/tvo_layout"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:orientation="vertical">
@@ -36,6 +37,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="5dp"
                 android:gravity="fill"
+                android:paddingRight="5pt"
                 android:paddingLeft="5pt"
                 android:text="Adidas Shoe"
                 android:textStyle="bold" />
@@ -48,9 +50,33 @@
                 android:layout_marginTop="5dp"
                 android:gravity="fill"
                 android:paddingLeft="5pt"
+                android:paddingRight="5pt"
                 android:text="$100.00"
                 android:textStyle="bold" />
         </LinearLayout>
+
+<!--        <TextView-->
+<!--            android:id="@+id/tv_order_quantity"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="10pt"-->
+<!--            android:gravity="center"-->
+<!--            android:padding="4pt"-->
+<!--            android:textStyle="bold"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="18sp"-->
+<!--            android:background="@drawable/text_view_outline_bg"-->
+<!--            android:text="xx" />-->
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/order_delete_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_delete"
+            android:background="@color/white"
+            android:layout_marginTop="12pt"
+            android:padding="5dp"
+            />
 
 
     </LinearLayout>

@@ -12,6 +12,7 @@ import com.example.eart.modules.CartItem
 import com.example.eart.modules.Constants
 import com.example.eart.modules.GlideLoader
 import com.example.eart.ui.activities.CartListActivity
+import com.example.eart.ui.activities.OrderDetailsActivity
 import kotlinx.android.synthetic.main.cart_item_custom.view.*
 
 class CartItemsListAdapter (
@@ -64,14 +65,30 @@ class CartItemsListAdapter (
             // If there is any item, make the - & + btns vissible
             else{
 
-                holder.itemView.quantity_remove_btn.visibility = View.VISIBLE
-                holder.itemView.quantity_add_btn.visibility = View.VISIBLE
-                // Make the color of the quantity to black again
-                holder.itemView.item_quantity.setTextColor(
-                    ContextCompat.getColor(
-                        context, R.color.black
-                    )
-                )
+                /**
+                 * This adapter will be used by other activities for recycler views
+                 * so deciding on what to display in each context is considered
+                 */
+                when(context){
+                    is OrderDetailsActivity->{
+                        holder.itemView.quantity_remove_btn.visibility = View.GONE
+                        holder.itemView.quantity_add_btn.visibility = View.GONE
+                        holder.itemView.cart_delete_btn.visibility = View.GONE
+                    }
+
+                    is CartListActivity -> {
+                        holder.itemView.quantity_remove_btn.visibility = View.VISIBLE
+                        holder.itemView.quantity_add_btn.visibility = View.VISIBLE
+                        // Make the color of the quantity to black again
+                        holder.itemView.item_quantity.setTextColor(
+                            ContextCompat.getColor(
+                                context, R.color.black
+                            )
+                        )
+                    }
+                }
+
+
 
             }
 

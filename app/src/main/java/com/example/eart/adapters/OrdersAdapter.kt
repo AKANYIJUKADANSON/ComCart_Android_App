@@ -16,8 +16,7 @@ import kotlinx.android.synthetic.main.orders_item_custom.view.*
 
 class OrdersAdapter(
     private val context: Context,
-    private val ordersList: ArrayList<Order>,
-    private val fragment: OrdersFragment
+    private val ordersList: ArrayList<Order>
 ):RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflateLayout = LayoutInflater.from(parent.context).inflate(R.layout.orders_item_custom, parent, false)
@@ -37,7 +36,11 @@ class OrdersAdapter(
             )
             holder.itemView.recyclerView_order_title.text = currentOrder.order_title
             holder.itemView.recyclerView_order_price.text = "$ ${currentOrder.sub_total}"
-
+//            val itemQuantity = currentOrder.items[position].cart_quantity
+            // Delete btn
+//            holder.itemView.order_delete_btn.setOnClickListener {
+//
+//            }
 
             // Setting the item click for each item in the recyclerview
 
