@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activities.OrderDetailsActivity">
+    tools:context=".ui.activities.SoldProductDetailsActivity">
 
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar_order_details_activity"
+        android:id="@+id/toolbar_sold_products_activity"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:layout_alignParentTop="true"
@@ -34,11 +34,11 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_below="@id/toolbar_order_details_activity"
+        android:layout_below="@id/toolbar_sold_products_activity"
         android:fillViewport="true"
         android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_order_details_activity">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_sold_products_activity">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -475,7 +475,9 @@
 
         </RelativeLayout>
 
-    </ScrollView>
 
+
+
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

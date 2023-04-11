@@ -12,10 +12,12 @@ import com.example.eart.ui.activities.*
 import com.example.eart.ui.fragments.DashboardFragment
 import com.example.eart.ui.fragments.OrdersFragment
 import com.example.eart.ui.fragments.ProductsFragment
+import com.example.eart.ui.fragments.SoldProductsFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.WriteBatch
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 
@@ -661,7 +663,7 @@ class FirestoreClass {
 
 
     // Updating the cart activity after making an order
-    fun updateAllDetails(activity: CheckoutActivity, cartItemArrayList:ArrayList<CartItem>){
+    fun updateAllDetails(activity: CheckoutActivity, cartItemArrayList:ArrayList<CartItem>, order:Order){
         /**
          * firestore batch helps to update or perform multiple activities at a tym
          * in this case we to update the cart quantity and stock quantity
@@ -678,19 +680,23 @@ class FirestoreClass {
         // Loop that will cater for the locating and then updating the document
         // *******************UPDATING THE CART AND PRODUCTS COLLECTIONS*************
         for (cartItem in cartItemArrayList){
-            // The product hashMap will contain the action that will be done ie updating
-            // the stock of the product
-            val productHashmap = HashMap<String, Any>()
-            /**
-             * Use the productHashMap to add the field to update ie the stock_quantity field
-             * and we are to get the cart stock_quantity minus cartItem_quantity and since
-             * the cart stock_quantity is up-to-date with the product stock_quantity field then
-             * it will help to update the stock quantity of products
-             * Whatever we update, later change it back to string since the stock_quantity field on accepts
-             * the String type by  default
-             */
-            productHashmap[Constants.STOCK_QUANTITY] = (
-                    cartItem.stock_quantity.toInt() - cartItem.cart_quantity.toInt()).toString()
+
+//            productHashmap[Constants.STOCK_QUANTITY] = (
+//                    cartItem.stock_quantity.toInt() - cartItem.cart_quantity.toInt()).toString()
+
+            val soldProducts = SoldProducts(
+                cartItem.product_owner_id,
+                cartItem.product_title,
+                cartItem.product_price,
+                cartItem.cart_quantity,
+                cartItem.product_image,
+                order.order_title,
+                order.order_date,
+                order.sub_total,
+                order.delivery_charge,
+                order.total_amount,
+                order.address
+            )
 
             /**
              * ~~~~~~~~~~~Locating the document that we will work on~~~~~~~~~~~~~~~~~~
@@ -699,10 +705,10 @@ class FirestoreClass {
              *  NOTE: That the product_id field is both in the products collection and the cart collection thus we can easily update it
              */
 
-            val documentReference = mFirestore.collection(Constants.PRODUCTS).document(cartItem.product_id)
+            val documentReference = mFirestore.collection(Constants.SOLD_PRODUCTS).document(cartItem.product_id)
 
             // Running or writing the batch
-            writeBatch.update(documentReference, productHashmap)
+            writeBatch.set(documentReference, soldProducts)
         }
 
 
@@ -725,6 +731,37 @@ class FirestoreClass {
             .addOnFailureListener {
                 activity.hideProgressDialog()
                 Log.e(activity.javaClass.simpleName, "Error while updating the items after placing order")
+            }
+    }
+
+    fun downloadSoldProductsFromFirestore(fragment: SoldProductsFragment) {
+        mFirestore.collection(Constants.SOLD_PRODUCTS)
+            .whereEqualTo(Constants.USER_ID, getCurrentUserID())
+            .get()
+            .addOnSuccessListener { soldProducts ->
+                val soldProductList:ArrayList<SoldProducts> = ArrayList()
+
+                for (i in soldProducts){
+                    val productObj = i.toObject(SoldProducts::class.java)
+
+                    // creating a new address id out of the id of the products
+                    /**
+                     * this id below will assign the product_id  property in the cart items on firebase database
+                     * the document id which is located in the column of documents(ids representing each product)
+                     * wc wea created automatically when a document is created too and since the sold_product_id field
+                     * is empty then we can assign this doc id to it
+                     */
+                    productObj.sold_product_id = i.id
+
+                    soldProductList.add(productObj)
+
+                }
+
+                fragment.getSoldProductsFromFirestoreSuccess(soldProductList)
+            }
+            .addOnFailureListener {
+                fragment.hideProgressDialog()
+                Log.e(fragment.javaClass.simpleName, "Error while downloading sold itemsr")
             }
     }
 

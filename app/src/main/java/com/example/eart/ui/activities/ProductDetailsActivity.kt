@@ -26,7 +26,7 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
      *  The object will be best initialized when we download the product from firestore
      *  ie productDownloadSuccess()
     */
-    private var productExraOwnerId:String = ""
+    private var productExtraOwnerId:String = ""
     private lateinit var mProductDetails:PrdctDtlsClass
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,7 +48,7 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
 
         if(intent.hasExtra(Constants.PRODUCT_EXTRA_OWNER_ID)){
             // Store the set the userid of the product that is not ours
-            productExraOwnerId = intent.getStringExtra(Constants.PRODUCT_EXTRA_OWNER_ID)!!
+            productExtraOwnerId = intent.getStringExtra(Constants.PRODUCT_EXTRA_OWNER_ID)!!
         }
 
         /**
@@ -56,7 +56,7 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
          * If ts ours then we set the "add_to_cart" & " go_to_cart" btns invisible
          * and visible if the product is not for the current logged in user
         */
-        if (FirestoreClass().getCurrentUserID() == productExraOwnerId){
+        if (FirestoreClass().getCurrentUserID() == productExtraOwnerId){
             add_to_cart_btn.visibility = View.GONE
             go_to_cart_btn.visibility = View.GONE
         }else{
@@ -152,6 +152,7 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
         // creating an object
         val cartItem = CartItem(
             FirestoreClass().getCurrentUserID(),
+            productExtraOwnerId,
             mProdcutId,
             mProductDetails.productTitle,
             mProductDetails.productPrice,

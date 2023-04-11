@@ -5,10 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.ProductsFragment">
+    tools:context=".ui.fragments.SoldProductsFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/products_recyc_view"
+        android:id="@+id/rv_sold_products"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/no_prdcts_added_yet"
+        android:id="@+id/tv_no_sold_products"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

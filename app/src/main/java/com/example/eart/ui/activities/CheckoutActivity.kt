@@ -22,6 +22,7 @@ class CheckoutActivity : BaseActivity() {
     // to the success from the download all products in firstoreclass
     private lateinit var mProductsList:ArrayList<PrdctDtlsClass>
     private lateinit var mCartListItems:ArrayList<CartItem>
+    private lateinit var mOrderDetails:Order
 
     private var mDeliveryFee:Double = 0.0
     private var mSubtotal:Double = 0.0
@@ -192,7 +193,7 @@ class CheckoutActivity : BaseActivity() {
     private fun placeOrder(){
         progressDialog("Ordering...")
         if (mSelectedAddress != null){
-            val order = Order(
+            mOrderDetails = Order(
                 FirestoreClass().getCurrentUserID(),
                 mCartListItems,
                 mSelectedAddress!!,
@@ -204,12 +205,12 @@ class CheckoutActivity : BaseActivity() {
                 System.currentTimeMillis()
                 )
 
-            FirestoreClass().addOrderToFirestoreCart(this@CheckoutActivity, order)
+            FirestoreClass().addOrderToFirestoreCart(this@CheckoutActivity, mOrderDetails)
         }
     }
 
     fun successAddOrderToFirestore() {
-        FirestoreClass().updateAllDetails(this, mCartListItems)
+        FirestoreClass().updateAllDetails(this, mCartListItems, mOrderDetails)
     }
 
     fun successUpdateAllDetails() {

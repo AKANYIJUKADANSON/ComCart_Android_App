@@ -9,17 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.eart.R
 import com.example.eart.modules.Constants
 import com.example.eart.modules.GlideLoader
-import com.example.eart.modules.PrdctDtlsClass
-import com.example.eart.ui.activities.ProductDetailsActivity
-import com.example.eart.ui.fragments.ProductsFragment
+import com.example.eart.modules.SoldProducts
+import com.example.eart.ui.activities.SoldProductDetailsActivity
 import kotlinx.android.synthetic.main.products_item_custom.view.*
 
-class ProductsAdapter(
+class SoldProductsAdapter(
     private val context: Context,
-    private val productList: ArrayList<PrdctDtlsClass>,
-    private val fragment:ProductsFragment
+    private val soldProductList: ArrayList<SoldProducts>
 ): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         // inflating the layout format so as to use it
         val layoutFormat = LayoutInflater.from(parent.context).inflate(R.layout.products_item_custom, parent, false)
@@ -27,24 +24,21 @@ class ProductsAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val currentProduct = productList[position]
+        val currentSoldProduct = soldProductList[position]
 
         if (holder is MyViewHolder) {
-            GlideLoader(context).loadProductPicture( currentProduct.image,
+            GlideLoader(context).loadProductPicture( currentSoldProduct.image,
                 holder.itemView.recyc_productImage
             )
-            holder.itemView.recyc_productTitle.text = currentProduct.productTitle
-            holder.itemView.recyc_productPrice.text = "$ ${currentProduct.productPrice}"
+            holder.itemView.recyc_productTitle.text = currentSoldProduct.title
+            holder.itemView.recyc_productPrice.text = "$ ${currentSoldProduct.price}"
 
-            holder.itemView.products_delete_btn.setOnClickListener {
-                // Passing the product id to the delete fn
-                fragment.deleteProduct(currentProduct.product_id)
-            }
+            holder.itemView.products_delete_btn.visibility = View.GONE
 
             // Setting the item click for each item in the recyclerview
 
             holder.itemView.setOnClickListener {
-                val intent = Intent(context, ProductDetailsActivity::class.java)
+                val intent = Intent(context, SoldProductDetailsActivity::class.java)
                 /**
                  * The product_extra_id will help us to be sent to the next activity thru the intent
                  * so that it can be used and assigned to the product_id
@@ -53,17 +47,17 @@ class ProductsAdapter(
                  * And thus we use the opportunity that we have the currentProduct and get its document id
                  * to send it to the productDetails activity
                  */
-                intent.putExtra(Constants.PRODUCT_EXTRA_ID, currentProduct.product_id)
-                intent.putExtra(Constants.PRODUCT_EXTRA_OWNER_ID, currentProduct.user_id)
-                context.startActivity(intent)
+                intent.putExtra(Constants.SOLD_PRODUCT_EXTRA_ID, currentSoldProduct.sold_product_id)
+                intent.putExtra(Constants.PRODUCT_EXTRA_OWNER_ID, currentSoldProduct.user_id)
+//                context.startActivity(intent)
             }
         }
     }
 
     override fun getItemCount(): Int {
-        return productList.size
+        return soldProductList.size
     }
 
-
     class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
+
 }
