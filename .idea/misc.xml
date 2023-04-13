@@ -3,24 +3,55 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/drawable/address_tv_background.xml" value="0.195" />
+        <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/drawable/btn_background.xml" value="0.187" />
         <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/drawable/custom_button.xml" value="0.1725" />
+        <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/drawable/custom_textviews.xml" value="0.202" />
+        <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/drawable/dashboard_item_background.xml" value="0.2005" />
+        <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/drawable/gradient.xml" value="0.176" />
+        <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/drawable/gradient_bg_default.xml" value="0.1395" />
+        <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/drawable/ic_add_btn.xml" value="0.1245" />
+        <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/drawable/ic_addimage.xml" value="0.2505" />
+        <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/drawable/ic_additem.xml" value="0.1885" />
+        <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/drawable/ic_back_arrow.xml" value="0.1885" />
+        <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/drawable/ic_cart.xml" value="0.1835" />
+        <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/drawable/ic_dd.xml" value="0.1245" />
+        <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/drawable/ic_delete.xml" value="0.2005" />
+        <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/drawable/ic_edit.xml" value="0.2375" />
+        <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/drawable/ic_remove_btn.xml" value="0.2635" />
+        <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/drawable/product_image_background.xml" value="0.1705" />
+        <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/drawable/radio_btn_tab_selector.xml" value="0.1585" />
+        <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/drawable/radio_btn_text_color_selector.xml" value="0.1585" />
+        <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/drawable/round_image.xml" value="0.2505" />
+        <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/drawable/round_textfield.xml" value="0.2505" />
         <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/drawable/splashbg.xml" value="0.1725" />
+        <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/layout/activity_add_address.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/layout/activity_addproduct.xml" value="0.27447916666666666" />
-        <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/layout/activity_dashboard.xml" value="0.2" />
+        <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/layout/activity_address.xml" value="0.27447916666666666" />
+        <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/layout/activity_address_list.xml" value="0.27447916666666666" />
+        <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/layout/activity_cart_list.xml" value="0.4" />
+        <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/layout/activity_dashboard.xml" value="0.264" />
         <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/layout/activity_forgotpasswd.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/layout/activity_login.xml" value="0.264" />
         <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/layout/activity_main.xml" value="0.27447916666666666" />
-        <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/layout/activity_registration.xml" value="0.27447916666666666" />
+        <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/layout/activity_product_details.xml" value="0.27447916666666666" />
+        <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/layout/activity_registration.xml" value="0.264" />
         <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/layout/activity_settings.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/layout/activity_splash.xml" value="0.27447916666666666" />
-        <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/layout/fragment_base.xml" value="0.27447916666666666" />
+        <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/layout/address_list_custom.xml" value="0.264" />
+        <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/layout/cart_item_custom.xml" value="0.264" />
+        <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/layout/dashboard_listitem_custom_layout.xml" value="0.2734375" />
+        <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/layout/fragment_base.xml" value="0.222011385199241" />
         <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/layout/fragment_dashboard.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/layout/fragment_orders.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/layout/fragment_products.xml" value="0.27447916666666666" />
+        <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/layout/products_item_custom.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/layout/progressdialog.xml" value="0.27447916666666666" />
+        <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/menu/address_list.xml" value="0.264" />
         <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/menu/bottom_nav_menu.xml" value="0.536" />
         <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/menu/dashboard_menu.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/menu/products_menu.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Andz/AndroidStudioProjects/EArt/app/src/main/res/menu/xx.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/KICONCO/AndroidStudioProjects/EArt/app/src/main/res/layout/activity_addproduct.xml" value="0.22447916666666667" />
         <entry key="..\:/Users/KICONCO/AndroidStudioProjects/EArt/app/src/main/res/layout/activity_dashboard.xml" value="0.22447916666666667" />
         <entry key="..\:/Users/KICONCO/AndroidStudioProjects/EArt/app/src/main/res/layout/activity_registration.xml" value="0.22447916666666667" />

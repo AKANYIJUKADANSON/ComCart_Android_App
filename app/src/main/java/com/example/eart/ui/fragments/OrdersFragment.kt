@@ -1,39 +1,106 @@
 package com.example.eart.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
-import androidx.fragment.app.Fragment
-import com.example.eart.databinding.FragmentOrdersBinding
+import android.view.*
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.eart.R
+import com.example.eart.adapters.OrdersAdapter
+import com.example.eart.basefragment.BaseFragment
+import com.example.eart.firestore.FirestoreClass
+import com.example.eart.modules.Order
+import com.example.eart.ui.activities.Addproduct
+import com.example.eart.ui.activities.CartListActivity
+import com.example.eart.ui.activities.Settings
+import kotlinx.android.synthetic.main.fragment_orders.*
 
-class OrdersFragment : Fragment() {
+class OrdersFragment : BaseFragment() {
 
-    //private lateinit var notificationsViewModel: NotificationsViewModel
-    private var _binding: FragmentOrdersBinding? = null
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        //notificationsViewModel =ViewModelProvider(this).get(NotificationsViewModel::class.java)
-
-        _binding = FragmentOrdersBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        val textView: TextView = binding.textNotifications
-            textView.text = "I am the Orders"
-        return root
+        return inflater.inflate(R.layout.fragment_orders, container, false)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.orders_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        val id = item.itemId
+        when(id){
+
+            R.id.action_cart_list ->{
+                startActivity(Intent(activity, CartListActivity::class.java))
+                return true
+            }
+
+            R.id.action_settings ->{
+                startActivity(Intent(activity, Settings::class.java))
+                return true
+            }
+
+            R.id.action_logout ->{
+                showAlertDialogForLogout(
+                    requireActivity(),
+                    "Logging out",
+                    "Are you sure, you want to logout?")
+                return true
+            }
+
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getOrdersFromFirestore()
+    }
+
+    private fun getOrdersFromFirestore(){
+        // start the progress dialog
+        progressDialog("Loading.....")
+        FirestoreClass().getOrdersList(this)
+
+    }
+
+    fun ordersListDownloadSuccess(ordersList: ArrayList<Order>){
+        //first hide the progress dialog
+        hideProgressDialog()
+        /**
+         * Check if there are any products in the list and .....
+         * make the recyclerview Views visible
+         * then make the no product added yet to gone
+         */
+        if(ordersList.size > 0 ){
+            orders_recyc_view.visibility = View.VISIBLE
+            no_orders_added_yet.visibility = View.GONE
+
+            // change the view layout using layoutManager and we want to use it in this activity/this
+            orders_recyc_view.layoutManager = LinearLayoutManager(activity)
+            // setHasFixed size in order to make its size fixed
+            orders_recyc_view.setHasFixedSize(true)
+
+            val ordersAdapter = OrdersAdapter(requireActivity(), ordersList)
+            // The productsAdapter above will be assigned as the adapter of the recyclerview
+            orders_recyc_view.adapter = ordersAdapter
+
+        }else{
+            orders_recyc_view.visibility = View.GONE
+            no_orders_added_yet.visibility = View.VISIBLE
+        }
+
+    }
+
 }

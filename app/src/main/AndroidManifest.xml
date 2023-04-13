@@ -2,28 +2,78 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.eart">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_ayikon"
+        android:icon="@mipmap/ic_comcart"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_ayikon_round"
+        android:roundIcon="@mipmap/ic_comcart_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EArt">
         <activity
-            android:name=".ui.activities.Addproduct"
+            android:name=".ui.activities.EditUserData"
+            android:exported="false"
+            android:theme="@style/noActionBar" />
+        <activity
+            android:name=".ui.activities.SoldProductDetailsActivity"
+            android:exported="false"
+            android:theme="@style/noActionBar" />
+        <activity
+            android:name=".ui.activities.OrderDetailsActivity"
+            android:exported="false"
+            android:theme="@style/noActionBar" />
+        <activity
+            android:name=".ui.activities.CheckoutActivity"
+            android:exported="false"
+            android:theme="@style/noActionBar" />
+        <activity
+            android:name=".ui.activities.AddAddress"
+            android:exported="false"
+            android:theme="@style/noActionBar" />
+        <activity
+            android:name=".ui.activities.AddressList"
+            android:exported="true"
             android:theme="@style/noActionBar"/>
+
+        <activity
+            android:name=".ui.activities.CartListActivity"
+            android:exported="false"
+            android:theme="@style/noActionBar" />
+
+        <activity
+            android:name=".ui.activities.ProductDetailsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/noActionBar" />
+
+        <activity
+            android:name=".ui.activities.Addproduct"
+            android:theme="@style/noActionBar" />
         <activity
             android:name=".ui.activities.Settings"
             android:theme="@style/noActionBar" />
         <activity
             android:name=".ui.activities.Dashboard"
-            android:label="@string/title_activity_dashboard" />
+            android:exported="true"
+            android:label="@string/title_activity_dashboard"/>
+
+        <activity
+            android:name=".ui.activities.Registration"
+            android:theme="@style/noActionBar" />
+
+        <activity
+            android:name=".ui.activities.Forgotpasswd"
+            android:theme="@style/noActionBar" />
+
+        <activity
+            android:name=".ui.activities.Login"
+            android:theme="@style/noActionBar"/>
+
         <activity
             android:name=".ui.activities.Splash"
+            android:exported="true"
             android:theme="@style/noActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,15 +81,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.activities.Registration"
-            android:theme="@style/noActionBar" />
-        <activity
-            android:name=".ui.activities.Forgotpasswd"
-            android:theme="@style/noActionBar" />
-        <activity
-            android:name=".ui.activities.Login"
-            android:theme="@style/noActionBar" />
+
         <activity
             android:name=".ui.activities.MainActivity"
             android:label="E~Art"

@@ -9,10 +9,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.eart.R
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.progressdialog.*
 
 open class BaseActivity : AppCompatActivity() {
     private  var doubleBackPressedOnce = false
-    lateinit var progDialog: ProgressDialog
+
+    /**
+     * This is a progress dialog instance which we will initialize later on.
+     */
+    lateinit var progDialog: Dialog
 
     // creating a popup that will appear in case one of the fields is empty or not valid #snackBar
     fun showErrorSnackBar(message: String, errorMessage: Boolean){
@@ -38,44 +43,32 @@ open class BaseActivity : AppCompatActivity() {
         }
         snackBar.show()
     }
-    //Function Starting the dialog
-//    fun progressDialog(text:String){
-//        //The parameter text can be any text say Loading, waiting
-//        val progdialgTxt = findViewById<TextView>(R.id.progdialgTxt)
-//        //Initializing the dialog
-//        mProgressBarDialog = Dialog(this)
-//        //Layout containing the progdialog will be inflated
-//        mProgressBarDialog.setContentView(R.layout.progressdialog)
-////        progdialgTxt.text = text
-//        //Setting it not to be cancelable even when the touched on the outside area
-//        mProgressBarDialog.setCancelable(false)
-//        mProgressBarDialog.setCanceledOnTouchOutside(false)
-//        mProgressBarDialog.show()
-//    }
+
+     /**
+     * This function is used to show the progress dialog with the title and message to user.
+     */
+    fun progressDialog(text: String) {
+        progDialog = Dialog(this)
+
+        /*Set the screen content from a layout resource.
+        The resource will be inflated, adding all top-level views to the screen.*/
+        progDialog.setContentView(R.layout.progressdialog)
+
+        progDialog.tv_progdialg.text = text
+
+        progDialog.setCancelable(false)
+        progDialog.setCanceledOnTouchOutside(false)
+
+        //Start the dialog and display it on screen.
+        progDialog.show()
+    }
+
 
     //function that will stop the dialog
 
-//    fun stopDialog(){
-//        progDialog.dismiss()
-//    }
-
-    //The progress dialog
-    fun progressDialog(text:String){
-        progDialog = ProgressDialog(this)
-        progDialog.progress = 0
-        progDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER)
-        progDialog.setTitle(text)
-        progDialog.show()
+    fun hideProgressDialog(){
+        progDialog.dismiss()
     }
-
-    fun perctageProgDialog(text:String){
-        progDialog = ProgressDialog(this)
-        progDialog.progress = 0
-        progDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL)
-        progDialog.setTitle(text)
-        progDialog.show()
-    }
-
 
     fun doubleBackToExit(){
 
@@ -93,8 +86,6 @@ open class BaseActivity : AppCompatActivity() {
             // This will enable if the back is clicked two seconds later, then the app will not be exited
         Handler().postDelayed({doubleBackPressedOnce =false}, 2000)
     }
-
-
 
 
 }

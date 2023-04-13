@@ -14,10 +14,10 @@ class Splash : AppCompatActivity() {
 
         Handler().postDelayed(
             {
-                startActivity(Intent(this, Dashboard::class.java))
+                startActivity(Intent(this, Login::class.java))
                 finish()
             },
-            2000
+            3000
         )
 
         // With no action and status bars

@@ -1,6 +1,7 @@
 package com.example.eart.ui.activities
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.navigation.findNavController
@@ -10,6 +11,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.eart.R
 import com.example.eart.baseactivity.BaseActivity
 import com.example.eart.databinding.ActivityDashboardBinding
+import kotlinx.android.synthetic.main.dashboard_listitem_custom_layout.*
 
 class Dashboard : BaseActivity() {
 
@@ -32,15 +34,16 @@ class Dashboard : BaseActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_products, R.id.navigation_dashboard, R.id.navigation_orders
+                R.id.navigation_dashboard, R.id.navigation_products, R.id.navigation_orders, R.id.navigation_sold_products
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
     }
 
     override fun onBackPressed() {
-
         doubleBackToExit()
     }
+
 }

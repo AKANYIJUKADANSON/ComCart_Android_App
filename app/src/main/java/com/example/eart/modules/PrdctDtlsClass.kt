@@ -1,9 +1,17 @@
 package com.example.eart.modules
 
-class PrdctDtlsClass(
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+
+@Parcelize
+data class PrdctDtlsClass(
+    val user_id:String = "",
+    val username:String = "",
     val productTitle:String = " ",
     val productPrice:String = "",
     val prodctDescrptn:String = "",
-    val prodctQuantity:String,
-    val image:String = ""
-)
+    var stock_quantity:String = "",
+    val image:String = "",
+    var product_id:String = "",
+) : Parcelable

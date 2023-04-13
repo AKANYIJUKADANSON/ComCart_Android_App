@@ -1,5 +1,7 @@
 <resources>
-    <string name="app_name">EArt</string>
+    <string name="app_name">ComCart</string>
+
+    <string name="currency">UGX</string>
 
     <!--    Registration Details validation error messages-->
     <string name="errorEtFirstName">Please enter first name.</string>
@@ -15,13 +17,14 @@
     <string name="loginFailure">Login Failure</string>
     <string name="emailForgotPasswd">Enter your email, we will send a link to change the password.</string>
     <string name="emailSentSuccess">Email sent successfully. Check your email to change your password.</string>
-    <string name="account">MY ACCOUNT</string>
+    <string name="account">Account</string>
     <string name="title_activity_dashboard">MainActivity</string>
     <string name="title_products">Products</string>
     <string name="title_dashboard">Dashboard</string>
-    <string name="title_orders">Orders</string>
+    <string name="title_orders">My Orders</string>
     <string name="onBackPress">Click back again to exit</string>
     <string name="action_settings">Settings</string>
+    <string name="errorPermission">You don\'t have permission to storag. You can allow this in settings</string>
 
     <!--    ERROR strings for Add Product-->
     <string name="errorProdctImg">Please Select the product.</string>
@@ -30,6 +33,38 @@
     <string name="errorProdctDescrptn">Please enter product description.</string>
     <string name="errorProdctQtty">Please enter prodct quantity.</string>
     <string name="noPrdctsAddedYet">No products added yet</string>
+    <string name="errorImageUrl">Please select profile Image</string>
+    <string name="noDashboardProdctsAddedYet">No dashboard products added yet</string>
+
+    <!--    Deleting a product-->
+    <string name="delete_product_success">Product, deleted successfully.</string>
+    <string name="delete_dialog_title">Delete.</string>
+    <string name="delete_dialog_alert_msg">Are you sure to delete the product?</string>
+    <string name="yes">Yes</string>
+    <string name="No">No</string>
+
+    <!--    Add to cart  -->
+    <string name="add_To_Cart_Success">Product added   to cart successfully</string>
+    <string name="title_my_cart">MY CART</string>
+
+    <string name="title_my_address">ADDRESS LIST</string>
+    <string name="title_add_address_edit">ADD ADDRESS</string>
+    <string name="title_select_address">SELECT ADDRESS</string>
+
+
+    <!--    Add address Details validation error messages-->
+    <string name="error_region">Region field is required</string>
+    <string name="error_address_name">Region Address name is required</string>
+    <string name="error_phone">Region Phone Number is required</string>
+    <string name="error_zipcode">Region Zipcode required</string>
+
+
+    <string name="status_pending">Pending</string>
+    <string name="status_progress">In Progress</string>
+    <string name="status_delivered">Delivered</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="sold_products">Sold Products</string>
+    <string name="sold">Sold</string>
+
 </resources>

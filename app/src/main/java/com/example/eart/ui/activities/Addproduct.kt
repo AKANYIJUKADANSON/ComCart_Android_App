@@ -1,6 +1,7 @@
 package com.example.eart.ui.activities
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -8,7 +9,6 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
-import android.webkit.MimeTypeMap
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -16,16 +16,12 @@ import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.bumptech.glide.Glide
 import com.example.eart.R
 import com.example.eart.baseactivity.BaseActivity
-import com.example.eart.firestore.ProdctInfoStore
+import com.example.eart.firestore.FirestoreClass
 import com.example.eart.modules.Constants
 import com.example.eart.modules.PrdctDtlsClass
-import com.example.edutech.firestore.UserInfoFirestore
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.UploadTask
 import java.io.IOException
 
 class Addproduct : BaseActivity(), View.OnClickListener {
@@ -55,11 +51,17 @@ class Addproduct : BaseActivity(), View.OnClickListener {
         myToolBar.setNavigationOnClickListener { onBackPressed() }
     }
 
+    /* The onclick function below appears as a member that is implemented
+        after inheriting from the Vie.OnclickListener
+    */
     override fun onClick(v: View?) {
+        // We first check if the view is not null
         if (v != null) {
+            // Then determine what will happen for each view using its id
             when (v.id) {
+                // Camera icon that acts as the button to trigger the uploading image process
                 R.id.loadProdct -> {
-                    //Checking if i have access to the camera and external storage
+                    //Checking if there is access to the camera and external storage
                     if (ContextCompat.checkSelfPermission(
                             this,
                             android.Manifest.permission.READ_EXTERNAL_STORAGE
@@ -69,20 +71,31 @@ class Addproduct : BaseActivity(), View.OnClickListener {
                         //I already have an account
                         //Instead of showing the already have permission we can choose an image
                         Constants.imageChooser(this)
-                    } else {
 
+                        /**
+                         * After choosing the image then the onActivityResult() function uploads the file/image to the app
+                         * to be viewed
+                         */
+                    } else {
                         ActivityCompat.requestPermissions(
                             this, arrayOf(
                                 android.Manifest.permission.READ_EXTERNAL_STORAGE
                                 // Manifest.permission.CAMERA
                             ), Constants.READ_EXTERNAL_STORAGE_CODE
+                        /* READ_EXTERNAL_STORAGE is the request code wic can be any value and can be used
+                            to compare say if the reqcode= to what u intend then do ABC...
+                            */
                         )
                     }
                 }
 
+                /**
+                 *  After the picture is set and the product details also entered then we validate and upload he image first
+                 *  then after the details uploaded to
+                */
                 R.id.addProdctBtn ->{
                     if (validateProductDetails()){
-                        uploadProductImage()
+                        uploadProductImageToCloud()
                     }
                 }
             }
@@ -94,8 +107,9 @@ class Addproduct : BaseActivity(), View.OnClickListener {
                                             grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == Constants.READ_EXTERNAL_STORAGE_CODE ){
-            if (grantResults.isEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
 
+                //if we are granted the permission the we just go ahead to choose the image
                 //Also hea the we already have the permissions so we choose the image
                 Constants.imageChooser(this)
             }else{
@@ -110,7 +124,7 @@ class Addproduct : BaseActivity(), View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data)
         //Checking whether the result image is ok
         if(resultCode == Activity.RESULT_OK && requestCode == Constants.PICK_IMAGE_CODE && data !=null){
-            //Checking if the request code passed from the onActivityResult is the one we picked our image
+            //Compare if the request code passed from the onActivityResult is the same as one used to picked the image
                 //Checking if the data is not equal to null coz it can happen otherwise the app can crash
 
                     val imgLoader = findViewById<ImageView>(R.id.loadProdct)
@@ -118,13 +132,26 @@ class Addproduct : BaseActivity(), View.OnClickListener {
             imgLoader.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_edit))
 
                     try {
+                        /**
+                         * if the request and result codes are okay then we have the data ready
+                         * and ts from this dat that we get the image uri from as below
+                        */
                         //selected uri for the image from storage media and this uri is one we
                         // set as a parameter on setting the image
                         //Picking the image
-                        mselectImageFileUri = data.data!!
-                        val profileImg = findViewById<ImageView>(R.id.image_view_prodct)
+
+                        mselectImageFileUri = data.data!! // LOCATION OF THE FILE
+                        val productImgToUpload = findViewById<ImageView>(R.id.image_view_prodct)
+                        /*
+                                Using Glide loader: its fast and can smartly define the type of file that one is uploading
+                        *  Syntax for glide
+                                Glide.with(the activity wea to oad the file).load( the Uri or location of the image)
+                                .into( the exact view   wea to insert the file within the selected activity)
+                        * */
                         //setting the image from the URI or use Glideloader
-                        profileImg.setImageURI(mselectImageFileUri!!)
+                        Glide.with(this).load(mselectImageFileUri).into(productImgToUpload)
+                        // Using setImageUri option below
+//                        profileImg.setImageURI(mselectImageFileUri!!)
                     }catch (e: IOException){
                         e.printStackTrace()
                         Toast.makeText(this, "set image failure", Toast.LENGTH_LONG).show()
@@ -173,68 +200,82 @@ class Addproduct : BaseActivity(), View.OnClickListener {
         }
     }
 
-    fun uploadProductImage(){
+
+    fun uploadProductImageToCloud(){
 
         progressDialog("Uploadig....")
         //first check if the image uri is not null
         if (mselectImageFileUri !=null){
+//            Log.e("File location: ", mselectImageFileUri.toString())
 
-            //Getting the image extensin which will help firebase to know under wc extension the img is stored
-            val imgExtension = MimeTypeMap.getSingleton()
-                .getExtensionFromMimeType(contentResolver.getType(mselectImageFileUri!!))
-
-            //get the firebase storage reference
-            val strgeRef : StorageReference = FirebaseStorage.getInstance().reference.child(
-                //passing in a child wc will be the name of the image
-                //Say naming the file
-                "Product_Image" + System.currentTimeMillis() + "." + imgExtension )
-
-            strgeRef.putFile(mselectImageFileUri!!).addOnSuccessListener {TaskSnapshot ->
-                TaskSnapshot.metadata!!.reference!!.downloadUrl.addOnSuccessListener { Url ->
-
-                    Log.e("Download Url", Url.toString())
-                    imageUploadSuccess(Url.toString())
-                   //mImageUrl = "$Url"
-                   // Toast.makeText(this, "$Url", Toast.LENGTH_LONG).show()
-                }.addOnFailureListener {
-                    Toast.makeText(this, "downloadUrl not generated", Toast.LENGTH_LONG).show()
-                }
-            }
+            FirestoreClass().uploadImageToCloud(this, mselectImageFileUri, Constants.PRODUCT_IMAGE)
 
         }
 
     }
 
-    fun imageUploadSuccess(ImageUrl:String){
-        mImageUrl = ImageUrl
-        uploadProdctDetails()
-    }
+
 
     fun uploadProdctDetails(){
+
+        val username = this.getSharedPreferences(Constants.MYAPP_PREFERENCES, Context.MODE_PRIVATE)
+            .getString(Constants.LOGGED_IN_USERNAME, "")!!
+        val userid = FirestoreClass().getCurrentUserID()
+
+
         val productTitle = findViewById<EditText>(R.id.prodctTitle).text.toString()
             .trim { it <= ' '}
         val productPrice = findViewById<EditText>(R.id.productPrice).text.toString()
             .trim { it <= ' '}
         val productDecrptn = findViewById<EditText>(R.id.prodctDescription).text.toString()
             .trim { it <= ' '}
-        val productQutty = findViewById<EditText>(R.id.prodctQuantity).text.toString()
+        val productQuatity = findViewById<EditText>(R.id.prodctQuantity).text.toString()
             .trim { it <= ' '}
 
-            //Storing the data into the PrdctDtlsClass to be picked by the ProdctInfoStore.kt file
-            val prodct = PrdctDtlsClass(
-                productTitle, productPrice,
-                productDecrptn, productQutty, mImageUrl
-            )
-            // Store details
-            ProdctInfoStore().storeProductInfo(this, prodct)
+        //Storing the data into the PrdctDtlsClass to be picked by the Firestoreclass file
+
+        val prodct = PrdctDtlsClass(
+            userid,
+            username,
+            productTitle,
+            productPrice,
+            productDecrptn,
+            productQuatity,
+            mImageUrl
+        )
+
+        // Store details
+        FirestoreClass().storeProductInfo(this,prodct)
+
     }
 
+
+    /*
+        This function below will be called when the image is uploaded successfully
+        after which the details about the image/product will also be uploaded
+        the imgUrl passed below as a param is th one that has been pst to the function in firestoreclass
+    */
+    fun imageUploadSuccess(ImageUrl:String){
+        mImageUrl = ImageUrl
+
+        //Log.e("Download Image Url: ", mImageUrl)
+
+        uploadProdctDetails()
+    }
+
+
+
+    /*
+        This function below will be called when the prdct details are uploaded successfully
+     */
     fun productUploadSuccess(){
-        //Hiding the progress dialog and finishing the process
-        progDialog.dismiss()
-        Toast.makeText(this, "Product Uploaded Successfully", Toast.LENGTH_LONG)
-            .show()
-        finish()
+       //Hiding the progress dialog and finishing the process
+       progDialog.dismiss()
+       Toast.makeText(this, "Product was uploaded successfully", Toast.LENGTH_LONG)
+           .show()
+
+       // finishing allws the user to stay out of the addproduct activity
+       finish()
     }
 
 }
