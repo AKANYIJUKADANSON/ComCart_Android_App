@@ -8,6 +8,19 @@
         app:showAsAction="always"
         android:iconTint="@color/white"/>
 
+    <item android:id="@+id/action_cart_list"
+        android:icon="@drawable/ic_cart"
+        android:title="cart"
+        app:showAsAction="always"
+        android:iconTint="@color/white"/>
+
+    <item
+        android:id="@+id/action_settings"
+        android:icon="@drawable/baseline_manage_account"
+        android:title="@string/account"
+        app:showAsAction="always"
+        android:iconTint="@color/white"/>
+
     <item android:id="@+id/action_logout"
         android:icon="@drawable/ic_logout"
         android:title="Logout"

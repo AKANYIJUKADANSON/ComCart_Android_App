@@ -117,6 +117,7 @@ class Login : BaseActivity(), View.OnClickListener {
         Toast.makeText(this, resources.getString(R.string.loginSuccess),
             Toast.LENGTH_LONG).show()
 
+//        val intent = Intent(this@Login, Dashboard::class.java)
         val intent = Intent(this@Login, Dashboard::class.java)
 
         // Clearing the previous background tasks

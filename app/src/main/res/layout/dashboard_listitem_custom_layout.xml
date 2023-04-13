@@ -2,57 +2,75 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:gravity="center"
-    android:padding="11dp"
-    android:layout_margin="10dp"
+    android:layout_margin="9dp"
     android:background="@drawable/dashboard_item_background">
 
-    <ImageView
-        android:id="@+id/recyc_imageview_dashboard"
-        android:layout_width="match_parent"
-        android:layout_height="164dp"
-        android:background="@color/lightGrey"
-        android:scaleType="fitXY"
-        app:srcCompat="@drawable/splashbg"
-        tools:layout_editor_absoluteX="10dp"
-        tools:layout_editor_absoluteY="7dp" />
+    <androidx.cardview.widget.CardView
+        android:id="@+id/dashboard_image_card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="3dp"
+        app:cardCornerRadius="10dp">
 
-    <View
-        android:id="@+id/view_divider"
-        android:layout_width="match_parent"
-        android:layout_height="16dp"
-        android:layout_below="@id/recyc_imageview_dashboard" />
+        <ImageView
+            android:id="@+id/recyc_imageview_dashboard"
+            android:layout_width="160dp"
+            android:layout_height="170dp"
+            android:scaleType="fitXY"
+            android:clipToOutline="true"
+            android:src="@drawable/comcartlogo"/>
+
+    </androidx.cardview.widget.CardView>
+
+
 
     <LinearLayout
-        android:layout_width="368dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@color/borderColor"
+        android:orientation="horizontal"
+        android:layout_marginLeft="5dp"
         tools:layout_editor_absoluteX="32dp"
         tools:layout_editor_absoluteY="322dp"
-        android:layout_below="@id/view_divider">
+        android:layout_below="@id/dashboard_image_card">
 
-        <TextView
-            android:id="@+id/tv_dashboard_item_name"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Item name"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:orientation="vertical"
+            android:layout_below="@id/dashboard_image_card">
 
-        <TextView
-            android:id="@+id/tv_dashboard_item_price"
-            android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tv_dashboard_item_name"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:text="Item name"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tv_dashboard_item_price"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:text="$200.0"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="15sp"/>
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/add_to_favourate_btn"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="$200.0"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:textSize="20sp"/>
-
+            android:backgroundTint="@color/white"
+            android:src="@drawable/baseline_favorite_bordered"/>
     </LinearLayout>
+
+
 
 </RelativeLayout>

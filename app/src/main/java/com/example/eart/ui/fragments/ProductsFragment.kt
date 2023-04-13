@@ -12,6 +12,8 @@ import com.example.eart.basefragment.BaseFragment
 import com.example.eart.firestore.FirestoreClass
 import com.example.eart.modules.PrdctDtlsClass
 import com.example.eart.ui.activities.Addproduct
+import com.example.eart.ui.activities.CartListActivity
+import com.example.eart.ui.activities.Settings
 import kotlinx.android.synthetic.main.fragment_products.*
 
 class ProductsFragment : BaseFragment() {
@@ -44,20 +46,30 @@ class ProductsFragment : BaseFragment() {
                 return true
             }
 
+            R.id.action_cart_list ->{
+                startActivity(Intent(activity, CartListActivity::class.java))
+                return true
+            }
+
+            R.id.action_settings ->{
+                startActivity(Intent(activity, Settings::class.java))
+                return true
+            }
+
             R.id.action_logout ->{
                 showAlertDialogForLogout(
                     requireActivity(),
                     "Logging out",
                     "Are you sure, you want to logout?")
-//                startActivity(Intent(activity, Login::class.java))
                 return true
             }
+
         }
         return super.onOptionsItemSelected(item)
     }
 
 
-    // On resume means that everytym we get trigger the onresume option or getting back to the products fragments
+    // On resume means that everytime we get trigger the on resume option or getting back to the products fragments
     // then we can call the functions for getting products again
     override fun onResume() {
         super.onResume()

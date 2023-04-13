@@ -1,10 +1,9 @@
 package com.example.eart.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eart.R
 import com.example.eart.adapters.ProductsAdapter
@@ -12,11 +11,20 @@ import com.example.eart.adapters.SoldProductsAdapter
 import com.example.eart.basefragment.BaseFragment
 import com.example.eart.firestore.FirestoreClass
 import com.example.eart.modules.SoldProducts
+import com.example.eart.ui.activities.CartListActivity
+import com.example.eart.ui.activities.Settings
 import kotlinx.android.synthetic.main.fragment_products.*
 import kotlinx.android.synthetic.main.fragment_sold_products.*
 
 
 class SoldProductsFragment : BaseFragment() {
+
+    // OnCreate() function will help to add the menu in the fragment
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,6 +32,40 @@ class SoldProductsFragment : BaseFragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_sold_products, container, false)
+    }
+
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.sold_products_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        val id = item.itemId
+        when(id){
+
+            R.id.action_cart_list ->{
+                startActivity(Intent(activity, CartListActivity::class.java))
+                return true
+            }
+
+            R.id.action_settings ->{
+                startActivity(Intent(activity, Settings::class.java))
+                return true
+            }
+
+            R.id.action_logout ->{
+                showAlertDialogForLogout(
+                    requireActivity(),
+                    "Logging out",
+                    "Are you sure, you want to logout?")
+                return true
+            }
+
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onResume() {
@@ -63,5 +105,4 @@ class SoldProductsFragment : BaseFragment() {
             tv_no_sold_products.visibility = View.VISIBLE
         }
     }
-
 }

@@ -63,7 +63,10 @@ class DashboardFragment : BaseFragment() {
             }
 
             R.id.action_logout ->{
-                startActivity(Intent(activity, Login::class.java))
+                showAlertDialogForLogout(
+                    requireActivity(),
+                    "Logging out",
+                    "Are you sure, you want to logout?")
                 return true
             }
         }
@@ -119,4 +122,5 @@ class DashboardFragment : BaseFragment() {
             no_dashboard_added_yet.visibility = View.VISIBLE
         }
     }
+
 }

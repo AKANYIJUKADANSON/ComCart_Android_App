@@ -26,9 +26,9 @@ class OrderDetailsActivity : AppCompatActivity() {
 
 
 
-        var myOrderDetails:Order = Order()
+        var myOrderDetails = Order()
         if (intent.hasExtra(Constants.EXTRA_MY_ORDER_DETAILS)){
-            myOrderDetails = intent.getParcelableExtra<Order>(Constants.EXTRA_MY_ORDER_DETAILS)!!
+            myOrderDetails = intent.getParcelableExtra(Constants.EXTRA_MY_ORDER_DETAILS)!!
         }
 
         // Fill the fields with order details

@@ -33,7 +33,8 @@ class CartItemsListAdapter (
                 holder.itemView.recyc_cart_image
             )
             holder.itemView.recyc_cart_item_title.text = currentCartItem.product_title
-            holder.itemView.recyc_cart_price.text = "$ ${currentCartItem.product_price}"
+            val currency = context.resources.getString(R.string.currency)
+            holder.itemView.recyc_cart_price.text = "${currency} ${currentCartItem.product_price}"
             holder.itemView.item_quantity.text = currentCartItem.cart_quantity
 
             /**

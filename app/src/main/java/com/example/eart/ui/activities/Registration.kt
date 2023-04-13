@@ -27,12 +27,12 @@ import java.io.IOException
 //
 class Registration : BaseActivity(), View.OnClickListener {
 
-    private var mselectImageFileUri: Uri? = null
+    private var mSelectImageFileUri: Uri? = null
     lateinit var registrationButton: Button
     lateinit var haveAcctLgn: TextView
     lateinit var loadUserImg:ImageView
     lateinit var auth: FirebaseAuth
-    private var mImageUrl:String? = ""
+    private var mDownloadedImageUrl:String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,9 +47,6 @@ class Registration : BaseActivity(), View.OnClickListener {
         haveAcctLgn.setOnClickListener(this)
         loadUserImg.setOnClickListener(this)
         registrationButton.setOnClickListener(this)
-
-
-
     }
 
     fun validateRegDetails(): Boolean{
@@ -64,7 +61,7 @@ class Registration : BaseActivity(), View.OnClickListener {
 
 
         return when{
-            mselectImageFileUri == null ->{
+            mSelectImageFileUri == null ->{
                 showErrorSnackBar(resources.getString(R.string.errorImageUrl), true)
                 false
             }
@@ -125,7 +122,7 @@ This function below will be called when the image is uploaded successfully in th
 after which the details about the image/product will also be uploaded
 */
     fun imageUploadSuccess(ImageUrl:String){
-        mImageUrl = ImageUrl
+        mDownloadedImageUrl = ImageUrl
 //        Toast.makeText(this, "Image uploaded and Uri = $ImageUrl", Toast.LENGTH_LONG).show()
         uploadUserDetails()
     }
@@ -140,7 +137,7 @@ after which the details about the image/product will also be uploaded
                 R.id.regbtn ->{
                     if(validateRegDetails()){
                         progressDialog("Authenticating....")
-                        FirestoreClass().uploadImageToCloud(this, mselectImageFileUri, Constants.USER_PROFILE_IMAGE)
+                        FirestoreClass().uploadImageToCloud(this, mSelectImageFileUri, Constants.USER_PROFILE_IMAGE)
                     }
                 }
 
@@ -166,8 +163,8 @@ after which the details about the image/product will also be uploaded
                             /**
                              * READ_EXTERNAL_STORAGE_CODE will be compared to in the onRequestPermisiionResults function
                              *  READ_EXTERNAL_STORAGE code is the request code wic can be any value and can be used
-                                to compare say if the reqcode= to what u intend then do ABC...
-                                */
+                             *  to compare say if the request code= to what u intend then do ABC...
+                             */
                         )
                     }
                 }
@@ -231,7 +228,7 @@ after which the details about the image/product will also be uploaded
                 //selected uri for the image from storage media and this uri is one we
                 // set as a parameter on setting the image
                 //Picking the image
-                mselectImageFileUri = data.data!! // LOCATION OF THE FILE
+                mSelectImageFileUri = data.data!! // LOCATION OF THE FILE
                 val userprofileImg = findViewById<ImageView>(R.id.userprofileImg)
                 /*
                         Using Glide loader: its fast and can smartly define the type of file that one is uploading
@@ -240,7 +237,7 @@ after which the details about the image/product will also be uploaded
                         .into( the exact view wea to insert the file within the selected activity)
                 */
                 //setting the image from the URI or use Glideloader
-                Glide.with(this).load(mselectImageFileUri).into(userprofileImg)
+                Glide.with(this).load(mSelectImageFileUri).into(userprofileImg)
                 // Using setImageUri option below
 //                        profileImg.setImageURI(mselectImageFileUri!!)
             }catch (e: IOException){
@@ -283,7 +280,8 @@ after which the details about the image/product will also be uploaded
                             firebaseuser!!.uid,
                             firstName,
                             lastName,
-                            email
+                            email,
+                            mDownloadedImageUrl
                         )
                         // Storing User details into the firebase storage using the firestore class
                         //UserInfoFirestore().storeUserInfo()
@@ -294,8 +292,6 @@ after which the details about the image/product will also be uploaded
                 }
 
             )
-
-
     }
 
     /**
@@ -307,7 +303,7 @@ after which the details about the image/product will also be uploaded
         hideProgressDialog()
 
         Toast.makeText(
-            this@Registration, "Registered successfully, LOGIN TO YOUR ACCOUNT",
+            this@Registration, "Registered successfully, Login to access account",
             Toast.LENGTH_LONG
         ).show()
 
@@ -328,6 +324,4 @@ after which the details about the image/product will also be uploaded
         startActivity(intent)
         finish()
     }
-
-
 }

@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">EArt</string>
+    <string name="app_name">ComCart</string>
 
-    <string name="currency">$</string>
+    <string name="currency">UGX</string>
 
     <!--    Registration Details validation error messages-->
     <string name="errorEtFirstName">Please enter first name.</string>
@@ -17,7 +17,7 @@
     <string name="loginFailure">Login Failure</string>
     <string name="emailForgotPasswd">Enter your email, we will send a link to change the password.</string>
     <string name="emailSentSuccess">Email sent successfully. Check your email to change your password.</string>
-    <string name="account">MY ACCOUNT</string>
+    <string name="account">Account</string>
     <string name="title_activity_dashboard">MainActivity</string>
     <string name="title_products">Products</string>
     <string name="title_dashboard">Dashboard</string>

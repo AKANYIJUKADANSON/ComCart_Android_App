@@ -65,8 +65,7 @@ open class BaseFragment : Fragment() {
     fun showAlertDialogForLogout(
         context:Context,
         title:String,
-        message_to_display:String,
-    ){
+        message_to_display:String){
         val builder = AlertDialog.Builder(activity)
 
         // Setting the Title, message and icon for the alert
@@ -78,7 +77,12 @@ open class BaseFragment : Fragment() {
         builder.setPositiveButton(resources.getString(R.string.yes)){
                 dialogInterface,_->
             // Logout
-            startActivity(Intent(context, Login::class.java))
+            val intent = Intent(context, Login::class.java)
+            // Removing the flags to avoid getting back to the background activities running
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+//            activity?.finish()
+
         }
 
         // Setting the negative action when a yes is selected

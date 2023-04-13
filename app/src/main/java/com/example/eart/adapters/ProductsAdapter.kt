@@ -12,6 +12,7 @@ import com.example.eart.modules.GlideLoader
 import com.example.eart.modules.PrdctDtlsClass
 import com.example.eart.ui.activities.ProductDetailsActivity
 import com.example.eart.ui.fragments.ProductsFragment
+import kotlinx.android.synthetic.main.orders_item_custom.view.*
 import kotlinx.android.synthetic.main.products_item_custom.view.*
 
 class ProductsAdapter(
@@ -34,7 +35,9 @@ class ProductsAdapter(
                 holder.itemView.recyc_productImage
             )
             holder.itemView.recyc_productTitle.text = currentProduct.productTitle
-            holder.itemView.recyc_productPrice.text = "$ ${currentProduct.productPrice}"
+            val currency = context.resources.getString(R.string.currency)
+            holder.itemView.recyc_productPrice.text = "${currency} ${currentProduct.productPrice}"
+            holder.itemView.recyclerView_stock_quantity.text = currentProduct.stock_quantity
 
             holder.itemView.products_delete_btn.setOnClickListener {
                 // Passing the product id to the delete fn

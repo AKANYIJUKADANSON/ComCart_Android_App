@@ -5,6 +5,8 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.eart.R
 import com.example.eart.modules.Constants
@@ -33,7 +35,13 @@ class DashboardItemListAdapter(
                     holder.itemView.recyc_imageview_dashboard
                 )
                 holder.itemView.tv_dashboard_item_name.text = currentProduct.productTitle
-                holder.itemView.tv_dashboard_item_price.text = "$ ${currentProduct.productPrice}"
+                val currency = context.resources.getString(R.string.currency)
+                holder.itemView.tv_dashboard_item_price.text = "${currency} ${currentProduct.productPrice}"
+
+                holder.itemView.add_to_favourate_btn.setOnClickListener {
+                    holder.itemView.add_to_favourate_btn.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.baseline_favorite))
+                    Toast.makeText(context, "Added to favourite successfully", Toast.LENGTH_LONG).show()
+                }
 
                 // Setting the item click foe each item in the recyclerview
 

@@ -25,6 +25,7 @@ import com.google.firebase.storage.StorageReference
 class FirestoreClass {
 
     private var mFirestore = FirebaseFirestore.getInstance()
+    private var mFireStorageReference = FirebaseStorage.getInstance()
 
     //Creating a function using data from the registration activity and MyUser data class
     fun registerUser(activity:Registration, UserInfo: MyUser){
@@ -32,7 +33,7 @@ class FirestoreClass {
         //Creating a new collection that will act as a folder under which all user details will be stored
         mFirestore.collection(Constants.USERS)
             // Document is the user id given after registration
-            .document(UserInfo.id)
+            .document(UserInfo.user_id)
             // Here we are using the fields created inMyUser class with help of UserInfo
             // Merge helps to change or add data in any field
             .set(UserInfo, SetOptions.merge())
@@ -43,7 +44,7 @@ class FirestoreClass {
                 activity.hideProgressDialog()
                 Log.e(
                     activity.javaClass.simpleName,
-                    "Error while registering the user.",
+                    "Error while registering.",
                     e
                 )
             }
@@ -100,13 +101,21 @@ class FirestoreClass {
 
                 /**
                  * Shared prefs can also help to reduce costs esp when making requests to firebase db
-                 * since the user datails can be stored physically and be used anytime wthout first makig a request to database again
+                 * since the user details can be stored physically and be used anytime without first making a request to database again
                  * this reduces costs coz each req u make is a cost and the more the requests the more the jam on the app too
                  */
 
                 when(activity){
                     is Login ->{
                         activity.loginSuccess(userDetails)
+                    }
+
+                    is Settings ->{
+                        activity.getUserDetailsSuccess(userDetails)
+                    }
+
+                    is EditUserData -> {
+                        activity.editUserDetailsSuccess(userDetails)
                     }
                 }
             }
@@ -150,7 +159,7 @@ class FirestoreClass {
 
         /**
          * passing in a child wc will be the name of the image Say naming the file
-         * The user_profile_image contant will be the name of the image on the firestore storage
+         * The user_profile_image constant will be the name of the image on the firestore storage
          * The time will act as the modifier to differentiate images
          *
          */
@@ -640,6 +649,7 @@ class FirestoreClass {
     // Orders
     fun getOrdersList(fragment: OrdersFragment){
         mFirestore.collection(Constants.ORDERS)
+            .whereEqualTo(Constants.USER_ID, getCurrentUserID())
             .get()
             .addOnSuccessListener { orders ->
 
@@ -679,11 +689,30 @@ class FirestoreClass {
 
         // Loop that will cater for the locating and then updating the document
         // *******************UPDATING THE CART AND PRODUCTS COLLECTIONS*************
+
         for (cartItem in cartItemArrayList){
 
-//            productHashmap[Constants.STOCK_QUANTITY] = (
-//                    cartItem.stock_quantity.toInt() - cartItem.cart_quantity.toInt()).toString()
+            val productHashmap = HashMap<String, Any>()
 
+            productHashmap[Constants.STOCK_QUANTITY] = (
+                    cartItem.stock_quantity.toInt() - cartItem.cart_quantity.toInt()).toString()
+
+            /**
+             * ~~~~~~~~~~~Locating the document that we will work on~~~~~~~~~~~~~~~~~~
+             * Creating the document reference in the collection in this case the products collection
+             *  and the document we need to work on is of id cartItem product_id.
+             *  NOTE: That the product_id field is both in the products collection and the cart collection thus we can easily update it
+             */
+
+            val documentReference = mFirestore.collection(Constants.PRODUCTS).document(cartItem.product_id)
+
+            // Running or writing the batch
+            writeBatch.update(documentReference, productHashmap)
+
+        }
+
+
+        for (cartItem in cartItemArrayList){
             val soldProducts = SoldProducts(
                 cartItem.product_owner_id,
                 cartItem.product_title,
@@ -709,6 +738,7 @@ class FirestoreClass {
 
             // Running or writing the batch
             writeBatch.set(documentReference, soldProducts)
+
         }
 
 
@@ -764,7 +794,6 @@ class FirestoreClass {
                 Log.e(fragment.javaClass.simpleName, "Error while downloading sold itemsr")
             }
     }
-
 
 }
 

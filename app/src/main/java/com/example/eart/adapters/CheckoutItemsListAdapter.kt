@@ -30,7 +30,8 @@ class CheckoutItemsListAdapter (
                 holder.itemView.recyc_checkout_image
             )
             holder.itemView.recyc_checkout_item_title.text = currentCartItem.product_title
-            holder.itemView.recyc_checkout_price.text = "$ ${currentCartItem.product_price}"
+            val currency = context.resources.getString(R.string.currency)
+            holder.itemView.recyc_checkout_price.text = "${currency} ${currentCartItem.product_price}"
         }
 
     }

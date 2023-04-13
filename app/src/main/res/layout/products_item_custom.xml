@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <LinearLayout
@@ -18,12 +19,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/recyc_productImage"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:scaleType="fitXY"
-            app:shapeAppearanceOverlay="@style/roundImgViewpager" />
+        <androidx.cardview.widget.CardView
+            android:id="@+id/product_image_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="10dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/recyc_productImage"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:scaleType="fitXY"
+                android:clipToOutline="true"
+                android:src="@drawable/comcartlogo"/>
+
+        </androidx.cardview.widget.CardView>
 
         <LinearLayout
             android:id="@+id/tvs_layout"
@@ -43,28 +57,72 @@
                 android:text="Adidas Shoe"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/recyc_productPrice"
+            <LinearLayout
+
                 android:layout_width="match_parent"
-                android:layout_height="16pt"
-                android:layout_marginLeft="10dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:gravity="fill"
-                android:paddingLeft="5pt"
-                android:text="$100.00"
-                android:textStyle="bold" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/recyc_productPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="16pt"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:gravity="fill"
+                    android:textColor="@color/black"
+                    android:paddingLeft="5pt"
+                    android:text="$100.00"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/recyclerView_stock_quantity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/text_view_outline_bg"
+                    android:gravity="fill"
+                    android:paddingRight="7dp"
+                    android:paddingLeft="7dp"
+                    android:paddingTop="3dp"
+                    android:paddingBottom="3dp"
+                    android:layout_marginStart="30dp"
+                    android:text="4"
+                    android:textStyle="bold"/>
+
+            </LinearLayout>
+
+
         </LinearLayout>
 
 
+
+
     </LinearLayout>
+
+<!--    <TextView-->
+<!--        android:id="@+id/recyclerView_product_quantity"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="20pt"-->
+<!--        android:layout_marginEnd="30dp"-->
+<!--        android:background="@drawable/text_view_outline_bg"-->
+<!--        android:gravity="fill"-->
+<!--        android:padding="10dp"-->
+<!--        android:text="4"-->
+<!--        android:textStyle="bold"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/products_delete_btn"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
+
 
     <ImageButton
         android:id="@+id/products_delete_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="20dp"
-        android:padding="10dp"
+        android:layout_marginTop="20pt"
+        android:layout_marginEnd="10dp"
+        android:padding="5dp"
         android:background="@color/white"
         android:src="@drawable/ic_delete"
         app:layout_constraintEnd_toEndOf="parent"

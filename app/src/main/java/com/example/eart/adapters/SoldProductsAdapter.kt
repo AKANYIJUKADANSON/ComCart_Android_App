@@ -31,7 +31,9 @@ class SoldProductsAdapter(
                 holder.itemView.recyc_productImage
             )
             holder.itemView.recyc_productTitle.text = currentSoldProduct.title
-            holder.itemView.recyc_productPrice.text = "$ ${currentSoldProduct.price}"
+            val currency = context.resources.getString(R.string.currency)
+            holder.itemView.recyc_productPrice.text = "${currency} ${currentSoldProduct.price}"
+            holder.itemView.recyclerView_stock_quantity.text = currentSoldProduct.sold_quantity
 
             holder.itemView.products_delete_btn.visibility = View.GONE
 
@@ -47,9 +49,10 @@ class SoldProductsAdapter(
                  * And thus we use the opportunity that we have the currentProduct and get its document id
                  * to send it to the productDetails activity
                  */
+                intent.putExtra(Constants.EXTRA_SOLD_PRODUCT_DETAILS, currentSoldProduct)
                 intent.putExtra(Constants.SOLD_PRODUCT_EXTRA_ID, currentSoldProduct.sold_product_id)
                 intent.putExtra(Constants.PRODUCT_EXTRA_OWNER_ID, currentSoldProduct.user_id)
-//                context.startActivity(intent)
+                context.startActivity(intent)
             }
         }
     }

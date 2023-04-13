@@ -21,7 +21,7 @@ object Constants {
     const val MYAPP_PREFERENCES:String = "yAppPrefsM"
     const val PICK_IMAGE_CODE = 1
     const val READ_EXTERNAL_STORAGE_CODE = 2
-    const val USER_PROFILE_IMAGE:String = "User_profile_image"
+    const val USER_PROFILE_IMAGE:String = "user_profile_image"
     const val PRODUCT_IMAGE:String = "Product_image"
     // PRODUCT_EXTRA_ID will store the documentId of the product
     const val PRODUCT_EXTRA_ID:String = "product_extra_id"
@@ -47,10 +47,12 @@ object Constants {
     // Orders
     const val ORDERS:String = "Orders"
     const val EXTRA_MY_ORDER_DETAILS:String = "extra_my_order_details"
-    const val SOLD_PRODUCTS:String = "sold_products"
+
 
     // Sold Products
+    const val SOLD_PRODUCTS:String = "sold_products"
     const val SOLD_PRODUCT_EXTRA_ID:String = "sold_product_id"
+    const val EXTRA_SOLD_PRODUCT_DETAILS:String = "extra_sold_product_details"
 
 
     fun imageChooser(activity: Activity){

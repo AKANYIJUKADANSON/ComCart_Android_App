@@ -112,6 +112,7 @@
                 android:layout_marginTop="16dp"
                 android:background="@drawable/custom_textviews"
                 android:gravity="fill"
+                android:inputType="number"
                 android:hint="Product Price"
                 android:paddingLeft="10dp"
                 android:textColor="@color/black"

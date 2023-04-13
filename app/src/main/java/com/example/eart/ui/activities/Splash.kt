@@ -17,7 +17,7 @@ class Splash : AppCompatActivity() {
                 startActivity(Intent(this, Login::class.java))
                 finish()
             },
-            2000
+            3000
         )
 
         // With no action and status bars
