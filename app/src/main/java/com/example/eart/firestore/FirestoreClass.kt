@@ -795,6 +795,75 @@ class FirestoreClass {
             }
     }
 
+    fun addCategoryToFirestoreCart(activity: AddCategory, category: Category){
+        mFirestore.collection(Constants.CATEGORIES)
+            .document()
+            .set(category)
+            .addOnSuccessListener {
+                activity.addCategoryToFirestoreSuccess()
+            }
+            .addOnFailureListener {
+                activity.hideProgressDialog()
+                Log.e(activity.javaClass.simpleName, "Error while adding category")
+            }
+    }
+
+    fun downloadCategoriesFromFirestore(activity: CategoryList) {
+        mFirestore.collection(Constants.CATEGORIES)
+            .get()
+            .addOnSuccessListener { categories ->
+
+                val categoryList:ArrayList<Category> = ArrayList()
+
+                for (i in categories){
+                    val categoryObj = i.toObject(Category::class.java)
+
+                    // creating a new address id out of the id of the products
+                    /**
+                     * this id below will assign the product_id  property in the cart items on firebase database
+                     * the document id which is located in the column of documents(ids representing each product)
+                     * wc wea created automatically when a document is created too and since the sold_product_id field
+                     * is empty then we can assign this doc id to it
+                     */
+                    categoryObj.category_id = i.id
+
+                    categoryList.add(categoryObj)
+
+                }
+
+                activity.downloadCategoriesFromFirestoreSuccess(categoryList)
+            }
+    }
+
+
+    fun deletingCategory(context: Context, category_id:String){
+        mFirestore.collection(Constants.CATEGORIES)
+            // Set the document to delete tht is using the ID
+            .document(category_id) // Checking the item id that was passed to this function
+            .delete()
+            .addOnSuccessListener {
+                when(context){
+                    is CategoryList ->{
+                        context.successDeleteCategory()
+                    }
+                }
+
+//                Log.e("DELETE", "ProductToDeleteId: ${category_id}")
+            }
+            .addOnFailureListener {
+                when(context){
+                    is CategoryList ->{
+                        context.hideProgressDialog()
+                        Log.e(
+                            context.javaClass.simpleName,
+                            "Error while deleting category", it
+                        )
+                    }
+                }
+
+            }
+    }
+
 }
 
 

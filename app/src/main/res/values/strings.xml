@@ -67,4 +67,10 @@
     <string name="sold_products">Sold Products</string>
     <string name="sold">Sold</string>
 
+
+    <!--    Category-->
+    <string name="error_category_title">Category title is required</string>
+    <string name="error_category_description">Category description is required</string>
+
+
 </resources>

@@ -144,9 +144,9 @@ class CartListActivity :BaseActivity() {
             // sethasfixed size in order to make its size fixed
             rv_cart_items_list.setHasFixedSize(true)
 
-            val rv_cart_items_list_adapter = CartItemsListAdapter(this, mCartListItems)
+            val cartItemsListAdapter = CartItemsListAdapter(this, mCartListItems)
             // The cartItemsListAdapter above will be assigned as the adapter of the recyclerview
-            rv_cart_items_list.adapter = rv_cart_items_list_adapter
+            rv_cart_items_list.adapter = cartItemsListAdapter
 
             // Dealing with the subtotal or calculating price
             var subtotal:Double = 0.0

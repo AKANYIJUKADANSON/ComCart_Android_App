@@ -14,6 +14,27 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EArt">
         <activity
+            android:name=".ui.activities.CategoryList"
+            android:exported="true"
+            android:theme="@style/noActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ui.activities.AddCategory"
+            android:exported="true"
+            android:theme="@style/noActionBar">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+        </activity>
+        <activity
             android:name=".ui.activities.EditUserData"
             android:exported="false"
             android:theme="@style/noActionBar" />
@@ -36,18 +57,15 @@
         <activity
             android:name=".ui.activities.AddressList"
             android:exported="true"
-            android:theme="@style/noActionBar"/>
-
+            android:theme="@style/noActionBar" />
         <activity
             android:name=".ui.activities.CartListActivity"
             android:exported="false"
             android:theme="@style/noActionBar" />
-
         <activity
             android:name=".ui.activities.ProductDetailsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/noActionBar" />
-
         <activity
             android:name=".ui.activities.Addproduct"
             android:theme="@style/noActionBar" />
@@ -57,31 +75,28 @@
         <activity
             android:name=".ui.activities.Dashboard"
             android:exported="true"
-            android:label="@string/title_activity_dashboard"/>
-
+            android:label="@string/title_activity_dashboard" />
         <activity
             android:name=".ui.activities.Registration"
             android:theme="@style/noActionBar" />
-
         <activity
             android:name=".ui.activities.Forgotpasswd"
             android:theme="@style/noActionBar" />
-
         <activity
             android:name=".ui.activities.Login"
-            android:theme="@style/noActionBar"/>
-
+            android:theme="@style/noActionBar" />
         <activity
             android:name=".ui.activities.Splash"
             android:exported="true"
             android:theme="@style/noActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
-
         <activity
             android:name=".ui.activities.MainActivity"
             android:label="E~Art"

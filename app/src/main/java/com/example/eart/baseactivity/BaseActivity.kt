@@ -1,13 +1,19 @@
 package com.example.eart.baseactivity
 
+import android.app.Activity
+import android.app.AlertDialog
 import android.app.Dialog
 import android.app.ProgressDialog
+import android.content.Context
+import android.content.Intent
 import android.os.Handler
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.eart.R
+import com.example.eart.firestore.FirestoreClass
+import com.example.eart.ui.activities.Login
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.progressdialog.*
 
@@ -85,6 +91,43 @@ open class BaseActivity : AppCompatActivity() {
 
             // This will enable if the back is clicked two seconds later, then the app will not be exited
         Handler().postDelayed({doubleBackPressedOnce =false}, 2000)
+    }
+
+
+    fun showAlertDialogToDelete(
+        activity: Activity,
+        title:String,
+        message_to_display:String,
+        itemToDeleteId:String
+    ){
+        val builder = AlertDialog.Builder(this)
+
+        // Setting the Title, message and icon for the alert
+        builder.setTitle(title)
+        builder.setMessage(message_to_display)
+        builder.setIcon(R.drawable.ic_warning)
+
+        // Setting the positive action when a yes is selected
+        builder.setPositiveButton(resources.getString(R.string.yes)){
+                dialogInterface,_->
+
+            // Delete
+            FirestoreClass().deletingCategory(activity, itemToDeleteId)
+
+        }
+
+        // Setting the negative action when a yes is selected
+        builder.setNegativeButton(resources.getString(R.string.No)){
+                dialogInterface,_->
+
+            dialogInterface.dismiss()
+        }
+
+        // Using the alert dialog structure above to show the alert
+        // Creating the dialof
+        val alert_dialog: AlertDialog = builder.create()
+        alert_dialog.setCancelable(false)
+        alert_dialog.show()
     }
 
 

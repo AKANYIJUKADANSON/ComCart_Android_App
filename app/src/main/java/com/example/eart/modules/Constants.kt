@@ -53,6 +53,7 @@ object Constants {
     const val SOLD_PRODUCTS:String = "sold_products"
     const val SOLD_PRODUCT_EXTRA_ID:String = "sold_product_id"
     const val EXTRA_SOLD_PRODUCT_DETAILS:String = "extra_sold_product_details"
+    const val CATEGORIES:String = "categories"
 
 
     fun imageChooser(activity: Activity){
