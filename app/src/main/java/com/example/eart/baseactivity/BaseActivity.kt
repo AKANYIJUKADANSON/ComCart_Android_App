@@ -3,17 +3,12 @@ package com.example.eart.baseactivity
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
-import android.app.ProgressDialog
-import android.content.Context
-import android.content.Intent
 import android.os.Handler
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.eart.R
 import com.example.eart.firestore.FirestoreClass
-import com.example.eart.ui.activities.Login
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.progressdialog.*
 

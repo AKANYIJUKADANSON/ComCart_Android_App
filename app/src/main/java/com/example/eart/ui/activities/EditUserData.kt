@@ -8,9 +8,6 @@ import com.example.eart.baseactivity.BaseActivity
 import com.example.eart.modules.GlideLoader
 import com.example.eart.modules.MyUser
 import kotlinx.android.synthetic.main.activity_edit_user_data.*
-import kotlinx.android.synthetic.main.activity_settings.*
-import kotlinx.android.synthetic.main.activity_settings.tv_user_email
-import kotlinx.android.synthetic.main.activity_settings.tv_user_name
 
 class EditUserData : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

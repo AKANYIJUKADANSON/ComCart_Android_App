@@ -12,6 +12,8 @@ object Constants {
      *  For example the name of the field in the firestore for fname will not change but only the value
      */
 
+    const val CURRENCY:String = "UGX"
+
     // Collections in firestore
     const val PRODUCTS:String = "products"
     const val USERS:String = "users"
@@ -72,7 +74,7 @@ object Constants {
      * @param activity Activity reference.
      * @param uri Image file uri.
      */
-    fun getFileExtension(activity: Activity, uri: Uri?): String? {
+    fun getFileExtension(activity: Activity, url: Uri?): String? {
         /*
          * MimeTypeMap: Two-way map that maps MIME-types to file extensions and vice versa.
          *
@@ -83,8 +85,9 @@ object Constants {
          * contentResolver.getType: Return the MIME type of the given content URL.
          */
         return MimeTypeMap.getSingleton()
-            .getExtensionFromMimeType(activity.contentResolver.getType(uri!!))
+            .getExtensionFromMimeType(activity.contentResolver.getType(url!!))
 
         // Uri is the link to the image
     }
+
 }

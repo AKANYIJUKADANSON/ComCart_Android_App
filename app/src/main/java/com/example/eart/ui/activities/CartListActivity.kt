@@ -14,8 +14,6 @@ import com.example.eart.modules.CartItem
 import com.example.eart.modules.Constants
 import com.example.eart.modules.PrdctDtlsClass
 import kotlinx.android.synthetic.main.activity_cart_list.*
-import kotlinx.android.synthetic.main.activity_checkout.*
-import kotlinx.android.synthetic.main.fragment_products.*
 
 class CartListActivity :BaseActivity() {
 
@@ -170,7 +168,7 @@ class CartListActivity :BaseActivity() {
             }
 
             // Assign the total of the subtotal to the subtotal field in the layout
-            tv_sub_total.text = "$ ${subtotal}"
+            tv_sub_total.text = "${Constants.CURRENCY} ${subtotal}"
 
             // Fr now the shipping cost can be fixed
             // TODO - Shipping charge
@@ -184,7 +182,7 @@ class CartListActivity :BaseActivity() {
             var deliveryFee:Double = 0.0
             deliveryFee = ((1.0/100.0)*(subtotal))
 
-            tv_shipping_charge.text = "$ ${deliveryFee}"
+            tv_shipping_charge.text = "${Constants.CURRENCY} ${deliveryFee}"
 
             /**
              * check if the subtotal is greater than zero as in real sense there are items in cart
@@ -195,7 +193,7 @@ class CartListActivity :BaseActivity() {
 
                 // find the overall total after adding the shipping
                 val total = subtotal + 10  // TODO - change the logic here due to shipping fee logic
-                tv_total_amount.text = "$ ${total}"
+                tv_total_amount.text = "${Constants.CURRENCY} ${total}"
             }else{
                 linear_layout_checkout.visibility = View.GONE
             }
@@ -215,6 +213,41 @@ class CartListActivity :BaseActivity() {
         getCartItemsList()
 
     }
+
+
+    /**
+     * *********************************PRAC****************************************
+     *
+     */
+
+//
+//    fun getData(){
+//        RetrieveDataFromDatabase().getDataFromFirebase(this)
+//    }
+//
+//    fun downloadCartItemsPractice(cartItemList: ArrayList<CartItem>) {
+//        hideProgressDialog()
+//
+//        if (cartItemList.size > 0){
+//
+//            // Change visibvility of recylerView to visible and that of text to gone
+//            rv_cart_items_list.visibility = View.VISIBLE
+//            tv_no_cart_item_found.visibility = View.GONE
+//
+//            // Display the items in the recycler view
+//            val recyclerViewAdapter = MyCartItemsAdapter(this, cartItemList)
+//
+//            rv_cart_items_list.layoutManager = LinearLayoutManager(this)
+//            rv_cart_items_list.setHasFixedSize(true)
+//
+//            rv_cart_items_list.adapter = recyclerViewAdapter
+//
+//
+//        }else{
+//            rv_cart_items_list.visibility = View.GONE
+//            tv_no_cart_item_found.visibility = View.VISIBLE
+//        }
+//    }
 
 
 }

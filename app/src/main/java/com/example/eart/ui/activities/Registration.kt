@@ -22,6 +22,7 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.UserInfo
 import java.io.IOException
 
 //
@@ -33,6 +34,10 @@ class Registration : BaseActivity(), View.OnClickListener {
     lateinit var loadUserImg:ImageView
     lateinit var auth: FirebaseAuth
     private var mDownloadedImageUrl:String = ""
+
+
+    // Practice
+    lateinit var imgDownloadUrl:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +75,8 @@ class Registration : BaseActivity(), View.OnClickListener {
                 showErrorSnackBar(resources.getString(R.string.errorEtFirstName), true)
                 false
             }
-            //errorMessage, we are passing true coz if its true we have to go to the showsnackbar and run the function
+            //errorMessage, we are passing true coz if its true, it means we have an error and thus
+            // we have to run the snack bar and run the function
 
             TextUtils.isEmpty(regLastName.text.toString().trim { it <= ' ' })->{
                 showErrorSnackBar(resources.getString(R.string.errorEtLastName), true)
@@ -117,10 +123,10 @@ class Registration : BaseActivity(), View.OnClickListener {
 
     }
 
-    /*
-This function below will be called when the image is uploaded successfully in the firestore class
-after which the details about the image/product will also be uploaded
-*/
+    /**
+     * This function below will be called when the image is uploaded successfully in the firestore class
+     * after which the details about the image/product will also be uploaded
+     */
     fun imageUploadSuccess(ImageUrl:String){
         mDownloadedImageUrl = ImageUrl
 //        Toast.makeText(this, "Image uploaded and Uri = $ImageUrl", Toast.LENGTH_LONG).show()
@@ -178,7 +184,6 @@ after which the details about the image/product will also be uploaded
             }
         }
     }
-
 
     /**
      *  This function will give an answer on the granted permission results
@@ -254,8 +259,8 @@ after which the details about the image/product will also be uploaded
     /**
      * Uploading the image to the firebase
      * */
-    fun uploadUserDetails(){
-//        progressDialog("Authenticating....")
+    private fun uploadUserDetails(){
+    // progressDialog("Authenticating....")
 
         // NOTE: all these always have to be captured again to be used in the authentication
         val firstName = findViewById<EditText>(R.id.address_name).text.toString().trim{it <= ' '}
@@ -316,11 +321,12 @@ after which the details about the image/product will also be uploaded
        */
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
 
-        // Transfering the any data to the next activity incase they are to be used
+        // Transferring the any data to the next activity in case they are to be used
         //  intent.putExtra("firstName", firstName)
         //  intent.putExtra("lastName", lastName)
         //  intent.putExtra("userID", currentUser)
         //  intent.putExtra("userEmail", email)
+
         startActivity(intent)
         finish()
     }

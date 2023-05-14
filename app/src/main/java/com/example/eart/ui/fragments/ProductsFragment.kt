@@ -163,7 +163,7 @@ class ProductsFragment : BaseFragment() {
         }
 
         // Using the alert dialog structure above to show the alert
-        // Creating the dialof
+        // Creating the dialog
         val alert_dialog:AlertDialog = builder.create()
         alert_dialog.setCancelable(false)
         alert_dialog.show()

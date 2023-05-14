@@ -36,7 +36,7 @@ class DashboardItemListAdapter(
                 )
                 holder.itemView.tv_dashboard_item_name.text = currentProduct.productTitle
                 val currency = context.resources.getString(R.string.currency)
-                holder.itemView.tv_dashboard_item_price.text = "${currency} ${currentProduct.productPrice}"
+                holder.itemView.tv_dashboard_item_price.text = "${Constants.CURRENCY} ${currentProduct.productPrice}"
 
                 holder.itemView.add_to_favourate_btn.setOnClickListener {
                     holder.itemView.add_to_favourate_btn.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.baseline_favorite))
