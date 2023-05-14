@@ -16,6 +16,7 @@ import com.example.eart.ui.fragments.SoldProductsFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 
@@ -858,6 +859,41 @@ class FirestoreClass {
 
             }
     }
+
+    fun addingProductToFavorite(product:PrdctDtlsClass){
+        mFirestore.collection(Constants.FAVORITE)
+            .document()
+            .set(product)
+            .addOnSuccessListener {
+                Log.e(
+                    "SUCCESS", "Success with favorite"
+                )
+            }
+            .addOnFailureListener {e->
+                Log.e(
+                    javaClass.simpleName, "Error while adding to favorite", e
+                )
+            }
+    }
+
+    fun downloadFavoriteProducts(activity: Favorite){
+        mFirestore.collection(Constants.FAVORITE).whereEqualTo(Constants.USER_ID, getCurrentUserID())
+            .get()
+            .addOnSuccessListener {favoriteProducts ->
+                val favoriteList:ArrayList<PrdctDtlsClass> = ArrayList()
+
+                for (i in favoriteProducts){
+                    val favObj = i.toObject(PrdctDtlsClass::class.java)
+
+                    favObj.product_id = i.id
+
+                    favoriteList.add(favObj)
+                }
+
+                activity.downloadFavoriteProductsSuccess(favoriteList)
+            }
+    }
+
 
 }
 

@@ -18,6 +18,7 @@ object Constants {
     const val PRODUCTS:String = "products"
     const val USERS:String = "users"
     const val USER_ID:String = "user_id"
+    const val FAVORITE:String = "favorite"
 
     const val LOGGED_IN_USERNAME: String = "logged_in_username"
     const val MYAPP_PREFERENCES:String = "yAppPrefsM"
