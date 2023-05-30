@@ -24,7 +24,7 @@
     <string name="title_orders">My Orders</string>
     <string name="onBackPress">Click back again to exit</string>
     <string name="action_settings">Settings</string>
-    <string name="errorPermission">You don\'t have permission to storag. You can allow this in settings</string>
+    <string name="errorPermission">You don\'t have permission to storage. You can allow this in settings</string>
 
     <!--    ERROR strings for Add Product-->
     <string name="errorProdctImg">Please Select the product.</string>

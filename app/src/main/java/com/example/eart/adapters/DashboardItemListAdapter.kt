@@ -76,5 +76,5 @@ class DashboardItemListAdapter(
         }
 
 
-        class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
+        private class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
     }

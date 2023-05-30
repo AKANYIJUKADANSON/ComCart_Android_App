@@ -61,10 +61,9 @@ object Constants {
 
     fun imageChooser(activity: Activity){
         /**
-         * we are passing the activity parameter coz we are to use it in any other activities
+         * we are passing the activity parameter coz there is need to use it in any other activities
          * Reading the image from phone media storage
          */
-
         val imagePicker = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         activity.startActivityForResult(imagePicker, PICK_IMAGE_CODE)
     }

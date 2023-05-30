@@ -14,8 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EArt">
         <activity
-            android:name=".Favorite"
-            android:exported="false" />
+            android:name=".ui.activities.Favorite"
+            android:exported="false"
+            android:theme="@style/noActionBar" />
         <activity
             android:name=".ui.activities.Account"
             android:exported="false"

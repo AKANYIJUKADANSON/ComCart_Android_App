@@ -1,9 +1,11 @@
 package com.example.eart.ui.activities
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import com.example.eart.R
 import com.example.eart.baseactivity.BaseActivity
 import com.example.eart.firestore.FirestoreClass

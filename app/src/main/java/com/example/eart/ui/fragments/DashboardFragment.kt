@@ -11,6 +11,7 @@ import com.example.eart.basefragment.BaseFragment
 import com.example.eart.firestore.FirestoreClass
 import com.example.eart.modules.PrdctDtlsClass
 import com.example.eart.ui.activities.CartListActivity
+import com.example.eart.ui.activities.Favorite
 import com.example.eart.ui.activities.Settings
 import kotlinx.android.synthetic.main.fragment_dashboard.*
 
@@ -59,6 +60,11 @@ class DashboardFragment : BaseFragment() {
                     requireActivity(),
                     "Logging out",
                     "Are you sure, you want to logout?")
+                return true
+            }
+
+            R.id.action_favorite ->{
+                startActivity(Intent(activity, Favorite::class.java))
                 return true
             }
         }

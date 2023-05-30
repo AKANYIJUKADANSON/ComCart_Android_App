@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.eart.modules.*
 import com.example.eart.ui.activities.*
+import com.example.eart.ui.activities.Favorite
 import com.example.eart.ui.fragments.DashboardFragment
 import com.example.eart.ui.fragments.OrdersFragment
 import com.example.eart.ui.fragments.ProductsFragment
@@ -877,13 +878,14 @@ class FirestoreClass {
     }
 
     fun downloadFavoriteProducts(activity: Favorite){
-        mFirestore.collection(Constants.FAVORITE).whereEqualTo(Constants.USER_ID, getCurrentUserID())
+        mFirestore.collection(Constants.FAVORITE)
+//            .whereEqualTo(Constants.USER_ID, getCurrentUserID())
             .get()
             .addOnSuccessListener {favoriteProducts ->
-                val favoriteList:ArrayList<PrdctDtlsClass> = ArrayList()
+                val favoriteList:ArrayList<FavoriteClass> = ArrayList()
 
                 for (i in favoriteProducts){
-                    val favObj = i.toObject(PrdctDtlsClass::class.java)
+                    val favObj = i.toObject(FavoriteClass::class.java)
 
                     favObj.product_id = i.id
 

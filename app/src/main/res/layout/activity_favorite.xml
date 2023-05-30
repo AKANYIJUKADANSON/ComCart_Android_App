@@ -6,30 +6,51 @@
     android:layout_height="match_parent"
     tools:context=".ui.activities.Favorite">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/favoriteToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/splashbg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/addProdctTxtView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="FAVORITE"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:gravity="fill"
+            android:textSize="18sp"
+            android:layout_marginEnd="0dp" />
+
+    </androidx.appcompat.widget.Toolbar>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/favorite_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
+        android:layout_marginTop="56dp"
+            android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/favoriteToolbar" />
 
     <TextView
         android:id="@+id/no_favorite_added_yet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:text="No products added to favorite"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/favoriteToolbar" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

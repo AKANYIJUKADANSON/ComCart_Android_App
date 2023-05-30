@@ -150,9 +150,7 @@ class Registration : BaseActivity(), View.OnClickListener {
                 // --------------------------PICKING THE IMAGE FROM STORAGE MEDIA--------------
                 R.id.loadUserImg->{
                     //Checking if there is access to the camera and external storage
-                    if (ContextCompat.checkSelfPermission(
-                            this, android.Manifest.permission.READ_EXTERNAL_STORAGE )
-                        == PackageManager.PERMISSION_GRANTED ) {
+                    if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE ) == PackageManager.PERMISSION_GRANTED ) {
                         //I already have permission to
                         //Instead of showing the already have permission we can choose an image
                         Constants.imageChooser(this)
@@ -164,7 +162,7 @@ class Registration : BaseActivity(), View.OnClickListener {
                         // If there are no permissions then we can ask for some as below
                         ActivityCompat.requestPermissions(
                             this, arrayOf(
-                                android.Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA
+                                Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA
                             ), Constants.READ_EXTERNAL_STORAGE_CODE
                             /**
                              * READ_EXTERNAL_STORAGE_CODE will be compared to in the onRequestPermisiionResults function
