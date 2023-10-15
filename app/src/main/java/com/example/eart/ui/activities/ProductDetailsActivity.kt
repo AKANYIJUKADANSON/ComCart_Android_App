@@ -6,16 +6,18 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import com.example.eart.R
 import com.example.eart.baseactivity.BaseActivity
+import com.example.eart.databinding.ActivityProductDetailsBinding
 import com.example.eart.firestore.FirestoreClass
 import com.example.eart.modules.CartItem
 import com.example.eart.modules.Constants
 import com.example.eart.modules.GlideLoader
 import com.example.eart.modules.PrdctDtlsClass
-import kotlinx.android.synthetic.main.activity_product_details.*
 
 class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
+    private lateinit var binding: ActivityProductDetailsBinding
     /**
      * mProductId, global variable will be initialized as soon as we get into this activity
      * after its value has been sent from the productsAdapter holderItemClickListener
@@ -31,7 +33,7 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_product_details)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_product_details)
 
 
 
@@ -57,16 +59,16 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
          * and visible if the product is not for the current logged in user
         */
         if (FirestoreClass().getCurrentUserID() == productExtraOwnerId){
-            add_to_cart_btn.visibility = View.GONE
-            go_to_cart_btn.visibility = View.GONE
+            binding.addToCartBtn.visibility = View.GONE
+            binding.goToCartBtn.visibility = View.GONE
         }else{
-            add_to_cart_btn.visibility = View.VISIBLE
+            binding.addToCartBtn.visibility = View.VISIBLE
         }
 
 
         setUpActionBar()
-        add_to_cart_btn.setOnClickListener(this)
-        go_to_cart_btn.setOnClickListener(this)
+        binding.addToCartBtn.setOnClickListener(this)
+        binding.goToCartBtn.setOnClickListener(this)
 
         // Getting extra product details
         getExtraProductDetails()
@@ -105,12 +107,12 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
         mProductDetails = product
 
         // Assign the details to the views in the product details layout
-        GlideLoader(this).loadProductPicture(product.image, iv_product_detail_image)
-        tv_product_details_title.text = product.productTitle
-        tv_product_details_price.text = "${Constants.CURRENCY} ${ product.productPrice}"
-        tv_product_details_description.text = product.prodctDescrptn
-        tv_product_details_stock_quantity.text = product.stock_quantity
-        tv_product_details_stock_quantity.setTextColor(
+        GlideLoader(this).loadProductPicture(product.image, binding.ivProductDetailImage)
+        binding.tvProductDetailsTitle.text = product.productTitle
+        binding.tvProductDetailsPrice.text = "${Constants.CURRENCY} ${ product.productPrice}"
+        binding.tvProductDetailsDescription.text = product.prodctDescrptn
+        binding.tvProductDetailsStockQuantity.text = product.stock_quantity
+        binding.tvProductDetailsStockQuantity.setTextColor(
             ContextCompat.getColor(
                 this, R.color.green
             )
@@ -123,9 +125,9 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
          */
         if(product.stock_quantity.toInt() == 0){
             hideProgressDialog()
-            add_to_cart_btn.visibility = View.GONE
-            tv_product_details_stock_quantity.text = "OUT OF STOCK"
-            tv_product_details_stock_quantity.setTextColor(
+            binding.addToCartBtn.visibility = View.GONE
+            binding.tvProductDetailsStockQuantity.text = "OUT OF STOCK"
+            binding.tvProductDetailsStockQuantity.setTextColor(
                 ContextCompat.getColor(
                     this, R.color.errorColor
                 )
@@ -175,16 +177,16 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
 
         // If a product is added to cart then the go_to_cart btn should be visible and
         // the add_to_cart btn gone
-        add_to_cart_btn.visibility = View.GONE
-        go_to_cart_btn.visibility = View.VISIBLE
+        binding.addToCartBtn.visibility = View.GONE
+        binding.goToCartBtn.visibility = View.VISIBLE
     }
 
     // if the product exists in cart already then hide the button to add it again
     fun productExistsInCart(){
         hideProgressDialog()
         // make the visibility of add_to_cart btn GONE and that of go_to_cart VISIBLE
-        add_to_cart_btn.visibility = View.GONE
-        go_to_cart_btn.visibility = View.VISIBLE
+        binding.addToCartBtn.visibility = View.GONE
+        binding.goToCartBtn.visibility = View.VISIBLE
     }
 
 
@@ -204,6 +206,4 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
         }
 
     }
-
-
 }

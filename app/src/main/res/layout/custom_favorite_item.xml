@@ -1,74 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:layout_margin="9dp"
-    android:background="@drawable/dashboard_item_background">
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/favorite_image_card"
+    xmlns:tools="http://schemas.android.com/tools">
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="3dp"
-        app:cardCornerRadius="10dp">
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_margin="9dp"
+        android:background="@drawable/dashboard_item_background">
 
-        <ImageView
-            android:id="@+id/favorite_imageview"
-            android:layout_width="160dp"
-            android:layout_height="170dp"
-            android:scaleType="fitXY"
-            android:clipToOutline="true"
-            android:src="@drawable/comcartlogo"/>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/favorite_image_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            app:cardCornerRadius="10dp">
 
-    </androidx.cardview.widget.CardView>
+            <ImageView
+                android:id="@+id/favorite_imageview"
+                android:layout_width="160dp"
+                android:layout_height="170dp"
+                android:scaleType="fitXY"
+                android:clipToOutline="true"
+                android:src="@drawable/comcartlogo"/>
+
+        </androidx.cardview.widget.CardView>
 
 
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginLeft="5dp"
-        tools:layout_editor_absoluteX="32dp"
-        tools:layout_editor_absoluteY="322dp"
-        android:layout_below="@id/favorite_image_card">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_below="@id/dashboard_image_card">
+            android:orientation="horizontal"
+            android:layout_marginLeft="5dp"
+            tools:layout_editor_absoluteX="32dp"
+            tools:layout_editor_absoluteY="322dp"
+            android:layout_below="@id/favorite_image_card">
 
-            <TextView
-                android:id="@+id/favorite_item_name"
-                android:layout_width="110dp"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Item name"
-                android:layout_marginTop="5dp"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
+                android:orientation="vertical"
+                android:layout_below="@id/dashboard_image_card">
 
-            <TextView
-                android:id="@+id/favorite_item_price"
-                android:layout_width="110dp"
+                <TextView
+                    android:id="@+id/favorite_item_title"
+                    android:layout_width="110dp"
+                    android:layout_height="wrap_content"
+                    android:text="Item name"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/favorite_item_price"
+                    android:layout_width="110dp"
+                    android:layout_height="wrap_content"
+                    android:text="$200.0"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="15sp"/>
+
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/favorite_button"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="$200.0"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:textSize="15sp"/>
-
+                android:backgroundTint="@color/white"
+                android:src="@drawable/baseline_favorite"/>
         </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/favorite_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
-            android:src="@drawable/baseline_favorite"/>
-    </LinearLayout>
-
-</RelativeLayout>
+    </RelativeLayout>
+</layout>

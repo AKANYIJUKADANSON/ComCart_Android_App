@@ -12,9 +12,11 @@ import android.view.View
 import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import com.example.eart.R
 import com.example.eart.baseactivity.BaseActivity
+import com.example.eart.databinding.ActivityRegistrationBinding
 import com.example.eart.firestore.FirestoreClass
 import com.example.eart.modules.Constants
 import com.example.eart.modules.MyUser
@@ -27,41 +29,31 @@ import java.io.IOException
 
 //
 class Registration : BaseActivity(), View.OnClickListener {
+    private lateinit var binding: ActivityRegistrationBinding
 
     private var mSelectImageFileUri: Uri? = null
-    lateinit var registrationButton: Button
-    lateinit var haveAcctLgn: TextView
-    lateinit var loadUserImg:ImageView
-    lateinit var auth: FirebaseAuth
     private var mDownloadedImageUrl:String = ""
+    lateinit var auth: FirebaseAuth
 
-
-    // Practice
-    lateinit var imgDownloadUrl:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_registration)
-
-        //capturing views to use in the onclick function
-        registrationButton = findViewById(R.id.regbtn)
-        haveAcctLgn = findViewById(R.id.haveActLogin)
-        loadUserImg = findViewById(R.id.loadUserImg)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_registration)
 
         //Setting the onclick function for views to function
-        haveAcctLgn.setOnClickListener(this)
-        loadUserImg.setOnClickListener(this)
-        registrationButton.setOnClickListener(this)
+        binding.haveActLogin.setOnClickListener(this)
+        binding.loadUserImg.setOnClickListener(this)
+        binding.regbtn.setOnClickListener(this)
     }
 
-    fun validateRegDetails(): Boolean{
+    private fun validateRegDetails(): Boolean{
         //capturing what the user enters using ids and changing them into text format
-        val regFirstName = findViewById<EditText>(R.id.address_name)
-        val regLastName = findViewById<EditText>(R.id.address_phone_number)
-        val regEmail = findViewById<EditText>(R.id.address_zipcode)
-        val regPasswrd = findViewById<EditText>(R.id.regPassword)
-        val regConfrmPaswd = findViewById<EditText>(R.id.regConfrmPassword)
-        val agreeTermsCondtns = findViewById<CheckBox>(R.id.agreeTermsCondtns)
+//        val regFirstName = findViewById<EditText>(R.id.address_name)
+//        val regLastName = findViewById<EditText>(R.id.address_phone_number)
+//        val regEmail = findViewById<EditText>(R.id.address_zipcode)
+//        val regPasswrd = findViewById<EditText>(R.id.regPassword)
+//        val regConfrmPaswd = findViewById<EditText>(R.id.regConfrmPassword)
+//        val agreeTermsCondtns = findViewById<CheckBox>(R.id.agreeTermsCondtns)
 
 
 
@@ -71,45 +63,45 @@ class Registration : BaseActivity(), View.OnClickListener {
                 false
             }
 
-            TextUtils.isEmpty(regFirstName.text.toString().trim { it <= ' ' })->{
+            TextUtils.isEmpty(binding.regFirstName.text.toString().trim { it <= ' ' })->{
                 showErrorSnackBar(resources.getString(R.string.errorEtFirstName), true)
                 false
             }
             //errorMessage, we are passing true coz if its true, it means we have an error and thus
             // we have to run the snack bar and run the function
 
-            TextUtils.isEmpty(regLastName.text.toString().trim { it <= ' ' })->{
+            TextUtils.isEmpty(binding.regLastName.text.toString().trim { it <= ' ' })->{
                 showErrorSnackBar(resources.getString(R.string.errorEtLastName), true)
                 false
             }
 
-            TextUtils.isEmpty(regEmail.text.toString().trim { it <= ' ' })->{
+            TextUtils.isEmpty(binding.regUserEmail.text.toString().trim { it <= ' ' })->{
                 showErrorSnackBar(resources.getString(R.string.errorEtEmail), true)
                 false
             }
 
-            TextUtils.isEmpty(regPasswrd.text.toString().trim { it <= ' ' })->{
+            TextUtils.isEmpty(binding.regPassword.text.toString().trim { it <= ' ' })->{
                 showErrorSnackBar(resources.getString(R.string.errorEtPassword), true)
                 false
             }
 
-            regConfrmPaswd.text.toString().length < 8 ->{
+            binding.regConfrmPassword.text.toString().length < 8 ->{
                 showErrorSnackBar(resources.getString(R.string.errorEtShortPaswd), true)
                 false
             }
 
-            TextUtils.isEmpty(regConfrmPaswd.text.toString().trim { it <= ' ' })->{
+            TextUtils.isEmpty(binding.regConfrmPassword.text.toString().trim { it <= ' ' })->{
                 showErrorSnackBar(resources.getString(R.string.errorEtConfrmPassword), true)
                 false
             }
 
             //Comparing the first and last password
-            regPasswrd.text.toString().trim { it <= ' ' } != regConfrmPaswd.text.toString().trim{it <= ' '} ->{
+            binding.regPassword.text.toString().trim { it <= ' ' } != binding.regConfrmPassword.text.toString().trim{it <= ' '} ->{
                 showErrorSnackBar(resources.getString(R.string.errorComparePassword), true)
                 false
             }
 
-            !agreeTermsCondtns.isChecked ->{
+            !binding.agreeTermsCondtns.isChecked ->{
                 showErrorSnackBar(resources.getString(R.string.errorTermsConditions), true)
                 false
             }
@@ -150,7 +142,8 @@ class Registration : BaseActivity(), View.OnClickListener {
                 // --------------------------PICKING THE IMAGE FROM STORAGE MEDIA--------------
                 R.id.loadUserImg->{
                     //Checking if there is access to the camera and external storage
-                    if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE ) == PackageManager.PERMISSION_GRANTED ) {
+                    if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE )
+                        == PackageManager.PERMISSION_GRANTED ) {
                         //I already have permission to
                         //Instead of showing the already have permission we can choose an image
                         Constants.imageChooser(this)
@@ -161,9 +154,9 @@ class Registration : BaseActivity(), View.OnClickListener {
 
                         // If there are no permissions then we can ask for some as below
                         ActivityCompat.requestPermissions(
-                            this, arrayOf(
-                                Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA
-                            ), Constants.READ_EXTERNAL_STORAGE_CODE
+                            this,
+                            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                            Constants.READ_EXTERNAL_STORAGE_CODE
                             /**
                              * READ_EXTERNAL_STORAGE_CODE will be compared to in the onRequestPermisiionResults function
                              *  READ_EXTERNAL_STORAGE code is the request code wic can be any value and can be used

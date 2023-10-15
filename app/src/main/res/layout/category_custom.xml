@@ -1,79 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <LinearLayout
-        android:id="@+id/linearLayout2"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:background="@drawable/card_bg"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="wrap_content">
 
         <LinearLayout
-            android:id="@+id/tvs_layout"
-            android:layout_width="wrap_content"
+            android:id="@+id/linearLayout2"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:orientation="vertical">
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/card_bg"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/tv_category_name"
+            <LinearLayout
+                android:id="@+id/tvs_layout"
                 android:layout_width="wrap_content"
-                android:layout_height="16pt"
-                android:layout_marginLeft="10dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:gravity="fill"
-                android:paddingStart="5pt"
-                android:text="Electronics"
-                android:textColor="@color/black"
-                android:textSize="22sp"
-                android:textStyle="bold" />
-
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tv_category_description"
-                    android:layout_width="270dp"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_category_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="16pt"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="5dp"
-                    android:padding="8dp"
+                    android:gravity="fill"
                     android:paddingStart="5pt"
-                    android:text="All electronic devices, xxxxxxxxxxxxxxxxxxxxxxxboth new and refurbished"
-                    android:textSize="15sp"
+                    android:text="Electronics"
+                    android:textColor="@color/black"
+                    android:textSize="22sp"
                     android:textStyle="bold" />
 
-            </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_category_description"
+                        android:layout_width="270dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:padding="8dp"
+                        android:paddingStart="5pt"
+                        android:text="All electronic devices, xxxxxxxxxxxxxxxxxxxxxxxboth new and refurbished"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/category_delete_btn"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="35dp"
+                android:background="@color/white"
+                android:minWidth="48dp"
+                android:minHeight="48dp"
+                android:src="@drawable/ic_delete"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/linearLayout2"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
         </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/category_delete_btn"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="35dp"
-            android:background="@color/white"
-            android:minWidth="48dp"
-            android:minHeight="48dp"
-            android:src="@drawable/ic_delete"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/linearLayout2"
-            app:layout_constraintTop_toTopOf="parent" />
 
-
-    </LinearLayout>
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

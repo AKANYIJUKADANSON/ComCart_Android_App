@@ -7,14 +7,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eart.R
 import com.example.eart.adapters.OrdersAdapter
 import com.example.eart.basefragment.BaseFragment
+import com.example.eart.databinding.FragmentOrdersBinding
 import com.example.eart.firestore.FirestoreClass
 import com.example.eart.modules.Order
-import com.example.eart.ui.activities.Addproduct
 import com.example.eart.ui.activities.CartListActivity
 import com.example.eart.ui.activities.Settings
-import kotlinx.android.synthetic.main.fragment_orders.*
 
 class OrdersFragment : BaseFragment() {
+
+    // Binding
+    private var _binding:FragmentOrdersBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +30,8 @@ class OrdersFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_orders, container, false)
+        _binding = FragmentOrdersBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -84,21 +88,21 @@ class OrdersFragment : BaseFragment() {
          * then make the no product added yet to gone
          */
         if(ordersList.size > 0 ){
-            orders_recyc_view.visibility = View.VISIBLE
-            no_orders_added_yet.visibility = View.GONE
+            binding.ordersRecycView.visibility = View.VISIBLE
+            binding.noOrdersAddedYet.visibility = View.GONE
 
             // change the view layout using layoutManager and we want to use it in this activity/this
-            orders_recyc_view.layoutManager = LinearLayoutManager(activity)
+            binding.ordersRecycView.layoutManager = LinearLayoutManager(activity)
             // setHasFixed size in order to make its size fixed
-            orders_recyc_view.setHasFixedSize(true)
+            binding.ordersRecycView.setHasFixedSize(true)
 
             val ordersAdapter = OrdersAdapter(requireActivity(), ordersList)
             // The productsAdapter above will be assigned as the adapter of the recyclerview
-            orders_recyc_view.adapter = ordersAdapter
+            binding.ordersRecycView.adapter = ordersAdapter
 
         }else{
-            orders_recyc_view.visibility = View.GONE
-            no_orders_added_yet.visibility = View.VISIBLE
+            binding.ordersRecycView.visibility = View.GONE
+            binding.noOrdersAddedYet.visibility = View.VISIBLE
         }
 
     }

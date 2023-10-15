@@ -16,31 +16,33 @@ import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import com.example.eart.R
 import com.example.eart.baseactivity.BaseActivity
+import com.example.eart.databinding.ActivityAddproductBinding
 import com.example.eart.firestore.FirestoreClass
 import com.example.eart.modules.Constants
 import com.example.eart.modules.PrdctDtlsClass
 import java.io.IOException
 
 class Addproduct : BaseActivity(), View.OnClickListener {
+    lateinit var binding: ActivityAddproductBinding
 
     private var mselectImageFileUri:Uri? = null
     private var mImageUrl:String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_addproduct)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_addproduct)
         setUpActionBar()
 
-        val loadimg = findViewById<ImageView>(R.id.loadProdct)
-        val addPrdctSubmtBtn = findViewById<Button>(R.id.addProdctBtn)
-        loadimg.setOnClickListener(this)
-        addPrdctSubmtBtn.setOnClickListener(this)
+
+        binding.loadProdct.setOnClickListener(this)
+        binding.addProdctBtn.setOnClickListener(this)
     }
 
     private fun setUpActionBar(){
-        val myToolBar = findViewById<Toolbar>(R.id.productsToolbar)
+        val myToolBar = binding.productsToolbar
         setSupportActionBar(myToolBar)
         val actionBar = supportActionBar
         if (actionBar != null){
@@ -127,7 +129,7 @@ class Addproduct : BaseActivity(), View.OnClickListener {
             //Compare if the request code passed from the onActivityResult is the same as one used to picked the image
                 //Checking if the data is not equal to null coz it can happen otherwise the app can crash
 
-                    val imgLoader = findViewById<ImageView>(R.id.loadProdct)
+                    val imgLoader = binding.loadProdct
             //Changing the icon for loadimage to edit
             imgLoader.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_edit))
 
@@ -141,7 +143,7 @@ class Addproduct : BaseActivity(), View.OnClickListener {
                         //Picking the image
 
                         mselectImageFileUri = data.data!! // LOCATION OF THE FILE
-                        val productImgToUpload = findViewById<ImageView>(R.id.image_view_prodct)
+                        val productImgToUpload = binding.imageViewProdct
                         /*
                                 Using Glide loader: its fast and can smartly define the type of file that one is uploading
                         *  Syntax for glide
@@ -163,45 +165,41 @@ class Addproduct : BaseActivity(), View.OnClickListener {
     }
 
     fun validateProductDetails(): Boolean{
-        val productTitle = findViewById<EditText>(R.id.prodctTitle)
-        val productPrice = findViewById<EditText>(R.id.productPrice)
-        val productDecrptn = findViewById<EditText>(R.id.prodctDescription)
-        val productQutty = findViewById<EditText>(R.id.prodctQuantity)
 
         return when{
             mselectImageFileUri == null ->{
                 showErrorSnackBar(resources.getString(R.string.errorProdctImg), true)
                 false
             }
-            TextUtils.isEmpty(productTitle.text.toString().trim { it <= ' ' }) ->{
+            TextUtils.isEmpty(binding.prodctTitle.text.toString().trim { it <= ' ' }) ->{
                 showErrorSnackBar(resources.getString(R.string.errorProdctTitle), true)
                 false
             }
 
-            TextUtils.isEmpty(productPrice.text.toString().trim { it <= ' ' }) ->{
+            TextUtils.isEmpty(binding.productPrice.text.toString().trim { it <= ' ' }) ->{
                 showErrorSnackBar(resources.getString(R.string.errorProdctPrice), true)
                 false
             }
 
-            TextUtils.isEmpty(productDecrptn.text.toString().trim { it <= ' ' }) ->{
+            TextUtils.isEmpty(binding.prodctDescription.text.toString().trim { it <= ' ' }) ->{
                 showErrorSnackBar(resources.getString(R.string.errorProdctDescrptn), true)
                 false
             }
 
-            TextUtils.isEmpty(productQutty.text.toString().trim { it <= ' ' }) ->{
+            TextUtils.isEmpty(binding.prodctQuantity.text.toString().trim { it <= ' ' }) ->{
                 showErrorSnackBar(resources.getString(R.string.errorProdctQtty), true)
                 false
             }
 
             else -> {
-                //Return true indicating that all data is verified
+                //Return true indicating that all data is validated
                 true
             }
         }
     }
 
 
-    fun uploadProductImageToCloud(){
+    private fun uploadProductImageToCloud(){
 
         progressDialog("Uploadig....")
         //first check if the image uri is not null
@@ -216,31 +214,21 @@ class Addproduct : BaseActivity(), View.OnClickListener {
 
 
 
-    fun uploadProdctDetails(){
+    private fun uploadProdctDetails(){
 
         val username = this.getSharedPreferences(Constants.MYAPP_PREFERENCES, Context.MODE_PRIVATE)
             .getString(Constants.LOGGED_IN_USERNAME, "")!!
         val userid = FirestoreClass().getCurrentUserID()
 
-
-        val productTitle = findViewById<EditText>(R.id.prodctTitle).text.toString()
-            .trim { it <= ' '}
-        val productPrice = findViewById<EditText>(R.id.productPrice).text.toString()
-            .trim { it <= ' '}
-        val productDecrptn = findViewById<EditText>(R.id.prodctDescription).text.toString()
-            .trim { it <= ' '}
-        val productQuatity = findViewById<EditText>(R.id.prodctQuantity).text.toString()
-            .trim { it <= ' '}
-
-        //Storing the data into the PrdctDtlsClass to be picked by the Firestoreclass file
+        //Storing the data into the PrdctDtlsClass to be picked by the Firestore class file
 
         val prodct = PrdctDtlsClass(
             userid,
             username,
-            productTitle,
-            productPrice,
-            productDecrptn,
-            productQuatity,
+            binding.prodctTitle.text.toString().trim { it <= ' '},
+            binding.productPrice.text.toString().trim { it <= ' '},
+            binding.prodctDescription.text.toString().trim { it <= ' '},
+            binding.prodctQuantity.text.toString().trim { it <= ' '},
             mImageUrl
         )
 

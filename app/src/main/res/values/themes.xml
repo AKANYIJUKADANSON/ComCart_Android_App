@@ -26,7 +26,7 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Customize your theme here. -->
 
-<!--        The properties below remove the actionbar-->
+        <!-- The properties below remove the actionbar-->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>

@@ -7,13 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.eart.R
+import com.example.eart.databinding.ProductsItemCustomBinding
 import com.example.eart.modules.Constants
 import com.example.eart.modules.GlideLoader
 import com.example.eart.modules.PrdctDtlsClass
 import com.example.eart.ui.activities.ProductDetailsActivity
 import com.example.eart.ui.fragments.ProductsFragment
-import kotlinx.android.synthetic.main.orders_item_custom.view.*
-import kotlinx.android.synthetic.main.products_item_custom.view.*
 
 class ProductsAdapter(
     private val context: Context,
@@ -23,7 +22,7 @@ class ProductsAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         // inflating the layout format so as to use it
-        val layoutFormat = LayoutInflater.from(parent.context).inflate(R.layout.products_item_custom, parent, false)
+        val layoutFormat = ProductsItemCustomBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MyViewHolder(layoutFormat)
     }
 
@@ -32,14 +31,14 @@ class ProductsAdapter(
 
         if (holder is MyViewHolder) {
             GlideLoader(context).loadProductPicture( currentProduct.image,
-                holder.itemView.recyc_productImage
+                holder.customProduct.recycProductImage
             )
-            holder.itemView.recyc_productTitle.text = currentProduct.productTitle
+            holder.customProduct.recycProductTitle.text = currentProduct.productTitle
             val currency = context.resources.getString(R.string.currency)
-            holder.itemView.recyc_productPrice.text = "${currency} ${currentProduct.productPrice}"
-            holder.itemView.recyclerView_stock_quantity.text = currentProduct.stock_quantity
+            holder.customProduct.recycProductPrice.text = "${currency} ${currentProduct.productPrice}"
+            holder.customProduct.recyclerViewStockQuantity.text = currentProduct.stock_quantity
 
-            holder.itemView.products_delete_btn.setOnClickListener {
+            holder.customProduct.productsDeleteBtn.setOnClickListener {
                 // Passing the product id to the delete fn
                 fragment.deleteProduct(currentProduct.product_id)
             }
@@ -68,5 +67,5 @@ class ProductsAdapter(
     }
 
 
-    class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
+    class MyViewHolder(val customProduct: ProductsItemCustomBinding): RecyclerView.ViewHolder(customProduct.root)
 }

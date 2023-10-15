@@ -7,21 +7,22 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.eart.R
+import com.example.eart.databinding.CartItemCustomBinding
 import com.example.eart.firestore.FirestoreClass
 import com.example.eart.modules.CartItem
 import com.example.eart.modules.Constants
 import com.example.eart.modules.GlideLoader
 import com.example.eart.ui.activities.CartListActivity
 import com.example.eart.ui.activities.OrderDetailsActivity
-import kotlinx.android.synthetic.main.cart_item_custom.view.*
 
 class CartItemsListAdapter (
     private val context: Context,
     private var cartItemsList: ArrayList<CartItem>
 ): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val cartLayoutFormat = LayoutInflater.from(parent.context)
-            .inflate(R.layout.cart_item_custom, parent, false)
+        val cartLayoutFormat = CartItemCustomBinding.inflate(
+            LayoutInflater.from(parent.context),parent,false
+        )
         return MyViewHolder(cartLayoutFormat)
     }
 
@@ -30,11 +31,11 @@ class CartItemsListAdapter (
 
         if (holder is MyViewHolder) {
             GlideLoader(context).loadProductPicture( currentCartItem.product_image,
-                holder.itemView.recyc_cart_image
+                holder.customItem.recycCartImage
             )
-            holder.itemView.recyc_cart_item_title.text = currentCartItem.product_title
-            holder.itemView.recyc_cart_price.text = "${Constants.CURRENCY} ${currentCartItem.product_price}"
-            holder.itemView.item_quantity.text = currentCartItem.cart_quantity
+            holder.customItem.recycCartItemTitle.text = currentCartItem.product_title
+            holder.customItem.recycCartPrice.text = "${Constants.CURRENCY} ${currentCartItem.product_price}"
+            holder.customItem.itemQuantity.text = currentCartItem.cart_quantity
 
             /**
              * if the cart quantity is 0 then that mean that also we are out of stock of that product
@@ -44,8 +45,8 @@ class CartItemsListAdapter (
              * ts out of stock
              */
             if(currentCartItem.cart_quantity.toInt() == 0){
-                holder.itemView.quantity_remove_btn.visibility = View.GONE
-                holder.itemView.quantity_add_btn.visibility = View.GONE
+                holder.customItem.quantityRemoveBtn.visibility = View.GONE
+                holder.customItem.quantityAddBtn.visibility = View.GONE
 
                 /**
                  * Since there is an option to also update items because we are using this adapter to
@@ -53,9 +54,9 @@ class CartItemsListAdapter (
                  */
 
                 // Setting the text
-                holder.itemView.item_quantity.text = "Out Of Stock"
+                holder.customItem.itemQuantity.text = "Out Of Stock"
                 // Setting the color
-                holder.itemView.item_quantity.setTextColor(
+                holder.customItem.itemQuantity.setTextColor(
                     ContextCompat.getColor(
                         context, R.color.errorColor
                     )
@@ -71,16 +72,16 @@ class CartItemsListAdapter (
                  */
                 when(context){
                     is OrderDetailsActivity->{
-                        holder.itemView.quantity_remove_btn.visibility = View.GONE
-                        holder.itemView.quantity_add_btn.visibility = View.GONE
-                        holder.itemView.cart_delete_btn.visibility = View.GONE
+                        holder.customItem.quantityRemoveBtn.visibility = View.GONE
+                        holder.customItem.quantityAddBtn.visibility = View.GONE
+                        holder.customItem.cartDeleteBtn.visibility = View.GONE
                     }
 
                     is CartListActivity -> {
-                        holder.itemView.quantity_remove_btn.visibility = View.VISIBLE
-                        holder.itemView.quantity_add_btn.visibility = View.VISIBLE
+                        holder.customItem.quantityRemoveBtn.visibility = View.VISIBLE
+                        holder.customItem.quantityAddBtn.visibility = View.VISIBLE
                         // Make the color of the quantity to black again
-                        holder.itemView.item_quantity.setTextColor(
+                        holder.customItem.itemQuantity.setTextColor(
                             ContextCompat.getColor(
                                 context, R.color.black
                             )
@@ -93,10 +94,10 @@ class CartItemsListAdapter (
             }
 
 
-            holder.itemView.cart_delete_btn.setOnClickListener{
+            holder.customItem.cartDeleteBtn.setOnClickListener{
                 when(context){
                     is CartListActivity->{
-                        context.progressDialog("please wait..")
+                        context.progressDialog()
                     }
                 }
                 FirestoreClass().deletingCartItem(context, currentCartItem.cartItemId)
@@ -104,7 +105,7 @@ class CartItemsListAdapter (
             }
 
             // Reducing the cart item quantity
-            holder.itemView.quantity_remove_btn.setOnClickListener {
+            holder.customItem.quantityRemoveBtn.setOnClickListener {
                 // check for the cart quantity
                 // if the cart quantty is at zero then it means if we press the minus option...
                 // none will remain thus delete the product from cart
@@ -120,14 +121,14 @@ class CartItemsListAdapter (
 
                     // If in the cartListActivity.. show the progress dialog
                     if(context is CartListActivity){
-                        context.progressDialog("Please wait...")
+                        context.progressDialog()
                     }
                     FirestoreClass().updateCart(context, currentCartItem.cartItemId, itemHashMap)
                 }
             }
 
             // Increasing the cart item quantity
-            holder.itemView.quantity_add_btn.setOnClickListener {
+            holder.customItem.quantityAddBtn.setOnClickListener {
                 val cartQuantity:Int = currentCartItem.cart_quantity.toInt()
 
                 // If the number of cart items is less than the stock value then it mean
@@ -140,7 +141,7 @@ class CartItemsListAdapter (
 
                     // If in the cartListactivity.. show the progress dialog
                     if(context is CartListActivity){
-                        context.progressDialog("Please wait...")
+                        context.progressDialog()
                     }
                     FirestoreClass().updateCart(context, currentCartItem.cartItemId, itemHashMap)
 
@@ -164,5 +165,5 @@ class CartItemsListAdapter (
         return cartItemsList.size
     }
 
-    class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    class MyViewHolder(val customItem:CartItemCustomBinding) : RecyclerView.ViewHolder(customItem.root)
 }

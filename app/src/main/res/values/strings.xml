@@ -62,7 +62,6 @@
     <string name="status_pending">Pending</string>
     <string name="status_progress">In Progress</string>
     <string name="status_delivered">Delivered</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="sold_products">Sold Products</string>
     <string name="sold">Sold</string>
@@ -71,6 +70,7 @@
     <!--    Category-->
     <string name="error_category_title">Category title is required</string>
     <string name="error_category_description">Category description is required</string>
+    <string name="noProductsSoldYet">Non of your products has been purchased yet!</string>
 
 
 </resources>

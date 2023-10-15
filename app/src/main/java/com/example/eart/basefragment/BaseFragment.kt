@@ -19,14 +19,13 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 open class BaseFragment : Fragment() {
     lateinit var mProgressDialog: Dialog
-    private var mFirestore = FirebaseFirestore.getInstance()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-
-        }
-    }
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        arguments?.let {
+//
+//        }
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

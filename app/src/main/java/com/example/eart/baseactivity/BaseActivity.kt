@@ -10,7 +10,6 @@ import androidx.core.content.ContextCompat
 import com.example.eart.R
 import com.example.eart.firestore.FirestoreClass
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.progressdialog.*
 
 open class BaseActivity : AppCompatActivity() {
     private  var doubleBackPressedOnce = false
@@ -48,15 +47,12 @@ open class BaseActivity : AppCompatActivity() {
      /**
      * This function is used to show the progress dialog with the title and message to user.
      */
-    fun progressDialog(text: String) {
+    fun progressDialog() {
         progDialog = Dialog(this)
 
         /*Set the screen content from a layout resource.
         The resource will be inflated, adding all top-level views to the screen.*/
         progDialog.setContentView(R.layout.progressdialog)
-
-        progDialog.tv_progdialg.text = text
-
         progDialog.setCancelable(false)
         progDialog.setCanceledOnTouchOutside(false)
 
@@ -124,6 +120,5 @@ open class BaseActivity : AppCompatActivity() {
         alert_dialog.setCancelable(false)
         alert_dialog.show()
     }
-
 
 }

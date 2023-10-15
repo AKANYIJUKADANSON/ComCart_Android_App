@@ -9,19 +9,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eart.R
 import com.example.eart.adapters.ProductsAdapter
 import com.example.eart.basefragment.BaseFragment
+import com.example.eart.databinding.FragmentProductsBinding
 import com.example.eart.firestore.FirestoreClass
 import com.example.eart.modules.PrdctDtlsClass
 import com.example.eart.ui.activities.Addproduct
 import com.example.eart.ui.activities.CartListActivity
 import com.example.eart.ui.activities.Settings
-import kotlinx.android.synthetic.main.fragment_products.*
 
 class ProductsFragment : BaseFragment() {
+    private var _binding:FragmentProductsBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-
     }
 
     override fun onCreateView(
@@ -29,8 +30,8 @@ class ProductsFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        return inflater.inflate(R.layout.fragment_products, container, false)
+        _binding = FragmentProductsBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -97,21 +98,21 @@ class ProductsFragment : BaseFragment() {
          * then make the no product added yet to gone
          */
         if(prductList.size > 0 ){
-            products_recyc_view.visibility = View.VISIBLE
-            no_prdcts_added_yet.visibility = View.GONE
+            binding.productsRecycView.visibility = View.VISIBLE
+            binding.noProductsAddedYet.visibility = View.GONE
 
             // change the view layout using layoutmanager and we want to use it in this activity/this
-            products_recyc_view.layoutManager = LinearLayoutManager(activity)
-            // sethasfixed size in order to make its size fixed
-            products_recyc_view.setHasFixedSize(true)
+            binding.productsRecycView.layoutManager = LinearLayoutManager(activity)
+            // set has fixed size in order to make its size fixed
+            binding.productsRecycView.setHasFixedSize(true)
 
             val productsAdapter = ProductsAdapter(requireActivity(), prductList, this)
             // The productsAdapter above will be assigned as the adapter of the recyclerview
-            products_recyc_view.adapter = productsAdapter
+            binding.productsRecycView.adapter = productsAdapter
 
         }else{
-            products_recyc_view.visibility = View.GONE
-            no_prdcts_added_yet.visibility = View.VISIBLE
+            binding.productsRecycView.visibility = View.GONE
+            binding.noProductsAddedYet.visibility = View.VISIBLE
         }
 
     }

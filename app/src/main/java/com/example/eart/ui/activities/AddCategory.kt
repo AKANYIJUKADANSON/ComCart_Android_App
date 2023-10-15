@@ -1,29 +1,30 @@
 package com.example.eart.ui.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
+import androidx.databinding.DataBindingUtil
+import com.example.eart.DataBindingTriggerClass
 import com.example.eart.R
 import com.example.eart.baseactivity.BaseActivity
+import com.example.eart.databinding.ActivityAddCategoryBinding
 import com.example.eart.firestore.FirestoreClass
 import com.example.eart.modules.Category
-import kotlinx.android.synthetic.main.activity_add_category.*
 
 class AddCategory : BaseActivity() {
+    lateinit var binding: ActivityAddCategoryBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_category)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_add_category)
 
         // Action bar
         setUpActionBar()
 
         // Store data
-        add_category_btn.setOnClickListener {
-            if (validateData(category_name.text.toString(), category_description.text.toString())){
+        binding.addCategoryBtn.setOnClickListener {
+            if (validateData(binding.categoryName.text.toString(), binding.categoryDescription.text.toString())){
                 addCategory()
             }
         }
@@ -62,8 +63,8 @@ class AddCategory : BaseActivity() {
 
         progressDialog("Adding.......")
 
-        val title = category_name.text.toString()
-        val description = category_description.text.toString()
+        val title = binding.categoryName.text.toString()
+        val description = binding.categoryDescription.text.toString()
 
         val category = Category(
             FirestoreClass().getCurrentUserID(),

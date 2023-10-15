@@ -2,19 +2,17 @@ package com.example.eart.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.eart.R
+import com.example.eart.databinding.CustomFavoriteItemBinding
 import com.example.eart.modules.*
-import kotlinx.android.synthetic.main.custom_favorite_item.view.*
 
 class FavoriteAdapter (
         private val context: Context,
         private val favoriteList: ArrayList<FavoriteClass>
     ): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val layoutFormat = LayoutInflater.from(parent.context).inflate(R.layout.custom_favorite_item, parent, false)
+        val layoutFormat = CustomFavoriteItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MyViewHolder(layoutFormat)
     }
 
@@ -23,10 +21,10 @@ class FavoriteAdapter (
 
         if (holder is MyViewHolder) {
             GlideLoader(context).loadProductPicture( currentFavorite.image,
-                holder.itemView.favorite_imageview
+                holder.customFavoriteItem.favoriteImageview
             )
-            holder.itemView.favorite_item_name.text = currentFavorite.productTitle
-            holder.itemView.favorite_item_price.text = "${Constants.CURRENCY} ${currentFavorite.productPrice}"
+            holder.customFavoriteItem.favoriteItemTitle.text = currentFavorite.productTitle
+            holder.customFavoriteItem.favoriteItemPrice.text = "${Constants.CURRENCY} ${currentFavorite.productPrice}"
 
             // Setting the item click foe each item in the recyclerview
 
@@ -48,6 +46,6 @@ class FavoriteAdapter (
 
 
 
-    class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    class MyViewHolder(val customFavoriteItem: CustomFavoriteItemBinding) : RecyclerView.ViewHolder(customFavoriteItem.root)
 
 }
