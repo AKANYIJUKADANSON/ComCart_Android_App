@@ -55,4 +55,5 @@
     <color name="grey" >#EAEAEA</color>
 
     <color name="dashboard_item_details_bg">#F3F3F3</color>
+    <color name="settings_card_bg_color">#F1F1F1</color>
 </resources>

@@ -19,7 +19,7 @@
             android:id="@+id/tv_title_cart_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
+            android:gravity="fill"
             android:paddingEnd="0dp"
             android:text="@string/title_my_cart"
             android:textColor="@color/white"

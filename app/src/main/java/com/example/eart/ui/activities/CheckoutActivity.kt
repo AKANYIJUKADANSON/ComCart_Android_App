@@ -169,23 +169,21 @@ class CheckoutActivity : BaseActivity() {
             }
 
             // Assign the total of the subtotal to the subtotal field in the layout
-            tv_checkout_sub_total.text = resources.getString(R.string.currency) + mSubtotal.toString()
+            tv_checkout_sub_total.text = "${Constants.CURRENCY} "+ mSubtotal.toString()
 
             // Shipping fee will be 1% of the total price of all products
 
             mDeliveryFee = ((1.0/100.0)*(mSubtotal))
 
-            tv_checkout_shipping_charge.text = "$ ${mDeliveryFee}"
+            tv_checkout_shipping_charge.text = "${Constants.CURRENCY} ${mDeliveryFee}"
 
             if (mCartListItems.size > 0){
                 mTotal = mSubtotal + mDeliveryFee
-                tv_checkout_total_amount.text = "$ ${mTotal}"
+                tv_checkout_total_amount.text = "${Constants.CURRENCY} ${mTotal}"
             }else{
                 checkout_place_order_layout.visibility = View.GONE
             }
         }
-
-
 
     }
 

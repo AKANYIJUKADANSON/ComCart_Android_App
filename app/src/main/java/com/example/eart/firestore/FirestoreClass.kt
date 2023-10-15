@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.eart.modules.*
 import com.example.eart.ui.activities.*
+import com.example.eart.ui.activities.Favorite
 import com.example.eart.ui.fragments.DashboardFragment
 import com.example.eart.ui.fragments.OrdersFragment
 import com.example.eart.ui.fragments.ProductsFragment
@@ -16,7 +17,6 @@ import com.example.eart.ui.fragments.SoldProductsFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
-import com.google.firebase.firestore.WriteBatch
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -80,7 +80,7 @@ class FirestoreClass {
 
                 /**
                  * Since we have the user object
-                 * we can use it to get the shared preferences which helps to store limited amnt of data like strings and codes
+                 * we can use it to get the shared preferences which helps to store limited amount of data like strings and codes
                  *
                  */
 
@@ -93,7 +93,7 @@ class FirestoreClass {
                 // ts in this editor that we are going to store the logged in username
                 // Uses the params of p0 wc is the key and p1 which is the value to store
                 // in this case key will be the logged_in_username and value will be the exact value
-                // for example the first name and last name or emal from the objet userDetails above
+                // for example the first name and last name or email from the objet userDetails above
                 editor.putString(Constants.LOGGED_IN_USERNAME, "${userDetails.firstName} ${userDetails.lastName}")
 
                 // Then we have to apply the editor
@@ -110,7 +110,7 @@ class FirestoreClass {
                         activity.loginSuccess(userDetails)
                     }
 
-                    is Settings ->{
+                    is Account ->{
                         activity.getUserDetailsSuccess(userDetails)
                     }
 
@@ -135,7 +135,7 @@ class FirestoreClass {
                 activity.productUploadSuccess()
             }
             .addOnFailureListener { e ->
-                //Hidding the progress dialog
+                //Hiding the progress dialog
                 activity.progDialog.dismiss()
                 Log.e(
                     activity.javaClass.simpleName,
@@ -153,8 +153,11 @@ class FirestoreClass {
 
         /**
          * This function can be used to load different kinds of pictures thus we have to specify from each activity
-         * The imageType param will help to differentiate the user
-         * image from the product image or any other image type
+         * The imageType param is just any name that can easily help to identify where the image belongs for example
+         * a product image can be named as " productImage followed by time in milliseconds(uniquely label the image)
+         * then a dot(.), then the extension" (productImage.jpg and also for a user image could be (userImage.jpg)
+         * NOTE: What will be stored in the details of the product or any other object where this image belongs is the
+         * image url/download url as a string.
          */
 
         /**
@@ -163,24 +166,24 @@ class FirestoreClass {
          * The time will act as the modifier to differentiate images
          *
          */
-        val strgeRef : StorageReference = FirebaseStorage.getInstance().reference.child(
+        val storageReference : StorageReference = mFireStorageReference.reference.child(
 
             imageType + System.currentTimeMillis() + "." + Constants
                 .getFileExtension(activity,imageUri)
         )
 
         //taskSnapShot is what we will receive
-        strgeRef.putFile(imageUri!!)
+        storageReference.putFile(imageUri!!)
             .addOnSuccessListener { TaskSnapshot ->
                 TaskSnapshot.metadata!!.reference!!.downloadUrl
                     .addOnSuccessListener { imageUrl ->
                         when(activity){
-                            // if ts the reg actvty then upload the user profile img
+                            // if ts the reg activity then upload the user profile img
                             is Registration ->{
                                 activity.imageUploadSuccess(imageUrl.toString())
                             }
 
-                            // if ts the addprdct actvty then upload the prodct img
+                            // if ts the addProduct activity then upload the product img
                             is Addproduct ->{
                                 activity.imageUploadSuccess(imageUrl.toString())
                             }
@@ -217,7 +220,7 @@ class FirestoreClass {
          * wc takes params: key and Value,..... Key is the user id and value is the exact user id got from getCurrentUserId() fn
          * from the current logged in user
          *
-         *  Then we have to get the product list wc is an array list of type ProductClass (because they have same prperties)
+         *  Then we have to get the product list wc is an array list of type ProductClass (because they have same properties)
          * and later we have to loop through the data we get coz they are many products from the collection
          *
          */
@@ -236,7 +239,7 @@ class FirestoreClass {
                     // This loop will contain the products that will fit in the criteria of the document obtained
                     // Then we now change each doc to an object
 
-                    val prodct = i.toObject(PrdctDtlsClass::class.java)
+                    val product = i.toObject(PrdctDtlsClass::class.java)
 
                     // creating a new product id out of the id of the products
                     /**
@@ -244,11 +247,11 @@ class FirestoreClass {
                      * is located in the column of documents(ids representing each product)
                      * i.id is the id representing each product in the document column
                      */
-                    prodct!!.product_id = i.id
+                    product!!.product_id = i.id
 
                     // then now we add this product to the product list
 
-                    productList.add(prodct)
+                    productList.add(product)
                 }
 
                 /** Since we shall deal with different fragments
@@ -279,16 +282,16 @@ class FirestoreClass {
                     // This loop will contain the products that will fit in the criteria of the document obtained
                     // Then we now change each doc to an object
 
-                    val prodct = i.toObject(PrdctDtlsClass::class.java)
+                    val product = i.toObject(PrdctDtlsClass::class.java)
 
                     // creating a new product id out of the id of the products
-                    prodct!!.product_id = i.id
+                    product!!.product_id = i.id
 
                     // then now we add this product to the product list
-                    productList.add(prodct)
+                    productList.add(product)
                 }
 
-                // Passing the productlist made to the dashboardListDownloadSuccess() function in the dashboard frag
+                // Passing the productList made to the dashboardListDownloadSuccess() function in the dashboard frag
                 fragment.dashboardListDownloadSuccess(productList)
 
             }
@@ -319,7 +322,7 @@ class FirestoreClass {
     }
 
     fun getExtraProductDetailsFromFirestore(activity: ProductDetailsActivity, productId:String){
-        // Have to specify the exact collectio to get data from and the exact product needed using the id
+        // Have to specify the exact collection to get data from and the exact product needed using the id
         mFirestore.collection(Constants.PRODUCTS)
             // Specifying the product using id
             .document(productId)
@@ -348,7 +351,7 @@ class FirestoreClass {
             .addOnSuccessListener {
                 activity.addToCartSuccess()
             }.addOnFailureListener { e ->
-                //Hidding the progress dialog
+                //Hiding the progress dialog
                 activity.progDialog.dismiss()
                 Log.e(
                     activity.javaClass.simpleName,
@@ -461,18 +464,18 @@ class FirestoreClass {
                     // This loop will contain the products that will fit in the criteria of the document obtained
                     // Then we now change each doc to an object
 
-                    val prodct = i.toObject(PrdctDtlsClass::class.java)
+                    val product = i.toObject(PrdctDtlsClass::class.java)
 
                     // creating a new product id out of the id of the products
                     /**
                      * this id below will assign the product_id  property in the cart items on firebase database the document id which
                      * is located in the column of documents(ids representing each product)
                      */
-                    prodct!!.product_id = i.id
+                    product!!.product_id = i.id
 
                     // then now we add this product to the product list
 
-                    productList.add(prodct)
+                    productList.add(product)
                 }
 
                 when(activity){
@@ -571,7 +574,6 @@ class FirestoreClass {
             }
     }
 
-
     fun downloadAddressListFromFirestore(activity: AddressList){
         mFirestore.collection(Constants.ADDRESS).get()
             .addOnSuccessListener { address ->
@@ -626,7 +628,6 @@ class FirestoreClass {
             }
     }
 
-
     // Save the order made
     fun addOrderToFirestoreCart(activity: CheckoutActivity, orderPlaced:Order){
         mFirestore.collection(Constants.ORDERS)
@@ -635,7 +636,7 @@ class FirestoreClass {
             .addOnSuccessListener {
                 activity.successAddOrderToFirestore()
             }.addOnFailureListener { e ->
-                //Hidding the progress dialog
+                //Hiding the progress dialog
                 activity.hideProgressDialog()
                 Log.e(
                     activity.javaClass.simpleName,
@@ -643,8 +644,6 @@ class FirestoreClass {
                 )
             }
     }
-
-
 
     // Orders
     fun getOrdersList(fragment: OrdersFragment){
@@ -670,7 +669,6 @@ class FirestoreClass {
                 fragment.ordersListDownloadSuccess(ordersList)
             }
     }
-
 
     // Updating the cart activity after making an order
     fun updateAllDetails(activity: CheckoutActivity, cartItemArrayList:ArrayList<CartItem>, order:Order){
@@ -791,9 +789,113 @@ class FirestoreClass {
             }
             .addOnFailureListener {
                 fragment.hideProgressDialog()
-                Log.e(fragment.javaClass.simpleName, "Error while downloading sold itemsr")
+                Log.e(fragment.javaClass.simpleName, "Error while downloading sold items")
             }
     }
+
+    fun addCategoryToFirestoreCart(activity: AddCategory, category: Category){
+        mFirestore.collection(Constants.CATEGORIES)
+            .document()
+            .set(category)
+            .addOnSuccessListener {
+                activity.addCategoryToFirestoreSuccess()
+            }
+            .addOnFailureListener {
+                activity.hideProgressDialog()
+                Log.e(activity.javaClass.simpleName, "Error while adding category")
+            }
+    }
+
+    fun downloadCategoriesFromFirestore(activity: CategoryList) {
+        mFirestore.collection(Constants.CATEGORIES)
+            .get()
+            .addOnSuccessListener { categories ->
+
+                val categoryList:ArrayList<Category> = ArrayList()
+
+                for (i in categories){
+                    val categoryObj = i.toObject(Category::class.java)
+
+                    // creating a new address id out of the id of the products
+                    /**
+                     * this id below will assign the product_id  property in the cart items on firebase database
+                     * the document id which is located in the column of documents(ids representing each product)
+                     * wc wea created automatically when a document is created too and since the sold_product_id field
+                     * is empty then we can assign this doc id to it
+                     */
+                    categoryObj.category_id = i.id
+
+                    categoryList.add(categoryObj)
+
+                }
+
+                activity.downloadCategoriesFromFirestoreSuccess(categoryList)
+            }
+    }
+
+    fun deletingCategory(context: Context, category_id:String){
+        mFirestore.collection(Constants.CATEGORIES)
+            // Set the document to delete tht is using the ID
+            .document(category_id) // Checking the item id that was passed to this function
+            .delete()
+            .addOnSuccessListener {
+                when(context){
+                    is CategoryList ->{
+                        context.successDeleteCategory()
+                    }
+                }
+
+//                Log.e("DELETE", "ProductToDeleteId: ${category_id}")
+            }
+            .addOnFailureListener {
+                when(context){
+                    is CategoryList ->{
+                        context.hideProgressDialog()
+                        Log.e(
+                            context.javaClass.simpleName,
+                            "Error while deleting category", it
+                        )
+                    }
+                }
+
+            }
+    }
+
+    fun addingProductToFavorite(product:PrdctDtlsClass){
+        mFirestore.collection(Constants.FAVORITE)
+            .document()
+            .set(product)
+            .addOnSuccessListener {
+                Log.e(
+                    "SUCCESS", "Success with favorite"
+                )
+            }
+            .addOnFailureListener {e->
+                Log.e(
+                    javaClass.simpleName, "Error while adding to favorite", e
+                )
+            }
+    }
+
+    fun downloadFavoriteProducts(activity: Favorite){
+        mFirestore.collection(Constants.FAVORITE)
+//            .whereEqualTo(Constants.USER_ID, getCurrentUserID())
+            .get()
+            .addOnSuccessListener {favoriteProducts ->
+                val favoriteList:ArrayList<FavoriteClass> = ArrayList()
+
+                for (i in favoriteProducts){
+                    val favObj = i.toObject(FavoriteClass::class.java)
+
+                    favObj.product_id = i.id
+
+                    favoriteList.add(favObj)
+                }
+
+                activity.downloadFavoriteProductsSuccess(favoriteList)
+            }
+    }
+
 
 }
 

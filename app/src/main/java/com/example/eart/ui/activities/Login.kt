@@ -13,16 +13,32 @@ import com.example.eart.R
 import com.example.eart.baseactivity.BaseActivity
 import com.example.eart.firestore.FirestoreClass
 import com.example.eart.modules.MyUser
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.ktx.Firebase
 
 class Login : BaseActivity(), View.OnClickListener {
     lateinit var auth: FirebaseAuth
     lateinit var forgotPasswd: TextView
     lateinit var haveNoAccnt: TextView
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        // Analytics
+        // Obtain the FirebaseAnalytics instance.
+        firebaseAnalytics = Firebase.analytics
+//        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
+
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM) {
+            param(FirebaseAnalytics.Param.ITEM_ID, FirestoreClass().getCurrentUserID())
+            param(FirebaseAnalytics.Param.ITEM_NAME, "My logs")
+            param(FirebaseAnalytics.Param.CONTENT_TYPE, "image")
+        }
 
         //Calling the views by id
         val lgnbtn = findViewById<Button>(R.id.loginbtn)

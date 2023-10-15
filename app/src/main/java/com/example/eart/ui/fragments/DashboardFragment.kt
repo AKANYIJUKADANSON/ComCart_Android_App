@@ -2,25 +2,18 @@ package com.example.eart.ui.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.widget.TextView
-import androidx.annotation.ContentView
-import androidx.fragment.app.Fragment
+import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eart.R
 import com.example.eart.adapters.DashboardItemListAdapter
-import com.example.eart.adapters.ProductsAdapter
 import com.example.eart.basefragment.BaseFragment
-import com.example.eart.databinding.FragmentDashboardBinding
 import com.example.eart.firestore.FirestoreClass
 import com.example.eart.modules.PrdctDtlsClass
 import com.example.eart.ui.activities.CartListActivity
-import com.example.eart.ui.activities.Login
+import com.example.eart.ui.activities.Favorite
 import com.example.eart.ui.activities.Settings
 import kotlinx.android.synthetic.main.fragment_dashboard.*
-import kotlinx.android.synthetic.main.fragment_products.*
 
 class DashboardFragment : BaseFragment() {
 
@@ -69,6 +62,11 @@ class DashboardFragment : BaseFragment() {
                     "Are you sure, you want to logout?")
                 return true
             }
+
+            R.id.action_favorite ->{
+                startActivity(Intent(activity, Favorite::class.java))
+                return true
+            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -99,9 +97,6 @@ class DashboardFragment : BaseFragment() {
          * make the recyclerview Views visible
          * then make the no product added yet to gone
          */
-//        for (i in dashboardItemsList){
-//            Log.i("Items", i.productTitle)
-//        }
 
 
         if(dashboardItemsList.size > 0 ){
@@ -113,7 +108,7 @@ class DashboardFragment : BaseFragment() {
             // sethasfixed size in order to make its size fixed
             dashboard_recyc_view.setHasFixedSize(true)
 
-            val dashboardProductsAdapter = DashboardItemListAdapter(requireActivity(), dashboardItemsList)
+            val dashboardProductsAdapter = DashboardItemListAdapter(requireActivity(),dashboardItemsList)
             // The productsAdapter above will be assigned as the adapter of the recyclerview
             dashboard_recyc_view.adapter = dashboardProductsAdapter
 
@@ -121,6 +116,12 @@ class DashboardFragment : BaseFragment() {
             dashboard_recyc_view.visibility = View.GONE
             no_dashboard_added_yet.visibility = View.VISIBLE
         }
+    }
+
+
+    fun addProductToFavoriteSuccess(){
+        Toast.makeText(requireActivity(), "Added to favourite successfully", Toast.LENGTH_LONG).show()
+        getDashboardItemsfromFirestore()
     }
 
 }

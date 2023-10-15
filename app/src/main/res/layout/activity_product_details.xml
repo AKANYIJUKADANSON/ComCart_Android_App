@@ -35,6 +35,7 @@
                 android:id="@+id/iv_product_detail_image"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/product_detail_image_height"
+                android:layout_marginTop="16dp"
                 android:background="@color/colorImageViewBackground"
                 android:contentDescription="Image"
                 android:scaleType="fitXY"

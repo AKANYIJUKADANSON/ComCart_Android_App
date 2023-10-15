@@ -12,10 +12,13 @@ object Constants {
      *  For example the name of the field in the firestore for fname will not change but only the value
      */
 
+    const val CURRENCY:String = "UGX"
+
     // Collections in firestore
     const val PRODUCTS:String = "products"
     const val USERS:String = "users"
     const val USER_ID:String = "user_id"
+    const val FAVORITE:String = "favorite"
 
     const val LOGGED_IN_USERNAME: String = "logged_in_username"
     const val MYAPP_PREFERENCES:String = "yAppPrefsM"
@@ -53,14 +56,14 @@ object Constants {
     const val SOLD_PRODUCTS:String = "sold_products"
     const val SOLD_PRODUCT_EXTRA_ID:String = "sold_product_id"
     const val EXTRA_SOLD_PRODUCT_DETAILS:String = "extra_sold_product_details"
+    const val CATEGORIES:String = "categories"
 
 
     fun imageChooser(activity: Activity){
         /**
-         * we are passing the activity parameter coz we are to use it in any other activities
+         * we are passing the activity parameter coz there is need to use it in any other activities
          * Reading the image from phone media storage
          */
-
         val imagePicker = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         activity.startActivityForResult(imagePicker, PICK_IMAGE_CODE)
     }
@@ -71,7 +74,7 @@ object Constants {
      * @param activity Activity reference.
      * @param uri Image file uri.
      */
-    fun getFileExtension(activity: Activity, uri: Uri?): String? {
+    fun getFileExtension(activity: Activity, url: Uri?): String? {
         /*
          * MimeTypeMap: Two-way map that maps MIME-types to file extensions and vice versa.
          *
@@ -82,8 +85,9 @@ object Constants {
          * contentResolver.getType: Return the MIME type of the given content URL.
          */
         return MimeTypeMap.getSingleton()
-            .getExtensionFromMimeType(activity.contentResolver.getType(uri!!))
+            .getExtensionFromMimeType(activity.contentResolver.getType(url!!))
 
         // Uri is the link to the image
     }
+
 }

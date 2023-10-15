@@ -107,7 +107,7 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
         // Assign the details to the views in the product details layout
         GlideLoader(this).loadProductPicture(product.image, iv_product_detail_image)
         tv_product_details_title.text = product.productTitle
-        tv_product_details_price.text = "$${product.productPrice}"
+        tv_product_details_price.text = "${Constants.CURRENCY} ${ product.productPrice}"
         tv_product_details_description.text = product.prodctDescrptn
         tv_product_details_stock_quantity.text = product.stock_quantity
         tv_product_details_stock_quantity.setTextColor(

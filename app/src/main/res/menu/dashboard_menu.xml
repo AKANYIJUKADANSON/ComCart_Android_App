@@ -11,16 +11,21 @@
 
     <item
         android:id="@+id/action_settings"
-        android:icon="@drawable/baseline_manage_account"
+        android:icon="@drawable/baseline_settings"
         android:title="@string/account"
         app:showAsAction="always"
         android:iconTint="@color/white"/>
 
-
+    <item android:id="@+id/action_favorite"
+        android:icon="@drawable/baseline_non_favorite"
+        android:title="My Favorite"
+        app:showAsAction="always"
+        android:iconTint="@color/white"/>
 
     <item android:id="@+id/action_logout"
         android:icon="@drawable/ic_logout"
         android:title="Logout"
         app:showAsAction="always"
         android:iconTint="@color/white"/>
+
 </menu>
