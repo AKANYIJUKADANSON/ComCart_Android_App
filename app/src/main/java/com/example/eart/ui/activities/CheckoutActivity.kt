@@ -5,16 +5,17 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eart.R
-import com.example.eart.adapters.CartItemsListAdapter
 import com.example.eart.adapters.CheckoutItemsListAdapter
 import com.example.eart.baseactivity.BaseActivity
+import com.example.eart.databinding.ActivityCheckoutBinding
 import com.example.eart.firestore.FirestoreClass
 import com.example.eart.modules.*
-import kotlinx.android.synthetic.main.activity_checkout.*
 
 class CheckoutActivity : BaseActivity() {
+    private lateinit var binding: ActivityCheckoutBinding
 
     // Will help to always check if its null because it can happen also sometimes
     private var mSelectedAddress:Address? = null
@@ -30,10 +31,9 @@ class CheckoutActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_checkout)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_checkout)
 
         setUpActionBar()
-
 
         /**
          * We check if whatever intent is heading to this activity has some intent with the extra wc
@@ -46,18 +46,18 @@ class CheckoutActivity : BaseActivity() {
 
         // Check if mseletedAddress is not empty and if not then, populate the activity with summarized details
         if (mSelectedAddress != null){
-            tv_checkout_address_type.text = mSelectedAddress!!.address_type
-            tv_checkout_address_name.text = mSelectedAddress!!.addressName
-            tv_checkout_address_region.text = mSelectedAddress!!.region
-            tv_checkout_address_zipcode.text = mSelectedAddress!!.zipCode
-            tv_checkout_mobile_number.text = mSelectedAddress!!.phoneNumber
+            binding.tvCheckoutAddressType.text = mSelectedAddress!!.address_type
+            binding.tvCheckoutAddressName.text = mSelectedAddress!!.addressName
+            binding.tvCheckoutAddressRegion.text = mSelectedAddress!!.region
+            binding.tvCheckoutAddressZipcode.text = mSelectedAddress!!.zipCode
+            binding.tvCheckoutMobileNumber.text = mSelectedAddress!!.phoneNumber
         }
 
         // Getting all the products
         getAllProductsList()
 
         // Placing an order
-        place_order_btn.setOnClickListener {
+        binding.placeOrderBtn.setOnClickListener {
             placeOrder()
         }
     }
@@ -124,26 +124,26 @@ class CheckoutActivity : BaseActivity() {
         // Setting recyclerview
 
         // change the view layout using layoutmanager and we want to use it in this activity/this
-        rv_checkout_items_list.layoutManager = LinearLayoutManager(this)
-        // sethasfixed size in order to make its size fixed
-        rv_checkout_items_list.setHasFixedSize(true)
+        binding.rvCheckoutItemsList.layoutManager = LinearLayoutManager(this)
+        // set has fixed size in order to make its size fixed
+        binding.rvCheckoutItemsList.setHasFixedSize(true)
 
 
         // Setting the adapter (in this case the cartlistadapter)
         // In here there is no need to update the cartItems thus param updateCartItems set to false
         val checkoutAdapter = CheckoutItemsListAdapter(this, mCartListItems)
-        rv_checkout_items_list.adapter = checkoutAdapter
+        binding.rvCheckoutItemsList.adapter = checkoutAdapter
 
 
         if (mCartListItems.size > 0){
             // change the view layout using layoutmanager and we want to use it in this activity/this
-            rv_checkout_items_list.layoutManager = LinearLayoutManager(this)
+            binding.rvCheckoutItemsList.layoutManager = LinearLayoutManager(this)
             // sethasfixed size in order to make its size fixed
-            rv_checkout_items_list.setHasFixedSize(true)
+            binding.rvCheckoutItemsList.setHasFixedSize(true)
 
             val checkoutCartListAdapter = CheckoutItemsListAdapter(this, mCartListItems)
             // The productsAdapter above will be assigned as the adapter of the recyclerview
-            rv_checkout_items_list.adapter = checkoutCartListAdapter
+            binding.rvCheckoutItemsList.adapter = checkoutCartListAdapter
 
 
 
@@ -169,19 +169,19 @@ class CheckoutActivity : BaseActivity() {
             }
 
             // Assign the total of the subtotal to the subtotal field in the layout
-            tv_checkout_sub_total.text = "${Constants.CURRENCY} "+ mSubtotal.toString()
+             binding.tvCheckoutSubTotal.text = "${Constants.CURRENCY} "+ mSubtotal.toString()
 
             // Shipping fee will be 1% of the total price of all products
 
             mDeliveryFee = ((1.0/100.0)*(mSubtotal))
 
-            tv_checkout_shipping_charge.text = "${Constants.CURRENCY} ${mDeliveryFee}"
+            binding.tvCheckoutShippingCharge.text = "${Constants.CURRENCY} ${mDeliveryFee}"
 
             if (mCartListItems.size > 0){
                 mTotal = mSubtotal + mDeliveryFee
-                tv_checkout_total_amount.text = "${Constants.CURRENCY} ${mTotal}"
+                binding.tvCheckoutTotalAmount.text = "${Constants.CURRENCY} ${mTotal}"
             }else{
-                checkout_place_order_layout.visibility = View.GONE
+                binding.checkoutPlaceOrderLayout.visibility = View.GONE
             }
         }
 

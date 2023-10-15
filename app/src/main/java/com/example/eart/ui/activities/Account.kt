@@ -1,31 +1,31 @@
 package com.example.eart.ui.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.Toolbar
+import androidx.databinding.DataBindingUtil
 import com.example.eart.R
 import com.example.eart.baseactivity.BaseActivity
+import com.example.eart.databinding.ActivityAccountBinding
 import com.example.eart.firestore.FirestoreClass
 import com.example.eart.modules.Constants
 import com.example.eart.modules.GlideLoader
 import com.example.eart.modules.MyUser
-import kotlinx.android.synthetic.main.activity_account.*
-import kotlinx.android.synthetic.main.activity_settings.*
 
 class Account : BaseActivity(), View.OnClickListener {
+    lateinit var binding:ActivityAccountBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_account)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_account)
         setUpActionBar()
 
         //  Get user data
         getUserDetails()
 
-        address_layout.setOnClickListener(this)
+        binding.addressLayout.setOnClickListener(this)
 
-        tv_currency.setText(Constants.CURRENCY)
+        binding.tvCurrency.setText(Constants.CURRENCY)
     }
 
     private fun setUpActionBar(){
@@ -66,12 +66,12 @@ class Account : BaseActivity(), View.OnClickListener {
         hideProgressDialog()
 
         GlideLoader(this).loadUserPicture(
-            userDetails.image, user_image
+            userDetails.image, binding.userImage
         )
 
-        tv_user_id.text = "ID: ${userDetails.user_id}"
-        tv_user_name.text = "Name: ${userDetails.firstName +" "+ userDetails.lastName}"
-        tv_user_email.text = "Email: ${userDetails.emailID}"
+        binding.tvUserId.text = "ID: ${userDetails.user_id}"
+        binding.tvUserName.text = "Name: ${userDetails.firstName +" "+ userDetails.lastName}"
+        binding.tvUserEmail.text = "Email: ${userDetails.emailID}"
         // tv_user_phone_number.text = userDetails.phone_number
 
     }

@@ -6,18 +6,21 @@ import android.text.TextUtils
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import com.example.eart.R
 import com.example.eart.baseactivity.BaseActivity
+import com.example.eart.databinding.ActivityForgotpasswdBinding
 import com.google.firebase.auth.FirebaseAuth
 
 class Forgotpasswd : BaseActivity() {
+    private lateinit var binding: ActivityForgotpasswdBinding
 
     lateinit var forgtpsswrd: Button
     lateinit var forgtpsswrdEmail: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_forgotpasswd)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_forgotpasswd)
 
         forgtpsswrd = findViewById(R.id.forgotPasswdBtn)
         forgtpsswrd.setOnClickListener {
@@ -26,9 +29,9 @@ class Forgotpasswd : BaseActivity() {
 
     }
 
-    fun changePassword():Boolean{
+    private fun changePassword():Boolean{
 
-        forgtpsswrdEmail = findViewById(R.id.forgotPasswdEmail)
+        forgtpsswrdEmail = binding.forgotPasswdEmail
 
         return when{
             TextUtils.isEmpty(forgtpsswrdEmail.text.toString().trim { it<= ' ' })->{
@@ -47,9 +50,9 @@ class Forgotpasswd : BaseActivity() {
                                 Toast.LENGTH_LONG
                             ).show()
 
-                            val intnt = Intent(this, Login::class.java)
-                            intnt.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                            startActivity(intnt)
+                            val intent = Intent(this, Login::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            startActivity(intent)
                             finish()
                         }
                         else{

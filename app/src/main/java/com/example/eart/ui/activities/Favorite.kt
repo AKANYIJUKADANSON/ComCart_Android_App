@@ -4,18 +4,20 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.Toolbar
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.eart.R
 import com.example.eart.adapters.FavoriteAdapter
 import com.example.eart.baseactivity.BaseActivity
+import com.example.eart.databinding.ActivityFavoriteBinding
 import com.example.eart.firestore.FirestoreClass
 import com.example.eart.modules.FavoriteClass
-import kotlinx.android.synthetic.main.activity_favorite.*
 
 class Favorite : BaseActivity() {
+    private lateinit var binding: ActivityFavoriteBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_favorite)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_favorite)
 
         setUpActionBar()
         downloadFavoriteProducts()
@@ -46,19 +48,19 @@ class Favorite : BaseActivity() {
         if (favorite.size > 0){
 
             Log.e("Favorites", favorite.toString())
-            favorite_recyclerView.visibility = View.VISIBLE
-            no_favorite_added_yet.visibility = View.GONE
+            binding.favoriteRecyclerView.visibility = View.VISIBLE
+            binding.noFavoriteAddedYet.visibility = View.GONE
 
             val adapter = FavoriteAdapter(this, favorite)
 
-            favorite_recyclerView.setHasFixedSize(true)
-            favorite_recyclerView.layoutManager = GridLayoutManager(this, 2)
+            binding.favoriteRecyclerView.setHasFixedSize(true)
+            binding.favoriteRecyclerView.layoutManager = GridLayoutManager(this, 2)
 
-            favorite_recyclerView.adapter = adapter
+            binding.favoriteRecyclerView.adapter = adapter
         }
         else{
-            favorite_recyclerView.visibility = View.GONE
-            no_favorite_added_yet.visibility = View.VISIBLE
+            binding.favoriteRecyclerView.visibility = View.GONE
+            binding.noFavoriteAddedYet.visibility = View.VISIBLE
         }
     }
 }

@@ -1,31 +1,30 @@
 package com.example.eart.ui.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.example.eart.R
 import com.example.eart.adapters.CategoryAdapter
 import com.example.eart.baseactivity.BaseActivity
+import com.example.eart.databinding.ActivityCategoryListBinding
 import com.example.eart.firestore.FirestoreClass
 import com.example.eart.modules.Category
-import kotlinx.android.synthetic.main.activity_category_list.*
 
 class CategoryList : BaseActivity() {
+    private lateinit var binding: ActivityCategoryListBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_category_list)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_category_list)
 
         // Tool bar
         setUpActionBar()
 
-        fabAddCategory.setOnClickListener {
+        binding.fabAddCategory.setOnClickListener {
             val intent = Intent(this, AddCategory::class.java)
             startActivity(intent)
         }
@@ -62,18 +61,18 @@ class CategoryList : BaseActivity() {
         Log.e("Categories", "Cats ${categoryList}")
 
         if (categoryList.size > 0){
-            recycler_view_category_list.visibility = View.VISIBLE
-            tv_no_category.visibility = View.GONE
+            binding.recyclerViewCategoryList.visibility = View.VISIBLE
+            binding.tvNoCategory.visibility = View.GONE
 
             val categoryListAdapter = CategoryAdapter(this, categoryList)
-            recycler_view_category_list.layoutManager = LinearLayoutManager(this)
-            recycler_view_category_list.setHasFixedSize(true)
+            binding.recyclerViewCategoryList.layoutManager = LinearLayoutManager(this)
+            binding.recyclerViewCategoryList.setHasFixedSize(true)
 
-            recycler_view_category_list.adapter = categoryListAdapter
+            binding.recyclerViewCategoryList.adapter = categoryListAdapter
 
         }else{
-            recycler_view_category_list.visibility = View.GONE
-            tv_no_category.visibility = View.VISIBLE
+            binding.recyclerViewCategoryList.visibility = View.GONE
+            binding.tvNoCategory.visibility = View.VISIBLE
         }
     }
 

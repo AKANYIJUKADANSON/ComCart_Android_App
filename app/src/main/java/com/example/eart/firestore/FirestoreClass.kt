@@ -229,7 +229,7 @@ class FirestoreClass {
             .get()
             .addOnSuccessListener { document ->
 
-                Log.e("ProductList: ", document.documents.toString())
+//                Log.e("ProductList: ", document.documents.toString())
 
                 //Creating an array that we shall put or add the products
                 val productList : ArrayList<PrdctDtlsClass> = ArrayList()

@@ -8,14 +8,16 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.eart.R
 import com.example.eart.adapters.DashboardItemListAdapter
 import com.example.eart.basefragment.BaseFragment
+import com.example.eart.databinding.FragmentDashboardBinding
 import com.example.eart.firestore.FirestoreClass
 import com.example.eart.modules.PrdctDtlsClass
 import com.example.eart.ui.activities.CartListActivity
 import com.example.eart.ui.activities.Favorite
 import com.example.eart.ui.activities.Settings
-import kotlinx.android.synthetic.main.fragment_dashboard.*
 
 class DashboardFragment : BaseFragment() {
+    private var _binding : FragmentDashboardBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,8 +30,8 @@ class DashboardFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_dashboard, container, false)
-        return root
+        _binding = FragmentDashboardBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     // This will make the menu to be activated
@@ -76,12 +78,12 @@ class DashboardFragment : BaseFragment() {
     // When the user selects the dashboard fragment the onResume function is called
     override fun onResume() {
         super.onResume()
-        getDashboardItemsfromFirestore()
+        getDashboardItemsFromFirestore()
     }
 
 
     // Function to get the Dashboard items list from firestore and it will be called on resume
-    fun getDashboardItemsfromFirestore(){
+    private fun getDashboardItemsFromFirestore(){
         // start the progress dialog
         progressDialog("Loading.....")
         FirestoreClass().getDashboardItemList(this)
@@ -100,28 +102,28 @@ class DashboardFragment : BaseFragment() {
 
 
         if(dashboardItemsList.size > 0 ){
-            dashboard_recyc_view.visibility = View.VISIBLE
-            no_dashboard_added_yet.visibility = View.GONE
+            binding.dashboardRecycView.visibility = View.VISIBLE
+            binding.noDashboardAddedYet.visibility = View.GONE
 
-            // change the view layout using layoutmanager and we want to use it in this activity/this
-            dashboard_recyc_view.layoutManager = GridLayoutManager(requireActivity(), 2)
-            // sethasfixed size in order to make its size fixed
-            dashboard_recyc_view.setHasFixedSize(true)
+            // change the view layout using layout manager and we want to use it in this activity/this
+            binding.dashboardRecycView.layoutManager = GridLayoutManager(requireActivity(), 2)
+            // set has fixed size in order to make its size fixed
+            binding.dashboardRecycView.setHasFixedSize(true)
 
             val dashboardProductsAdapter = DashboardItemListAdapter(requireActivity(),dashboardItemsList)
             // The productsAdapter above will be assigned as the adapter of the recyclerview
-            dashboard_recyc_view.adapter = dashboardProductsAdapter
+            binding.dashboardRecycView.adapter = dashboardProductsAdapter
 
         }else{
-            dashboard_recyc_view.visibility = View.GONE
-            no_dashboard_added_yet.visibility = View.VISIBLE
+            binding.dashboardRecycView.visibility = View.GONE
+            binding.noDashboardAddedYet.visibility = View.VISIBLE
         }
     }
 
 
     fun addProductToFavoriteSuccess(){
         Toast.makeText(requireActivity(), "Added to favourite successfully", Toast.LENGTH_LONG).show()
-        getDashboardItemsfromFirestore()
+        getDashboardItemsFromFirestore()
     }
 
 }

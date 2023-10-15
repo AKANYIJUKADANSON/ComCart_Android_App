@@ -9,15 +9,16 @@ import com.example.eart.R
 import com.example.eart.adapters.ProductsAdapter
 import com.example.eart.adapters.SoldProductsAdapter
 import com.example.eart.basefragment.BaseFragment
+import com.example.eart.databinding.FragmentSoldProductsBinding
 import com.example.eart.firestore.FirestoreClass
 import com.example.eart.modules.SoldProducts
 import com.example.eart.ui.activities.CartListActivity
 import com.example.eart.ui.activities.Settings
-import kotlinx.android.synthetic.main.fragment_products.*
-import kotlinx.android.synthetic.main.fragment_sold_products.*
 
 
 class SoldProductsFragment : BaseFragment() {
+    private var _binding:FragmentSoldProductsBinding? = null
+    private val binding get() = _binding!!
 
     // OnCreate() function will help to add the menu in the fragment
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +32,8 @@ class SoldProductsFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sold_products, container, false)
+        _binding = FragmentSoldProductsBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
 
@@ -88,21 +90,21 @@ class SoldProductsFragment : BaseFragment() {
          * then make the no product added yet to gone
          */
         if(soldProductList.size > 0 ){
-            rv_sold_products.visibility = View.VISIBLE
-            tv_no_sold_products.visibility = View.GONE
+            binding.rvSoldProducts.visibility = View.VISIBLE
+            binding.tvNoSoldProducts.visibility = View.GONE
 
             // change the view layout using layoutmanager and we want to use it in this activity/this
-            rv_sold_products.layoutManager = LinearLayoutManager(activity)
+            binding.rvSoldProducts.layoutManager = LinearLayoutManager(activity)
             // sethasfixed size in order to make its size fixed
-            rv_sold_products.setHasFixedSize(true)
+            binding.rvSoldProducts.setHasFixedSize(true)
 
             val soldProductsAdapter = SoldProductsAdapter(requireActivity(), soldProductList)
             // The productsAdapter above will be assigned as the adapter of the recyclerview
-            rv_sold_products.adapter = soldProductsAdapter
+            binding.rvSoldProducts.adapter = soldProductsAdapter
 
         }else{
-            rv_sold_products.visibility = View.GONE
-            tv_no_sold_products.visibility = View.VISIBLE
+            binding.rvSoldProducts.visibility = View.GONE
+            binding.tvNoSoldProducts.visibility = View.VISIBLE
         }
     }
 }

@@ -9,8 +9,10 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import com.example.eart.R
 import com.example.eart.baseactivity.BaseActivity
+import com.example.eart.databinding.ActivityLoginBinding
 import com.example.eart.firestore.FirestoreClass
 import com.example.eart.modules.MyUser
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -20,14 +22,14 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 
 class Login : BaseActivity(), View.OnClickListener {
+
+    private lateinit var binding: ActivityLoginBinding
     lateinit var auth: FirebaseAuth
-    lateinit var forgotPasswd: TextView
-    lateinit var haveNoAccnt: TextView
     private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
 
         // Analytics
         // Obtain the FirebaseAnalytics instance.
@@ -40,16 +42,9 @@ class Login : BaseActivity(), View.OnClickListener {
             param(FirebaseAnalytics.Param.CONTENT_TYPE, "image")
         }
 
-        //Calling the views by id
-        val lgnbtn = findViewById<Button>(R.id.loginbtn)
-        forgotPasswd = findViewById(R.id.forgotPasswd)
-        haveNoAccnt = findViewById(R.id.haveNoActReg)
-
-        //Setting the onclick function to work when the views are selected
-
-        lgnbtn.setOnClickListener(this)
-        forgotPasswd.setOnClickListener(this)
-        haveNoAccnt.setOnClickListener(this)
+        binding.loginbtn.setOnClickListener(this)
+        binding.forgotPasswd.setOnClickListener(this)
+        binding.haveNoActReg.setOnClickListener(this)
 
         // With no action and status bars
         window.setFlags(
@@ -58,17 +53,14 @@ class Login : BaseActivity(), View.OnClickListener {
         )
     }
 
-    fun validateLoginDetails(): Boolean {
-        val loginEmailID = findViewById<EditText>(R.id.loginEmail)
-        val loginPassword = findViewById<EditText>(R.id.loginPassword)
-
+    private fun validateLoginDetails(): Boolean {
         return when{
-            TextUtils.isEmpty(loginEmailID.text.toString().trim { it <= ' ' })->{
+            TextUtils.isEmpty(binding.loginEmail.text.toString().trim { it <= ' ' })->{
                 showErrorSnackBar(resources.getString(R.string.errorEtEmail), true)
                 false
             }
 
-            TextUtils.isEmpty(loginPassword.text.toString().trim { it <= ' ' })->{
+            TextUtils.isEmpty(binding.loginPassword.text.toString().trim { it <= ' ' })->{
                 showErrorSnackBar(resources.getString(R.string.errorEtPassword), true)
                 false
             }
@@ -76,8 +68,8 @@ class Login : BaseActivity(), View.OnClickListener {
             else ->{
                 // Starting the progress dialog
                 progressDialog("Authenticating.....")
-                val email = findViewById<EditText>(R.id.loginEmail).text.toString().trim{it <= ' '}
-                val password = findViewById<EditText>(R.id.loginPassword).text.toString().trim{it <= ' '}
+                val email = binding.loginEmail.text.toString().trim{it <= ' '}
+                val password = binding.loginPassword.text.toString().trim{it <= ' '}
 
                 auth = FirebaseAuth.getInstance()
                 auth.signInWithEmailAndPassword(email, password)

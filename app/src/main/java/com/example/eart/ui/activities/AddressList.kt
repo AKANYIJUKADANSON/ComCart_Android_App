@@ -5,19 +5,22 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.eart.R
 import com.example.eart.adapters.AddressListAdapter
 import com.example.eart.baseactivity.BaseActivity
+import com.example.eart.databinding.ActivityAddAddressBinding
+import com.example.eart.databinding.ActivityAddressListBinding
 import com.example.eart.firestore.FirestoreClass
 import com.example.eart.modules.Address
 import com.example.eart.modules.Constants
 import com.example.eart.modules.SwipeToDeleteCallback
-import kotlinx.android.synthetic.main.activity_address_list.*
 
 class   AddressList : BaseActivity(){
+    lateinit var binding: ActivityAddressListBinding
     // Will help to know what address is selected and it will be filled with the intent but one with
     // only intent with extras
     // The variable willl help determine wther we are selecting or want to edit the address what to do
@@ -25,11 +28,11 @@ class   AddressList : BaseActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_address_list)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_address_list)
         setUpActionBar()
 
         // Adding the address icon
-        fabAddAddress.setOnClickListener {
+        binding.fabAddAddress.setOnClickListener {
             // If we add an address, then we expect some results whc can be stored in the address code(constant)
             startActivity(Intent(this, AddAddress::class.java))
         }
@@ -49,7 +52,7 @@ class   AddressList : BaseActivity(){
          * but not edit or delete the address
          */
         if (mSelectAddress){
-            tv_title_address_list.text = resources.getString(R.string.title_select_address)
+            binding.tvTitleAddressList.text = resources.getString(R.string.title_select_address)
         }
     }
 
@@ -88,17 +91,17 @@ class   AddressList : BaseActivity(){
          * then make the no product added yet to gone
          */
         if(addressList.size > 0 ){
-            recycler_view_address_list.visibility = View.VISIBLE
-            tv_no_address.visibility = View.GONE
+            binding.recyclerViewAddressList.visibility = View.VISIBLE
+            binding.tvNoAddress.visibility = View.GONE
 
             // change the view layout using layoutmanager and we want to use it in this activity/this
-            recycler_view_address_list.layoutManager = LinearLayoutManager(this)
+            binding.recyclerViewAddressList.layoutManager = LinearLayoutManager(this)
             // sethasfixed size in order to make its size fixed
-            recycler_view_address_list.setHasFixedSize(true)
+            binding.recyclerViewAddressList.setHasFixedSize(true)
 
             val addressListAdapter = AddressListAdapter(this, addressList, mSelectAddress)
             // The productsAdapter above will be assigned as the adapter of the recyclerview
-            recycler_view_address_list.adapter = addressListAdapter
+            binding.recyclerViewAddressList.adapter = addressListAdapter
 
             /**
              * If the mselectedAddress is not having extras with the intent to selectan address then
@@ -116,12 +119,12 @@ class   AddressList : BaseActivity(){
                 }
 
                 val deleteItemTouchHelper = ItemTouchHelper(swipeToDeleteHandler)
-                deleteItemTouchHelper.attachToRecyclerView(recycler_view_address_list)
+                deleteItemTouchHelper.attachToRecyclerView(binding.recyclerViewAddressList)
             }
 
         }else{
-            recycler_view_address_list.visibility = View.GONE
-            tv_no_address.visibility = View.VISIBLE
+            binding.recyclerViewAddressList.visibility = View.GONE
+            binding.tvNoAddress.visibility = View.VISIBLE
         }
 
     }

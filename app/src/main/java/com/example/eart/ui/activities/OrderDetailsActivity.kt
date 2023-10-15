@@ -4,23 +4,24 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eart.R
 import com.example.eart.adapters.CartItemsListAdapter
+import com.example.eart.databinding.ActivityOrderDetailsBinding
 import com.example.eart.modules.Constants
 import com.example.eart.modules.Order
-import kotlinx.android.synthetic.main.activity_checkout.*
-import kotlinx.android.synthetic.main.activity_order_details.*
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
-import kotlin.collections.ArrayList
 
 class OrderDetailsActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityOrderDetailsBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_order_details)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_order_details)
 
         setUpActionBar()
 
@@ -52,18 +53,18 @@ class OrderDetailsActivity : AppCompatActivity() {
 
 
     private fun setUpUIDetails(myOrder:Order){
-        tv_order_id.text = myOrder.order_title
+        binding.tvOrderId.text = myOrder.order_title
 
         // Date format
         val dateFormat = "dd MMM yyyy HH:mm"
         val dateFormater = SimpleDateFormat(dateFormat, Locale.getDefault())
-        tv_order_date.text = myOrder.order_date.toString()
+        binding.tvOrderDate.text = myOrder.order_date.toString()
         val calender:Calendar = Calendar.getInstance()
         calender.timeInMillis = myOrder.order_date
         val formatedDate = dateFormater.format(calender.time)
 
         // Assigning date to the date field
-        tv_order_date.text = formatedDate
+        binding.tvOrderDate.text = formatedDate
         /**
          * Try to change the time to hour in order to play around with the status
          * for example if the difference in time when the order was made is < 1 hr
@@ -78,8 +79,8 @@ class OrderDetailsActivity : AppCompatActivity() {
         when {
             diffInTimeInHours < 1 ->{
                 // make status pending
-                tv_order_status.text = resources.getString(R.string.status_pending)
-                tv_order_status.setTextColor(
+                binding.tvOrderStatus.text = resources.getString(R.string.status_pending)
+                binding.tvOrderStatus.setTextColor(
                     ContextCompat.getColor(
                         this, R.color.status_pending_Color
                     )
@@ -88,8 +89,8 @@ class OrderDetailsActivity : AppCompatActivity() {
 
             diffInTimeInHours < 2 ->{
                 // make status in progress
-                tv_order_status.text = resources.getString(R.string.status_progress)
-                tv_order_status.setTextColor(
+                binding.tvOrderStatus.text = resources.getString(R.string.status_progress)
+                binding.tvOrderStatus.setTextColor(
                     ContextCompat.getColor(
                         this@OrderDetailsActivity, R.color.status_in_progress_Color
                     )
@@ -98,8 +99,8 @@ class OrderDetailsActivity : AppCompatActivity() {
 
             else -> {
                 // make status delivered
-                tv_order_status.text = resources.getString(R.string.status_delivered)
-                tv_order_status.setTextColor(
+                binding.tvOrderStatus.text = resources.getString(R.string.status_delivered)
+                binding.tvOrderStatus.setTextColor(
                     ContextCompat.getColor(
                         this@OrderDetailsActivity, R.color.status_delivered_Color
                     )
@@ -108,22 +109,22 @@ class OrderDetailsActivity : AppCompatActivity() {
         }
 
         // Setting the recyclerview
-        rv_order_items_list.layoutManager = LinearLayoutManager(this)
-        rv_order_items_list.setHasFixedSize(true)
+        binding.rvOrderItemsList.layoutManager = LinearLayoutManager(this)
+        binding.rvOrderItemsList.setHasFixedSize(true)
 
         val adapter = CartItemsListAdapter(this, myOrder.items)
-        rv_order_items_list.adapter = adapter
+        binding.rvOrderItemsList.adapter = adapter
 
         val orderAddress= myOrder.address
-        tv_order_address_type.text = orderAddress.address_type
-        tv_order_address_name.text = orderAddress.addressName
-        tv_order_address_region.text = orderAddress.region
-        tv_order_address_zipcode.text = orderAddress.zipCode
-        tv_order_mobile_number.text = orderAddress.phoneNumber
+        binding.tvOrderAddressType.text = orderAddress.address_type
+        binding.tvOrderAddressName.text = orderAddress.addressName
+        binding.tvOrderAddressRegion.text = orderAddress.region
+        binding.tvOrderAddressZipcode.text = orderAddress.zipCode
+        binding.tvOrderMobileNumber.text = orderAddress.phoneNumber
 
-        tv_order_sub_total.text = myOrder.sub_total
-        tv_order_shipping_charge.text = myOrder.delivery_charge
-        tv_order_total_amount.text = myOrder.total_amount
+        binding.tvOrderSubTotal.text = myOrder.sub_total
+        binding.tvOrderShippingCharge.text = myOrder.delivery_charge
+        binding.tvOrderTotalAmount.text = myOrder.total_amount
 
     }
 

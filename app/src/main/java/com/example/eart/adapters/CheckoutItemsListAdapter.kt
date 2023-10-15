@@ -6,10 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.eart.R
+import com.example.eart.databinding.CheckoutProductCustomBinding
 import com.example.eart.modules.CartItem
 import com.example.eart.modules.GlideLoader
-import kotlinx.android.synthetic.main.cart_item_custom.view.*
-import kotlinx.android.synthetic.main.checkout_product_custom.view.*
 
 class CheckoutItemsListAdapter (
     private val context: Context,
@@ -17,8 +16,7 @@ class CheckoutItemsListAdapter (
 //    private val activity: CartListActivity
 ): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val cartLayoutFormat = LayoutInflater.from(parent.context)
-            .inflate(R.layout.checkout_product_custom, parent, false)
+        val cartLayoutFormat = CheckoutProductCustomBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MyViewHolder(cartLayoutFormat)
     }
 
@@ -27,11 +25,11 @@ class CheckoutItemsListAdapter (
 
         if (holder is MyViewHolder) {
             GlideLoader(context).loadProductPicture( currentCartItem.product_image,
-                holder.itemView.recyc_checkout_image
+                holder.checkOutProduct.recycCheckoutImage
             )
-            holder.itemView.recyc_checkout_item_title.text = currentCartItem.product_title
+            holder.checkOutProduct.recycCheckoutItemTitle.text = currentCartItem.product_title
             val currency = context.resources.getString(R.string.currency)
-            holder.itemView.recyc_checkout_price.text = "${currency} ${currentCartItem.product_price}"
+            holder.checkOutProduct.recycCheckoutPrice.text = "${currency} ${currentCartItem.product_price}"
         }
 
     }
@@ -40,5 +38,5 @@ class CheckoutItemsListAdapter (
         return cartItemsList.size
     }
 
-    class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    class MyViewHolder(val checkOutProduct:CheckoutProductCustomBinding) : RecyclerView.ViewHolder(checkOutProduct.root)
 }

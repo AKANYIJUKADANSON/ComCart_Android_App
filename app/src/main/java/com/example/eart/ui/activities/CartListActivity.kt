@@ -5,17 +5,19 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eart.R
 import com.example.eart.adapters.CartItemsListAdapter
 import com.example.eart.baseactivity.BaseActivity
+import com.example.eart.databinding.ActivityCartListBinding
 import com.example.eart.firestore.FirestoreClass
 import com.example.eart.modules.CartItem
 import com.example.eart.modules.Constants
 import com.example.eart.modules.PrdctDtlsClass
-import kotlinx.android.synthetic.main.activity_cart_list.*
 
 class CartListActivity :BaseActivity() {
+    private lateinit var binding: ActivityCartListBinding
 
     // This variable will be initialized in the productdownload success
     private lateinit var mProductsList:ArrayList<PrdctDtlsClass>
@@ -23,10 +25,10 @@ class CartListActivity :BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_cart_list)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_cart_list)
         setUpActionBar()
 
-        btn_checkout.setOnClickListener {
+        binding.btnCheckout.setOnClickListener {
             // Send an intent with extras to the AddressList Activity wea to pic the address from
             val intent = Intent(this@CartListActivity, AddressList::class.java)
             intent.putExtra(Constants.EXTRA_SELECT_ADDRESS, true)
@@ -132,19 +134,19 @@ class CartListActivity :BaseActivity() {
 
         // Log.e("Downloaded cart items:", cartItemList.toString())
         if(mCartListItems.size > 0 ){
-            rv_cart_items_list.visibility = View.VISIBLE
-            linear_layout_checkout.visibility = View.VISIBLE
-            tv_no_cart_item_found.visibility = View.GONE
+            binding.rvCartItemsList.visibility = View.VISIBLE
+            binding.linearLayoutCheckout.visibility = View.VISIBLE
+            binding.tvNoCartItemFound.visibility = View.GONE
 
 
             // change the view layout using layoutmanager and we want to use it in this activity/this
-            rv_cart_items_list.layoutManager = LinearLayoutManager(this)
+            binding.rvCartItemsList.layoutManager = LinearLayoutManager(this)
             // sethasfixed size in order to make its size fixed
-            rv_cart_items_list.setHasFixedSize(true)
+            binding.rvCartItemsList.setHasFixedSize(true)
 
             val cartItemsListAdapter = CartItemsListAdapter(this, mCartListItems)
             // The cartItemsListAdapter above will be assigned as the adapter of the recyclerview
-            rv_cart_items_list.adapter = cartItemsListAdapter
+            binding.rvCartItemsList.adapter = cartItemsListAdapter
 
             // Dealing with the subtotal or calculating price
             var subtotal:Double = 0.0
@@ -168,7 +170,7 @@ class CartListActivity :BaseActivity() {
             }
 
             // Assign the total of the subtotal to the subtotal field in the layout
-            tv_sub_total.text = "${Constants.CURRENCY} ${subtotal}"
+            binding.tvSubTotal.text = "${Constants.CURRENCY} ${subtotal}"
 
             // Fr now the shipping cost can be fixed
             // TODO - Shipping charge
@@ -176,32 +178,32 @@ class CartListActivity :BaseActivity() {
              * can do the logic to determine hipping charge
              * based on weight or size or data from the developer or manufacturer
              */
-            tv_shipping_charge.text = "$ 10"
+            binding.tvShippingCharge.text = "$ 10"
 
             // Shipping fee will be 1% of the total price of all products
             var deliveryFee:Double = 0.0
             deliveryFee = ((1.0/100.0)*(subtotal))
 
-            tv_shipping_charge.text = "${Constants.CURRENCY} ${deliveryFee}"
+            binding.tvShippingCharge.text = "${Constants.CURRENCY} ${deliveryFee}"
 
             /**
              * check if the subtotal is greater than zero as in real sense there are items in cart
              * and then make the checkout layout visible
              */
             if (cartItemList.size > 0){
-                linear_layout_checkout.visibility = View.VISIBLE
+                binding.linearLayoutCheckout.visibility = View.VISIBLE
 
                 // find the overall total after adding the shipping
                 val total = subtotal + 10  // TODO - change the logic here due to shipping fee logic
-                tv_total_amount.text = "${Constants.CURRENCY} ${total}"
+                binding.tvTotalAmount.text = "${Constants.CURRENCY} ${total}"
             }else{
-                linear_layout_checkout.visibility = View.GONE
+                binding.linearLayoutCheckout.visibility = View.GONE
             }
 
         }else{
-            rv_cart_items_list.visibility = View.GONE
-            linear_layout_checkout.visibility = View.GONE
-            tv_no_cart_item_found.visibility = View.VISIBLE
+            binding.rvCartItemsList.visibility = View.GONE
+            binding.linearLayoutCheckout.visibility = View.GONE
+            binding.tvNoCartItemFound.visibility = View.VISIBLE
         }
 
 
@@ -213,41 +215,5 @@ class CartListActivity :BaseActivity() {
         getCartItemsList()
 
     }
-
-
-    /**
-     * *********************************PRAC****************************************
-     *
-     */
-
-//
-//    fun getData(){
-//        RetrieveDataFromDatabase().getDataFromFirebase(this)
-//    }
-//
-//    fun downloadCartItemsPractice(cartItemList: ArrayList<CartItem>) {
-//        hideProgressDialog()
-//
-//        if (cartItemList.size > 0){
-//
-//            // Change visibvility of recylerView to visible and that of text to gone
-//            rv_cart_items_list.visibility = View.VISIBLE
-//            tv_no_cart_item_found.visibility = View.GONE
-//
-//            // Display the items in the recycler view
-//            val recyclerViewAdapter = MyCartItemsAdapter(this, cartItemList)
-//
-//            rv_cart_items_list.layoutManager = LinearLayoutManager(this)
-//            rv_cart_items_list.setHasFixedSize(true)
-//
-//            rv_cart_items_list.adapter = recyclerViewAdapter
-//
-//
-//        }else{
-//            rv_cart_items_list.visibility = View.GONE
-//            tv_no_cart_item_found.visibility = View.VISIBLE
-//        }
-//    }
-
 
 }
